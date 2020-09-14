@@ -1,0 +1,216 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description', content='')
+    meta(name='author', content='Mark Otto, Jacob Thornton, and Bootstrap contributors')
+    meta(name='generator', content='Jekyll v4.1.1')
+    title #{title}
+    link(rel='canonical', href='https://getbootstrap.com/docs/4.5/examples/dashboard/')
+    // Bootstrap core CSS
+    link(href='https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css', rel='stylesheet', integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z', crossorigin='anonymous')
+    // Favicons
+    link(rel='apple-touch-icon', href='/docs/4.5/assets/img/favicons/apple-touch-icon.png', sizes='180x180')
+    link(rel='icon', href='/docs/4.5/assets/img/favicons/favicon-32x32.png', sizes='32x32', type='image/png')
+    link(rel='icon', href='/docs/4.5/assets/img/favicons/favicon-16x16.png', sizes='16x16', type='image/png')
+    link(rel='manifest', href='/docs/4.5/assets/img/favicons/manifest.json')
+    link(rel='mask-icon', href='/docs/4.5/assets/img/favicons/safari-pinned-tab.svg', color='#563d7c')
+    link(rel='icon', href='/docs/4.5/assets/img/favicons/favicon.ico')
+    meta(name='msapplication-config', content='/docs/4.5/assets/img/favicons/browserconfig.xml')
+    meta(name='theme-color', content='#563d7c')
+    style.
+      .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      }
+      @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+      }
+      }
+    // Custom styles for this template
+    link(href='https://getbootstrap.com/docs/4.5/examples/dashboard/dashboard.css', rel='stylesheet')
+  body
+    nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0.shadow
+      a.navbar-brand.col-md-3.col-lg-2.mr-0.px-3(href='#') CAIC Motor Inventory System
+      button.navbar-toggler.position-absolute.d-md-none.collapsed(type='button', data-toggle='collapse', data-target='#sidebarMenu', aria-controls='sidebarMenu', aria-expanded='false', aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      input.form-control.form-control-dark.w-100(type='text', placeholder='Search', aria-label='Search')
+      ul.navbar-nav.px-3
+        li.nav-item.text-nowrap
+          a.nav-link(href='#') Sign out
+    .container-fluid
+      .row
+        nav#sidebarMenu.col-md-3.col-lg-2.d-md-block.bg-light.sidebar.collapse
+          .sidebar-sticky.pt-3
+            ul.nav.flex-column
+              li.nav-item
+                a.nav-link.active(href='#')
+                  span(data-feather='home')
+                  |               Dashboard 
+                  span.sr-only (current)
+              ul#test
+              li.nav-item
+                a.nav-link(href='#')
+                  span(data-feather='file')
+                  |               Orders
+              li.nav-item
+                a.nav-link(href='#')
+                  span(data-feather='shopping-cart')
+                  |               Products
+              li.nav-item
+                a.nav-link(href='#')
+                  span(data-feather='users')
+                  |               Customers
+              li.nav-item
+                a.nav-link(href='#')
+                  span(data-feather='bar-chart-2')
+                  |               Reports
+              li.nav-item
+                a.nav-link(href='#')
+                  span(data-feather='layers')
+                  |               Integrations
+            h6.sidebar-heading.d-flex.justify-content-between.align-items-center.px-3.mt-4.mb-1.text-muted
+              span Saved reports
+              a.d-flex.align-items-center.text-muted(href='#', aria-label='Add a new report')
+                span(data-feather='plus-circle')
+            ul.nav.flex-column.mb-2
+              li.nav-item
+                a.nav-link(href='#')
+                  span(data-feather='file-text')
+                  |               Current month
+              li.nav-item
+                a.nav-link(href='#')
+                  span(data-feather='file-text')
+                  |               Last quarter
+              li.nav-item
+                a.nav-link(href='#')
+                  span(data-feather='file-text')
+                  |               Social engagement
+              li.nav-item
+                a.nav-link(href='#')
+                  span(data-feather='file-text')
+                  |               Year-end sale
+        main.col-md-9.ml-sm-auto.col-lg-10.px-md-4(role='main')
+          .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+            h1.h2 Dashboard
+            .btn-toolbar.mb-2.mb-md-0
+              .btn-group.mr-2
+                button.btn.btn-sm.btn-outline-secondary(type='button') Share
+                button.btn.btn-sm.btn-outline-secondary(type='button') Export
+              button.btn.btn-sm.btn-outline-secondary.dropdown-toggle(type='button')
+                span(data-feather='calendar')
+                |             This week
+          canvas#myChart.my-4.w-100(width='900', height='200')
+          
+          h2 Recent Items
+          .table-responsive
+            table.table.table-striped.table-sm
+              thead
+                tr
+                  th Urgent? 
+                  th Sales Representative
+                  th Date Pulled Out
+                  th Company
+                  th Motor Type
+                  th HP
+                  th KW
+                  th RPM
+                  //- th Others
+                  //- th Parts
+                  th Remarks
+              tbody#newItem
+                each item in items
+                  tr
+                    if item.urgent === 'on'
+                        td yes
+                    else 
+                        td no 
+
+                    td #{item.salesRep}
+                    td #{item.datePulledOut}
+                    td #{item.company}
+                    td #{item.motorType}
+                    td #{item.hp}
+                    td #{item.kw}
+                    td #{item.rpm}
+                    td #{item.remarks}
+                    //- - var otherList = [];
+                    //- each other in item.others
+                    //-   if other.isChecked == "on"
+                    //-     - otherList.push(other.name)
+                        
+                    //- td #{otherList}
+
+                
+    script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js', integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj', crossorigin='anonymous')
+    script.
+      window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\\/script>')
+    script(src='https://getbootstrap.com/docs/4.5/dist/js/bootstrap.bundle.min.js', integrity='sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf', crossorigin='anonymous')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js')
+    script(src='js/dashboard.js')
+    script(src='/socket.io/socket.io.js')
+    script.
+      var ctx = document.getElementById('myChart').getContext('2d');
+      var salesRepObject = loadSalesRep(ctx, !{JSON.stringify(stats)});
+      var socket = io();
+    
+      var obj = [];
+      socket.on('db', (msg) => {
+        
+        //Load the initital data
+        var curr = JSON.parse(msg);
+        if(curr.operationType == 'insert'){
+          var myTable = document.getElementById('newItem');
+          var row = myTable.insertRow(0);
+
+          var c1 = row.insertCell(0);
+          var c2 = row.insertCell(1);
+          var c3 = row.insertCell(2);
+          var c4 = row.insertCell(3);
+          var c5 = row.insertCell(4);
+          var c6 = row.insertCell(5);
+          var c7 = row.insertCell(6);
+          var c8 = row.insertCell(7);
+          var c9 = row.insertCell(8);
+
+          curr.fullDocument.urgent === 'on'? c1.innerHTML = 'yes':
+                                          c1.innerHTML = 'no';
+          
+          c2.innerHTML = curr.fullDocument.salesRep;
+          c3.innerHTML = curr.fullDocument.datePulledOut;
+          c4.innerHTML = curr.fullDocument.company;
+          c5.innerHTML = curr.fullDocument.motorType;
+          c6.innerHTML = curr.fullDocument.hp;
+          c7.innerHTML = curr.fullDocument.kw;
+          c8.innerHTML = curr.fullDocument.rpm;
+          c9.innerHTML = curr.fullDocument.remarks;
+        }
+
+        //Make changes to charts
+        salesRepIndx = salesRepObject.data.labels.indexOf(curr.fullDocument.salesRep);
+        if(salesRepIndx >= 0)
+        {
+          salesRepObject.chart.data.datasets[0].data[salesRepIndx]++;
+          salesRepObject.update();
+        }
+        else{
+           salesRepObject.data.labels.push(curr.fullDocument.salesRep);
+           salesRepObject.data.datasets.forEach((dataset) => {
+              dataset.data.push(1);
+           });
+           salesRepObject.update();
+        }
+        
+
+      });
+
+      //console.log(salesRepObject.chart.data.datasets[0].data[0]++);
+      
+     

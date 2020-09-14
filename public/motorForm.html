@@ -1,0 +1,264 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>Checkout example · Bootstrap</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/checkout/">
+
+    <!-- Bootstrap core CSS -->
+<link href="https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <!-- Favicons -->
+<link rel="apple-touch-icon" href="/docs/4.5/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/docs/4.5/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/docs/4.5/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/docs/4.5/assets/img/favicons/manifest.json">
+<link rel="mask-icon" href="/docs/4.5/assets/img/favicons/safari-pinned-tab.svg" color="#563d7c">
+<link rel="icon" href="/docs/4.5/assets/img/favicons/favicon.ico">
+<meta name="msapplication-config" content="/docs/4.5/assets/img/favicons/browserconfig.xml">
+<meta name="theme-color" content="#563d7c">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+   
+    <!-- Custom styles for this template -->
+    <link href="css/form-validation.css" rel="stylesheet">
+  </head>
+  <body class="bg-light">
+    <div class="container">
+  <div class="py-5 text-center">
+    <h2>Motor Pick-up Report</h2>
+  </div>
+
+  <div class="row">
+    <div class="col order-md-1">
+      <h4 class="mb-3">Billing address</h4>
+      <form class="needs-validation" novalidate method="post">
+        <div class="row">
+          <div class="col row">
+            <div class="col-6">
+              <label for="currDate">Date</label>
+              <input type="text" class="form-control" id="currDate" placeholder="" value="" required name="currDate" readonly>
+            </div>
+           
+            <div class="col-6 custom-control custom-checkbox urgent-cont">
+              <input type="checkbox" class="custom-control-input" id="urgent" name="urgent">
+              <label class="custom-control-label" for="urgent">Tick this if URGENT</label>
+            </div>
+          </div>
+          
+         
+        </div> 
+        <div class="row">
+          <div class="col">
+            <label for="salesRep">Sales Representative</label>
+            <input type="text" class="form-control" id="salesRep" placeholder="" value="" required name="salesRep">
+          </div>
+          <div class="invalid-feedback">
+            Valid name is required.
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="datePulledOut">Date Pulled Out</label>
+            <input type="date" class="form-control" id="datePulledOut" placeholder="" required name="datePulledOut">
+            <div class="invalid-feedback">
+              Valid date is required.
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName">Company</label>
+            <input type="text" class="form-control" id="company" placeholder="" value="" required name="company">
+            <div class="invalid-feedback">
+              Valid Company is required.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label for="firstName">Motor Type/Brand</label>
+            <input type="text" class="form-control" id="motorType" placeholder="" value="" required name="motorType">
+            <div class="invalid-feedback">
+              Valid first name is required.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="firstName">HP</label>
+            <input type="number" class="form-control" id="hp" placeholder="" value="" required name="hp">
+            <div class="invalid-feedback">
+              Valid first name is required.
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="firstName">KW</label>
+            <input type="number" class="form-control" id="kw" placeholder="" value="" required name="kw">
+            <div class="invalid-feedback">
+              Valid first name is required.
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="firstName">RPM</label>
+            <input type="number" class="form-control" id="rpm" placeholder="" value="" required name="rpm">
+            <div class="invalid-feedback">
+              Valid first name is required.
+            </div>
+          </div>
+        </div>
+        <label for="firstName">Others:</label>
+        <div class="row col mb-3">
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="motor-assy" name="motor-assy">
+            <label class="custom-control-label" for="motor-assy">Motor Assy</label>
+          </div>
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="ac-assy" name="ac-assy">
+            <label class="custom-control-label" for="ac-assy">A/C ASSY</label>
+          </div> 
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="fabrication" name="fabrication">
+            <label class="custom-control-label" for="fabrication">Fabrication</label>
+          </div>
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="machining" name="machining">
+            <label class="custom-control-label" for="machining">Machining</label>
+          </div> 
+        </div>
+
+        <label for="firstName">Parts Checklist/Inspection Remarks: </label>
+        <div class="row col mb-3">
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="fan-cover" name="fan-cover">
+            <label class="custom-control-label" for="fan-cover">Fan Cover</label>
+          </div>
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="stator" name="stator">
+            <label class="custom-control-label" for="stator">Stator</label>
+          </div> 
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="keystock" name="keystock">
+            <label class="custom-control-label" for="keystock">Keystock (CUÑA)</label>
+          </div>
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="fan-blade" name="fan-blade">
+            <label class="custom-control-label" for="fan-blade">Fan Blade</label>
+          </div> 
+        </div>
+        <div class="row col mb-3">
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="rotor" name="rotor">
+            <label class="custom-control-label" for="rotor">Rotor</label>
+          </div>
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="centrifugal" name="centrifugal">
+            <label class="custom-control-label" for="centrifugal">Centrifugal Switch</label>
+          </div> 
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="terminal-box" name="terminal-box">
+            <label class="custom-control-label" for="terminal-box">Terminal Box</label>
+          </div>
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="pulley" name="pulley">
+            <label class="custom-control-label" for="pulley">Pulley</label>
+          </div> 
+        </div>
+        <div class="row col mb-3">
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="governor-switch" name="governor-switch">
+            <label class="custom-control-label" for="governor-switch">Governor Switch</label>
+          </div>
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="terminal" name="terminal">
+            <label class="custom-control-label" for="terminal">Terminal Cover</label>
+          </div> 
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="carbon" name="carbon">
+            <label class="custom-control-label" for="carbon">Carbon Brush</label>
+          </div>
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="capacitor" name="capacitor">
+            <label class="custom-control-label" for="capacitor">Capacitor</label>
+          </div> 
+        </div>
+        <div class="row col mb-3">
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="terminal-block" name="terminal-block">
+            <label class="custom-control-label" for="terminal-block">Terminal Block</label>
+          </div>
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="carbon-holder" name="carbon-holder">
+            <label class="custom-control-label" for="carbon-holder">Carbon Holder</label>
+          </div> 
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="impeller" name="impeller">
+            <label class="custom-control-label" for="impeller">Impeller</label>
+          </div>
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="bolts-and-nuts" name="bolts-and-nuts">
+            <label class="custom-control-label" for="bolts-and-nuts">Bolts & Nuts</label>
+          </div> 
+        </div>
+        <div class="row col mb-3">
+          <div class="col custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="coupling" name="coupling">
+            <label class="custom-control-label" for="coupling">Coupling</label>
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Remarks</label>
+          <textarea class="form-control" id="remarks" rows="3" name="remarks"></textarea>
+        </div>
+      
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">&copy; 2020 Calamba Allied Industrial Corp. || Developed by Lan Cortez</p>
+  </footer>
+</div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
+  <script src="form-validation.js"></script>
+      
+      
+  <script>
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + dd + '-' + mm;
+    var currDate = document.getElementById("currDate");
+  
+    currDate.setAttribute("value", today.toString());
+    
+    console.log(JSON.stringify(name));
+    
+  </script>    
+  </body>
+</html>
