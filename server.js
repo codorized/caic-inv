@@ -62,7 +62,7 @@ async function main() {
 
   app.post('/motorForm', async function (req, res) {
     var inputObj = {
-        tagID: req.body.tagID,
+        tagID:  parseInt(req.body.tagID),
         status: req.body.status,
         currDate: req.body.currDate,
         urgent: req.body.urgent,
