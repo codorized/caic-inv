@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+  body
+    p(style: 'color: red')
+      | This Page is for Devs only!
+    form#myForm(method='post')
+      label Enter no. of Randomized Input
+      input(name = 'noOfInput') 
+      input(type='submit', id="myAnchor", value='Run Randomized Client Action')
+      a(href="/") Go to dashboard
+    script.
+      document.getElementById("myAnchor").addEventListener("click", function(event){
+      });

@@ -23,19 +23,47 @@ async function main() {
   const uri = "mongodb://codor2:codor2@caic-shard-00-00.ag1uv.gcp.mongodb.net:27017,caic-shard-00-01.ag1uv.gcp.mongodb.net:27017,caic-shard-00-02.ag1uv.gcp.mongodb.net:27017/test?ssl=true&replicaSet=atlas-jkfvz0-shard-0&authSource=admin&retryWrites=true&w=majority";
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
+
   app.get('/', async function (req, res) {
-    await getStats(client);
-    res.render('index', {title: "CAIC", items: await getItems(client), stats: await getStats(client), urgenCount: await getUrgents(client), clientCount: await getClients(client)});
+    res.render('index', {title: "CAIC", 
+                         items: await getItems(client, 10), 
+                         stats: await getStats(client), 
+                         urgenCount: await getUrgents(client), 
+                         clientCount: await getClients(client), 
+                         statusStats: await getStatusStats(client)});
   })
 
-  app.get('/motorForm', (req, res) => {
-    res.sendFile(path.join(__dirname, '/public', 'motorForm.html'));
+  app.get('/insertRandomData',async function (req, res) {
+    res.render('random', {});
+  })
+
+  app.get('/viewAllMotors',async function (req, res) {
+    res.render('viewAll', {items: await getItems(client, -1)});
+  })
+
+  app.post('/insertRandomData',async function (req, res) {
+    for(var i=0; i< parseInt(req.body.noOfInput); i++)
+    {
+      try {
+        await sleep(3000);
+        await insertItem(client, await insertRandom(client));
+      } catch(error){
+
+      }
+      
+    }
+    res.render('randomSuccess', {});
+  })
+
+  app.get('/motorForm', async (req, res) => {
+    res.render('motorForm', {maxTagID: await getMaxTagID(client)});
   });
+  
 
   app.post('/motorForm', async function (req, res) {
-    console.log(req.body);
-    await insertItem(client,
-    {
+    var inputObj = {
+        tagID: req.body.tagID,
+        status: req.body.status,
         currDate: req.body.currDate,
         urgent: req.body.urgent,
         salesRep: req.body.salesRep,
@@ -134,9 +162,20 @@ async function main() {
           }
         ],
         remarks: req.body.remarks
+      }
 
-    });
-    res.sendFile(path.join(__dirname, '/public', 'motorForm.html'));
+    if(req.body.rb == 'hp')
+    {
+      inputObj.hp = req.body['hp-kw'];
+      inputObj.kw = '';
+    }else 
+    {
+      inputObj.hp = '';
+      inputObj.kw = req.body['hp-kw'];
+    }
+    console.log(inputObj);
+    await insertItem(client, inputObj);
+    res.render('motorForm', {maxTagID: await getMaxTagID(client)});
   })
 
 
@@ -217,8 +256,15 @@ async function insertItem(client, newListing){
   console.log(`New item created with the following id: ${result.insertedId}`);
 }
 
-async function getItems(client){
-  const result = await client.db("caic-sample").collection("items").find({}).sort({ currDate: -1 }).limit(10);;
+async function getItems(client, count){
+  var result;
+  if(count == -1){
+    result = await client.db("caic-sample").collection("items").find({}).sort({ tagID: -1 });
+  }
+  else{
+    result = await client.db("caic-sample").collection("items").find({}).sort({ tagID: -1 }).limit(count);
+  }
+  
   console.log(`Dsiplayed all the items!`);
   return await result.toArray();
 }
@@ -272,4 +318,132 @@ async function getClients(client){
     }
   ]);
   return await result.toArray();
+}
+
+async function insertRandom(client){
+  var statusx = ['Not Started','On Check-up','For Quotation','Awaiting Purchase Order','On Rewind','On Fabrication','In Baking','Waiting for Materials','Assembly and Testing','Painting','For Delivery','For Billing Statement','For OR','Completed']; 
+  var salesRepx = ['Dulce Importante', 'Evelyn Malabanan', 'Kate Banosong', 'Ronnie Uy', 'Walk-in'];
+  var urgentx = ['on', null];
+  var currDatex = '2020-09-15';
+  var datePulledOutx = '2020-09-15';
+  var companyx = ['Asia Brewery', 'Coca cola', 'Concepcion Durables Inc.', 'Enchanted Kingdom', 'Gardenia', 'Honda', 'Nestle'];
+  var motorTypex = ['Nidec Motor', 'Rockwell Automation', 'AMETEK', 'Regal Beloit'];
+  var HPx = 123;
+  var KWx = 123;
+  var RPMx = 123;
+
+  var randStatusIndx = Math.floor((Math.random() * 13) + 0);
+  var randSalesRepIndx = Math.floor((Math.random() * 4) + 0);
+  var randUrgentIndex = (Math.random() < 0.5) ? 'on' : null;
+  var randCompanyIndx = Math.floor((Math.random() * 6) + 0);
+  var randMotorTypeIndx = Math.floor((Math.random() * 3) + 0);
+ 
+  try {
+    var autoIncTagID = parseInt( (await getMaxTagID(client))[0].maxNumber )+1;
+  } catch(err)
+  { 
+    console.log('error BITCh!!');
+    var autoIncTagID = 1000;
+  }
+  
+  var insertObject = {
+    tagID: autoIncTagID,
+    status: statusx[randStatusIndx],
+    currDate: currDatex,
+    urgent: randUrgentIndex,
+    salesRep: salesRepx[randSalesRepIndx],
+    datePulledOut: datePulledOutx,
+    company: companyx[randCompanyIndx],
+    motorType: motorTypex[randMotorTypeIndx],
+    hp: HPx,
+    kw: '',
+    rpm: RPMx,
+    others: [],
+    parts: [],
+    remarks: '' 
+  }
+
+  return insertObject;
+}
+
+
+async function updateAllByName(client, nameOfListing, updatedListing){
+  result = await client.db("caic-sample").collection("items")
+  .updateMany({ salesRep: nameOfListing },
+              { $set: {salesRep: updatedListing}}
+              );
+  console.log(`${result.matchedCount} document(s) matched the query criteria.`);
+}
+
+async function updateAllAddFields(client){
+  result = await client.db("caic-sample").collection("items")
+  .updateMany({ tagID: { $exists: false } },
+              { $set: { tagID: 0 } });
+
+  console.log(`${result.matchedCount} document(s) matched the query criteria.`);
+}
+
+async function updateAllAddFieldStatus(client){
+  result = await client.db("caic-sample").collection("items")
+  .updateMany({ status: { $exists: false } },
+              { $set: { status: 'Not Started' } });
+
+  console.log(`${result.matchedCount} document(s) matched the query criteria.`);
+}
+
+async function deleteAllByName(client, nameOfListing){
+  result = await client.db("caic-sample").collection("items")
+  .deleteMany({ salesRep: nameOfListing }
+              );
+  console.log(`${result.matchedCount} document(s) matched the query criteria.`);
+}
+
+async function getMaxTagID(client){
+  try{
+    result = await client.db("caic-sample").collection("items").aggregate(
+      [
+        {
+          $group: 
+          {
+            _id: null,
+            maxNumber: { $max: "$tagID" }
+          }
+        }
+      ]
+    )
+
+    return result.toArray();
+  }catch(err){
+      console.log('ERROR!');
+      return {
+        _id: null,
+        maxNumber: 1000 
+      };
+  }
+
+  return {
+    _id: null,
+    maxNumber: 1000 
+  };
+}
+
+async function getStatusStats(client){
+  result = await client.db("caic-sample").collection("items").aggregate(
+    [
+      {
+        $group: 
+        {
+          _id: '$status',
+          count: {
+            $sum: 1
+          }
+        }
+      }
+    ]
+  )
+  return result.toArray();
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

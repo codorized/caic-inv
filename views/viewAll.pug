@@ -54,7 +54,7 @@ html(lang='en')
           .sidebar-sticky.pt-3
             ul.nav.flex-column
               li.nav-item
-                a.nav-link.active(href='#')
+                a.nav-link.active(href='/')
                   span(data-feather='home')
                   |               Dashboard 
                   span.sr-only (current)
@@ -73,7 +73,7 @@ html(lang='en')
         main.col-md-9.ml-sm-auto.col-lg-10.px-md-4(role='main')
         
           .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
-            h1.h2 Dashboard
+            h1.h2 All Items
             .btn-toolbar.mb-2.mb-md-0
               //- .btn-group.mr-2
               //-   button.btn.btn-sm.btn-outline-secondary(type='button') Share
@@ -83,59 +83,7 @@ html(lang='en')
               //-   |             This week
               //- form(method='POST')
               //-   button.btn.btn-outline-secondary(type='submit', onclick='submitForm()') Insert/Delete Randomly
-          div.numberStats
-            div
-              div.numberStat 
-                h1.h3#notStarted 1
-                p Not Started
-              div.numberStat 
-                h1.h3#onCheckup 0
-                p On Check-up
-              div.numberStat 
-                h1.h3#forQuotation 0
-                p For Quotation
-              div.numberStat 
-                h1.h3#awaitingPo 0
-                p Awaiting PO
-              div.numberStat 
-                h1.h3#onRewind 0
-                p On Rewind
-              div.numberStat 
-                h1.h3#onFabrication 0
-                p On Fabrication
-              div.numberStat 
-                h1.h3#inBaking 0
-                p In Baking
-              div.numberStat 
-                h1.h3#waitingMaterials 0
-                p Waiting for Materials
-              div.numberStat 
-                h1.h3#assAndTest 0
-                p Assembly and Testing
-              div.numberStat 
-                h1.h3#painting 0
-                p Painting
-              div.numberStat 
-                h1.h3#forDelivery 0
-                p For Delivery
-              div.numberStat 
-                h1.h3#forBilling 0
-                p For Billing Statement
-              div.numberStat 
-                h1.h3#forOr 0
-                p For OR
-              div.numberStat 
-                h1.h3#completed 0
-                p Completed
-          div.pieCharts.row
-            div.col-6
-              canvas#myPieChart1.my-4.w-100
-            div.col-6
-              canvas#myPieChart2.my-4.w-100
-          div
-            canvas#myChart.my-4.w-100(width='900', height='350')
-          
-          h2 Recent Items
+         
           .table-responsive
             table.table.table-striped.table-sm
               thead

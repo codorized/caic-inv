@@ -1,0 +1,225 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description', content='')
+    meta(name='author', content='Mark Otto, Jacob Thornton, and Bootstrap contributors')
+    meta(name='generator', content='Jekyll v4.1.1')
+    title Checkout example · Bootstrap
+    link(rel='canonical', href='https://getbootstrap.com/docs/4.5/examples/checkout/')
+    // Bootstrap core CSS
+    link(href='https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css', rel='stylesheet', integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z', crossorigin='anonymous')
+    // Favicons
+    link(rel='apple-touch-icon', href='/docs/4.5/assets/img/favicons/apple-touch-icon.png', sizes='180x180')
+    link(rel='icon', href='/docs/4.5/assets/img/favicons/favicon-32x32.png', sizes='32x32', type='image/png')
+    link(rel='icon', href='/docs/4.5/assets/img/favicons/favicon-16x16.png', sizes='16x16', type='image/png')
+    link(rel='manifest', href='/docs/4.5/assets/img/favicons/manifest.json')
+    link(rel='mask-icon', href='/docs/4.5/assets/img/favicons/safari-pinned-tab.svg', color='#563d7c')
+    link(rel='icon', href='/docs/4.5/assets/img/favicons/favicon.ico')
+    meta(name='msapplication-config', content='/docs/4.5/assets/img/favicons/browserconfig.xml')
+    meta(name='theme-color', content='#563d7c')
+    style.
+      .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      }
+      @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+      }
+      }
+    // Custom styles for this template
+    link(href='css/form-validation.css', rel='stylesheet')
+  body.bg-light
+    .container
+      .py-5.text-center
+        h2 Motor Pick-up Report
+      .row
+        .col.order-md-1
+          form.needs-validation(novalidate='', method='post')
+            .row
+              .col.row.mb-3
+                .col-6
+                  label(for='currDate') Date
+                  input#currDate.form-control(type='text', placeholder='', value='', required='', name='currDate', readonly='')
+            .row
+              .col.row.mb-3
+                .col-6
+                  label(for='currDate') Tag#
+                  input.form-control#inputMaxTag(type='text', placeholder='', value='', required='', name='tagID', readonly='')
+                .col-6.custom-control.custom-checkbox.urgent-cont
+                  input#urgent.custom-control-input(type='checkbox', name='urgent')
+                  label.custom-control-label(for='urgent') Tick this if URGENT
+            .row.mb-3
+              .col-md-6
+                label(for='currDate') Sales Representative
+                select.form-control(name='salesRep')
+                  option Dulce Importante
+                  option Kate Banosong
+                  option Ronnie Uy
+                  option Evelyn Malabanan
+                  option Walk-in
+              .col-md-6
+                label(for='currDate') Status
+                select.form-control(name='status')
+                  option Not Started
+                  option On Check-up
+                  option For Quotation
+                  option Awaiting Purchase Order
+                  option On Rewind
+                  option On Fabrication
+                  option In Baking
+                  option Waiting for Materials
+                  option Assembly and Testing
+                  option Painting
+                  option For Delivery
+                  option For Billing Statement
+                  option For OR
+                  option Completed
+              .invalid-feedback
+                | Valid name is required.
+            .row
+              .col-md-6.mb-3
+                label(for='datePulledOut') Date Pulled Out
+                input#datePulledOut.form-control(type='date', placeholder='', required='', name='datePulledOut')
+                .invalid-feedback
+                  | Valid date is required.
+              .col-md-6.mb-3
+                label(for='company') Company
+                select.form-control(name='company')
+                  option Coca Cola
+                  option Concepcion Durables Inc
+                  option Honda
+                  option Nestle
+                  option Asia Brewery
+                  option Enchanted Kingdom
+                  option Gardenia
+            .row.mb-3
+              .col
+                label(for='firstName') Motor Type/Brand
+                select.form-control(name='motorType')
+                  option Toshiba
+                  option ABB
+                  option TECO Westinghouse
+                  option Lincoln Electric
+                  option Siemens
+                  option Nidec Motor
+                  option Rockwell Automation
+                  option AMETEK
+                  option Regal Beloit
+                  option Johnson Electric
+                  option Franklin Electrics
+                  option Faulhaber Group
+                  option General Electric (GE)
+                  option WEG 
+            .row
+              .col-md-6.mb-3
+                label(for='firstName')
+                  .form-check.form-check-inline.radio
+                    input#inlineRadio1.form-check-input(type='radio', name='rb', value='hp', checked='')
+                    label.form-check-label(for='inlineRadio1') HP
+                  .form-check.form-check-inline.radio
+                    input#inlineRadio2.form-check-input(type='radio', name='rb', value='kw')
+                    label.form-check-label(for='inlineRadio2') KW
+                input#rpm.form-control(type='number', placeholder='', value='', required='', name='hp-kw')
+              .col-md-6.mb-3
+                label(for='firstName') RPM
+                input#rpm.form-control(type='number', placeholder='', value='', required='', name='rpm')
+            label(for='firstName') Others:
+            .row.col.mb-3
+              .col.custom-control.custom-checkbox
+                input#motor-assy.custom-control-input(type='checkbox', name='motor-assy')
+                label.custom-control-label(for='motor-assy') Motor Assy
+              .col.custom-control.custom-checkbox
+                input#ac-assy.custom-control-input(type='checkbox', name='ac-assy')
+                label.custom-control-label(for='ac-assy') A/C ASSY
+              .col.custom-control.custom-checkbox
+                input#fabrication.custom-control-input(type='checkbox', name='fabrication')
+                label.custom-control-label(for='fabrication') Fabrication
+              .col.custom-control.custom-checkbox
+                input#machining.custom-control-input(type='checkbox', name='machining')
+                label.custom-control-label(for='machining') Machining
+            label(for='firstName') Parts Checklist/Inspection Remarks: 
+            .row.col.mb-3
+              .col.custom-control.custom-checkbox
+                input#fan-cover.custom-control-input(type='checkbox', name='fan-cover')
+                label.custom-control-label(for='fan-cover') Fan Cover
+              .col.custom-control.custom-checkbox
+                input#stator.custom-control-input(type='checkbox', name='stator')
+                label.custom-control-label(for='stator') Stator
+              .col.custom-control.custom-checkbox
+                input#keystock.custom-control-input(type='checkbox', name='keystock')
+                label.custom-control-label(for='keystock') Keystock (CUÑA)
+              .col.custom-control.custom-checkbox
+                input#fan-blade.custom-control-input(type='checkbox', name='fan-blade')
+                label.custom-control-label(for='fan-blade') Fan Blade
+            .row.col.mb-3
+              .col.custom-control.custom-checkbox
+                input#rotor.custom-control-input(type='checkbox', name='rotor')
+                label.custom-control-label(for='rotor') Rotor
+              .col.custom-control.custom-checkbox
+                input#centrifugal.custom-control-input(type='checkbox', name='centrifugal')
+                label.custom-control-label(for='centrifugal') Centrifugal Switch
+              .col.custom-control.custom-checkbox
+                input#terminal-box.custom-control-input(type='checkbox', name='terminal-box')
+                label.custom-control-label(for='terminal-box') Terminal Box
+              .col.custom-control.custom-checkbox
+                input#pulley.custom-control-input(type='checkbox', name='pulley')
+                label.custom-control-label(for='pulley') Pulley
+            .row.col.mb-3
+              .col.custom-control.custom-checkbox
+                input#governor-switch.custom-control-input(type='checkbox', name='governor-switch')
+                label.custom-control-label(for='governor-switch') Governor Switch
+              .col.custom-control.custom-checkbox
+                input#terminal.custom-control-input(type='checkbox', name='terminal')
+                label.custom-control-label(for='terminal') Terminal Cover
+              .col.custom-control.custom-checkbox
+                input#carbon.custom-control-input(type='checkbox', name='carbon')
+                label.custom-control-label(for='carbon') Carbon Brush
+              .col.custom-control.custom-checkbox
+                input#capacitor.custom-control-input(type='checkbox', name='capacitor')
+                label.custom-control-label(for='capacitor') Capacitor
+            .row.col.mb-3
+              .col.custom-control.custom-checkbox
+                input#terminal-block.custom-control-input(type='checkbox', name='terminal-block')
+                label.custom-control-label(for='terminal-block') Terminal Block
+              .col.custom-control.custom-checkbox
+                input#carbon-holder.custom-control-input(type='checkbox', name='carbon-holder')
+                label.custom-control-label(for='carbon-holder') Carbon Holder
+              .col.custom-control.custom-checkbox
+                input#impeller.custom-control-input(type='checkbox', name='impeller')
+                label.custom-control-label(for='impeller') Impeller
+              .col.custom-control.custom-checkbox
+                input#bolts-and-nuts.custom-control-input(type='checkbox', name='bolts-and-nuts')
+                label.custom-control-label(for='bolts-and-nuts') Bolts & Nuts
+            .row.col.mb-3
+              .col.custom-control.custom-checkbox
+                input#coupling.custom-control-input(type='checkbox', name='coupling')
+                label.custom-control-label(for='coupling') Coupling
+            .form-group
+              label(for='exampleFormControlTextarea1') Remarks
+              textarea#remarks.form-control(rows='3', name='remarks')
+            button.btn.btn-primary.btn-lg.btn-block(type='submit') Continue to checkout
+      footer.my-5.pt-5.text-muted.text-center.text-small
+        p.mb-1 © 2020 Calamba Allied Industrial Corp. || Developed by Lan Cortez
+    script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js', integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj', crossorigin='anonymous')
+    script.
+      window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\\/script>')
+    script(src='/docs/4.5/dist/js/bootstrap.bundle.min.js', integrity='sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf', crossorigin='anonymous')
+    script(src='form-validation.js')
+    script.
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+      today = yyyy + '-' + dd + '-' + mm;
+      var currDate = document.getElementById("currDate");
+      currDate.setAttribute("value", today.toString());
+      
+      document.getElementById('inputMaxTag').setAttribute('value', ++!{JSON.stringify(maxTagID)}[0].maxNumber);
+    

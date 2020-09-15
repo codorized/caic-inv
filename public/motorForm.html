@@ -53,27 +53,56 @@
 
   <div class="row">
     <div class="col order-md-1">
-      <h4 class="mb-3">Billing address</h4>
       <form class="needs-validation" novalidate method="post">
         <div class="row">
-          <div class="col row">
-            <div class="col-6">
+          <div class="col row mb-3">
+            <div class="col-6 ">
               <label for="currDate">Date</label>
               <input type="text" class="form-control" id="currDate" placeholder="" value="" required name="currDate" readonly>
             </div>
-           
-            <div class="col-6 custom-control custom-checkbox urgent-cont">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col row mb-3">
+            <div class="col-6">
+              <label for="currDate">Tag#</label>
+              <input type="text" class="form-control" id="currDate" placeholder="" value="" required name="tagID" readonly>
+            </div>
+            <div class="col-6 custom-control custom-checkbox urgent-cont ">
               <input type="checkbox" class="custom-control-input" id="urgent" name="urgent">
               <label class="custom-control-label" for="urgent">Tick this if URGENT</label>
             </div>
           </div>
-          
-         
         </div> 
-        <div class="row">
-          <div class="col">
-            <label for="salesRep">Sales Representative</label>
-            <input type="text" class="form-control" id="salesRep" placeholder="" value="" required name="salesRep">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="currDate">Sales Representative</label>
+            <select class="form-control" name="salesRep">
+              <option>Dulce Importante</option>
+              <option>Kate Banosong</option>
+              <option>Ronnie Uy</option>
+              <option>Evelyn Malabanan</option>
+              <option>Walk-in</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="currDate">Status</label>
+            <select class="form-control" name="status">
+              <option>Not Started</option>
+              <option>On Check-up</option>
+              <option>For Quotation</option>
+              <option>Awaiting Purchase Order</option>
+              <option>On Rewind</option>
+              <option>On Fabrication</option>
+              <option>In Baking</option>
+              <option>Waiting for Materials</option>
+              <option>Assembly and Testing</option>
+              <option>Painting</option>
+              <option>For Delivery</option>
+              <option>For Billing Statement</option>
+              <option>For Order</option>
+              <option>Completed</option>
+            </select>
           </div>
           <div class="invalid-feedback">
             Valid name is required.
@@ -88,45 +117,53 @@
             </div>
           </div>
           <div class="col-md-6 mb-3">
-            <label for="lastName">Company</label>
-            <input type="text" class="form-control" id="company" placeholder="" value="" required name="company">
-            <div class="invalid-feedback">
-              Valid Company is required.
-            </div>
+            <label for="company">Company</label>
+            <select class="form-control" name="company">
+              <option>Coca Cola</option>
+              <option>Concepcion Durables Inc</option>
+              <option>Honda</option>
+              <option>Nestle</option>
+              <option>Asia Brewery</option>
+              <option>Enchanted Kingdom</option>
+              <option>Gardenia</option>
+            </select>
           </div>
         </div>
         <div class="row">
-          <div class="col">
+          <div class="col-md-6">
             <label for="firstName">Motor Type/Brand</label>
-            <input type="text" class="form-control" id="motorType" placeholder="" value="" required name="motorType">
-            <div class="invalid-feedback">
-              Valid first name is required.
-            </div>
+            <select class="form-control" name="motorType">
+              <option>Toshiba</option>
+              <option>ABB</option>
+              <option>TECO Westinghouse</option>
+              <option>Lincoln Electric</option>
+              <option>Siemens</option>
+              <option>Nidec Motor</option>
+              <option>Rockwell Automation</option>
+              <option>AMETEK</option>
+              <option>Regal Beloit</option>
+              <option>Johnson Electric</option>
+              <option>Franklin Electrics</option>
+              <option>Faulhaber Group</option>
+              <option>General Electric (GE)</option>
+              <option>WEG </option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="firstName">
+              <div class="form-check form-check-inline radio">
+                <input class="form-check-input" type="radio" name="rb" id="inlineRadio1" value="hp" checked>
+                <label class="form-check-label" for="inlineRadio1">HP</label>
+              </div>
+              <div class="form-check form-check-inline radio">
+                <input class="form-check-input" type="radio" name="rb" id="inlineRadio2" value="kw">
+                <label class="form-check-label" for="inlineRadio2">KW</label>
+              </div>
+            </label>
+            <input type="number" class="form-control" id="rpm" placeholder="" value="" required name="hp-kw">
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-4 mb-3">
-            <label for="firstName">HP</label>
-            <input type="number" class="form-control" id="hp" placeholder="" value="" required name="hp">
-            <div class="invalid-feedback">
-              Valid first name is required.
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <label for="firstName">KW</label>
-            <input type="number" class="form-control" id="kw" placeholder="" value="" required name="kw">
-            <div class="invalid-feedback">
-              Valid first name is required.
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <label for="firstName">RPM</label>
-            <input type="number" class="form-control" id="rpm" placeholder="" value="" required name="rpm">
-            <div class="invalid-feedback">
-              Valid first name is required.
-            </div>
-          </div>
-        </div>
+
         <label for="firstName">Others:</label>
         <div class="row col mb-3">
           <div class="col custom-control custom-checkbox">

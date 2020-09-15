@@ -7,7 +7,7 @@ function loadSalesRep(ctx, data)
         data: {
             //labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
             datasets: [{
-                label: '# of client per sales rep',
+                // label: '# of motors per sales rep',
                 //data: [12, 7, 3, 5, 2, 3],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -36,8 +36,34 @@ function loadSalesRep(ctx, data)
                     }
                 }]
             },
-            maintainAspectRatio: false
-        }
+            maintainAspectRatio: false,
+            title: {
+                display: true,
+                text: '# of Motors per sales rep'
+            },
+            legend: {
+                display: false
+
+            },
+            plugins: {
+                datalabels: {
+                    anchor: 'end',
+                    color: 'black',
+                    labels: {
+                        title: {
+                            font: {
+                                weight: 'bold'
+                            }
+                        },
+                        value: {
+                            color: 'green'
+                        }
+                    }
+                }
+            }
+        },
+    
+       
     });
 
     for(var i=0; i<data.length; i++)
@@ -85,6 +111,22 @@ function getUrgentCount(ctx, data){
             animation: {
                 animateScale: true,
                 animateRotate: true
+            },
+            plugins: {
+                datalabels: {
+                    anchor: 'center',
+                    color: 'black',
+                    labels: {
+                        title: {
+                            font: {
+                                weight: 'bold'
+                            }
+                        },
+                        value: {
+                            color: 'green'
+                        }
+                    }
+                }
             }
         }
     });
@@ -145,6 +187,22 @@ function getClients(ctx, data){
             animation: {
                 animateRotate: false,
                 animateScale: true
+            },
+            plugins: {
+                datalabels: {
+                    anchor: 'center',
+                    color: 'black',
+                    labels: {
+                        title: {
+                            font: {
+                                weight: 'bold'
+                            }
+                        },
+                        value: {
+                            color: 'green'
+                        }
+                    }
+                }
             }
         }
     });
