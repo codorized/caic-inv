@@ -1,0 +1,43 @@
+
+  nav > div {
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .row > nav {
+    box-shadow: none;
+    background-color: white;
+  }
+
+  .pieCharts
+  {
+    display: flex;
+  } 
+
+  
+
+  .container-fluid > .row
+  {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .row .sidebar{
+    position: unset;
+  }
+
+
+
+  @media screen and (max-width: 1100px) {
+    .pieCharts
+    {
+      flex-direction: column;
+    } 
+    .pieCharts > div
+    {
+      max-width: 100%;
+    } 
+  
+  }

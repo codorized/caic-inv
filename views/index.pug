@@ -11,6 +11,8 @@ html(lang='en')
     // Bootstrap core CSS
     link(href='https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css', rel='stylesheet', integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z', crossorigin='anonymous')
     // Favicons
+    link(href='css/dashboard2.css', rel='stylesheet')
+  
     link(rel='apple-touch-icon', href='/docs/4.5/assets/img/favicons/apple-touch-icon.png', sizes='180x180')
     link(rel='icon', href='/docs/4.5/assets/img/favicons/favicon-32x32.png', sizes='32x32', type='image/png')
     link(rel='icon', href='/docs/4.5/assets/img/favicons/favicon-16x16.png', sizes='16x16', type='image/png')
@@ -35,15 +37,17 @@ html(lang='en')
       }
     // Custom styles for this template
     link(href='https://getbootstrap.com/docs/4.5/examples/dashboard/dashboard.css', rel='stylesheet')
-  body
+  body#bodyStyle
     nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0.shadow
-      a.navbar-brand.col-md-3.col-lg-2.mr-0.px-3(href='#') CAIC Inventory System
-      button.navbar-toggler.position-absolute.d-md-none.collapsed(type='button', data-toggle='collapse', data-target='#sidebarMenu', aria-controls='sidebarMenu', aria-expanded='false', aria-label='Toggle navigation')
-        span.navbar-toggler-icon
-      input.form-control.form-control-dark.w-100(type='text', placeholder='Search', aria-label='Search')
-      ul.navbar-nav.px-3
-        li.nav-item.text-nowrap
-          a.nav-link(href='#') Sign out
+      div 
+        a.navbar-brand.col-md-3.col-lg-2.mr-0.px-3(href='#') CAIC Inventory System
+        button.navbar-toggler.position-absolute.d-md-none.collapsed(type='button', data-toggle='collapse', data-target='#sidebarMenu', aria-controls='sidebarMenu', aria-expanded='false', aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        //input.form-control.form-control-dark.w-100(type='text', placeholder='Search', aria-label='Search')
+      
+      //- ul.navbar-nav.px-3
+      //-   li.nav-item.text-nowrap
+      //-     a.nav-link(href='#') Sign out
     .container-fluid
       .row
         nav#sidebarMenu.col-md-3.col-lg-2.d-md-block.bg-light.sidebar.collapse
@@ -56,57 +60,31 @@ html(lang='en')
                   span.sr-only (current)
               ul#test
               li.nav-item
-                a.nav-link(href='#')
+                a.nav-link(href='motorForm')
                   span(data-feather='file')
-                  |               Orders
+                  |               Motor Pickup Form
               li.nav-item
                 a.nav-link(href='#')
                   span(data-feather='shopping-cart')
-                  |               Products
-              li.nav-item
-                a.nav-link(href='#')
-                  span(data-feather='users')
-                  |               Customers
-              li.nav-item
-                a.nav-link(href='#')
-                  span(data-feather='bar-chart-2')
-                  |               Reports
-              li.nav-item
-                a.nav-link(href='#')
-                  span(data-feather='layers')
-                  |               Integrations
-            h6.sidebar-heading.d-flex.justify-content-between.align-items-center.px-3.mt-4.mb-1.text-muted
-              span Saved reports
-              a.d-flex.align-items-center.text-muted(href='#', aria-label='Add a new report')
-                span(data-feather='plus-circle')
-            ul.nav.flex-column.mb-2
-              li.nav-item
-                a.nav-link(href='#')
-                  span(data-feather='file-text')
-                  |               Current month
-              li.nav-item
-                a.nav-link(href='#')
-                  span(data-feather='file-text')
-                  |               Last quarter
-              li.nav-item
-                a.nav-link(href='#')
-                  span(data-feather='file-text')
-                  |               Social engagement
-              li.nav-item
-                a.nav-link(href='#')
-                  span(data-feather='file-text')
-                  |               Year-end sale
+                  |               View All Items
         main.col-md-9.ml-sm-auto.col-lg-10.px-md-4(role='main')
           .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
             h1.h2 Dashboard
-            .btn-toolbar.mb-2.mb-md-0
-              .btn-group.mr-2
-                button.btn.btn-sm.btn-outline-secondary(type='button') Share
-                button.btn.btn-sm.btn-outline-secondary(type='button') Export
-              button.btn.btn-sm.btn-outline-secondary.dropdown-toggle(type='button')
-                span(data-feather='calendar')
-                |             This week
-          canvas#myChart.my-4.w-100(width='900', height='200')
+            //- .btn-toolbar.mb-2.mb-md-0
+            //-   .btn-group.mr-2
+            //-     button.btn.btn-sm.btn-outline-secondary(type='button') Share
+            //-     button.btn.btn-sm.btn-outline-secondary(type='button') Export
+            //-   button.btn.btn-sm.btn-outline-secondary.dropdown-toggle(type='button')
+            //-     span(data-feather='calendar')
+            //-     |             This week
+         
+          div.pieCharts.row
+            div.col-6
+              canvas#myPieChart1.my-4.w-100
+            div.col-6
+              canvas#myPieChart2.my-4.w-100
+          div
+            canvas#myChart.my-4.w-100(width='900', height='350')
           
           h2 Recent Items
           .table-responsive
@@ -154,16 +132,22 @@ html(lang='en')
     script(src='https://getbootstrap.com/docs/4.5/dist/js/bootstrap.bundle.min.js', integrity='sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf', crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js')
-    script(src='js/dashboard.js')
+    script(src='/js/dashboard.js')
     script(src='/socket.io/socket.io.js')
     script.
+      var socket = io();
       var ctx = document.getElementById('myChart').getContext('2d');
       var salesRepObject = loadSalesRep(ctx, !{JSON.stringify(stats)});
-      var socket = io();
+
+      var ctx2 = document.getElementById('myPieChart1').getContext('2d');
+      var urgentCountObject = getUrgentCount(ctx2, !{JSON.stringify(urgenCount)});
+
+      
+      var ctx3 = document.getElementById('myPieChart2').getContext('2d');
+      var clientCountObject = getClients(ctx3, !{JSON.stringify(clientCount)});
     
-      var obj = [];
+
       socket.on('db', (msg) => {
-        
         //Load the initital data
         var curr = JSON.parse(msg);
         if(curr.operationType == 'insert'){
@@ -191,10 +175,12 @@ html(lang='en')
           c7.innerHTML = curr.fullDocument.kw;
           c8.innerHTML = curr.fullDocument.rpm;
           c9.innerHTML = curr.fullDocument.remarks;
+
+          myTable.deleteRow(10);
         }
 
-        //Make changes to charts
-        salesRepIndx = salesRepObject.data.labels.indexOf(curr.fullDocument.salesRep);
+        //Make changes to SalesRep Chart
+        var salesRepIndx = salesRepObject.data.labels.indexOf(curr.fullDocument.salesRep);
         if(salesRepIndx >= 0)
         {
           salesRepObject.chart.data.datasets[0].data[salesRepIndx]++;
@@ -207,10 +193,47 @@ html(lang='en')
            });
            salesRepObject.update();
         }
-        
+
+        //Make changes to Urgent Chart
+        var urgentIndx = '';
+        curr.fullDocument.urgent === 'on'? 
+          urgentIndx = urgentCountObject.data.labels.indexOf('urgent'):
+          urgentIndx = urgentCountObject.data.labels.indexOf('not');
+        urgentCountObject.chart.data.datasets[0].data[urgentIndx]++;
+        urgentCountObject.update();
+
+        //Make changes to Client Chart
+        var clientIndx = clientCountObject.data.labels.indexOf(curr.fullDocument.company);
+        if(clientIndx >= 0)
+        {
+          clientCountObject.chart.data.datasets[0].data[clientIndx]++;
+          clientCountObject.update();
+        }
+        else{
+           clientCountObject.data.labels.push(curr.fullDocument.company);
+           clientCountObject.data.datasets.forEach((dataset) => {
+              dataset.data.push(1);
+           });
+           clientCountObject.update();
+        }
 
       });
 
-      //console.log(salesRepObject.chart.data.datasets[0].data[0]++);
+    script.
+      $(window).resize(function() {
+        
+        var totalWidth=document.body.clientWidth;
+
+        if(totalWidth <= 600)
+        {
+            clientCountObject.options.legend.display = false;
+            clientCountObject.update();
+        }
+        else{
+          clientCountObject.options.legend.display = true;
+          clientCountObject.update();
+        }
+      });
+    
       
      

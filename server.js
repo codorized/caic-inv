@@ -25,7 +25,7 @@ async function main() {
 
   app.get('/', async function (req, res) {
     await getStats(client);
-    res.render('index', {title: "CAIC", items: await getItems(client), stats: await getStats(client)});
+    res.render('index', {title: "CAIC", items: await getItems(client), stats: await getStats(client), urgenCount: await getUrgents(client), clientCount: await getClients(client)});
   })
 
   app.get('/motorForm', (req, res) => {
@@ -229,6 +229,40 @@ async function getStats(client){
       $group: {
         _id: '$salesRep',
           count: {$sum: 1}
+      }
+    },
+    {
+      $sort: {  
+        _id: 1
+      }
+    }
+  ]);
+  return await result.toArray();
+}
+
+async function getUrgents(client){
+  const result = await client.db("caic-sample").collection("items").aggregate([
+    {
+      $group: {
+        _id: '$urgent',
+        count: {$sum: 1}
+      }
+    },
+    {
+      $sort: {  
+        _id: 1
+      }
+    }
+  ]);
+  return await result.toArray();
+}
+
+async function getClients(client){
+  const result = await client.db("caic-sample").collection("items").aggregate([
+    {
+      $group: {
+        _id: '$company',
+        count: {$sum: 1}
       }
     },
     {
