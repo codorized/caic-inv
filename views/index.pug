@@ -40,7 +40,7 @@ html(lang='en')
   body#bodyStyle
     nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0.shadow
       div 
-        a.navbar-brand.col-md-3.col-lg-2.mr-0.px-3(href='#') CAIC Inventory System
+        a.navbar-brand.col-md-3.col-lg-2.mr-0.px-3(href='#') CAIC Motor Monitoring System
         button.navbar-toggler.position-absolute.d-md-none.collapsed(type='button', data-toggle='collapse', data-target='#sidebarMenu', aria-controls='sidebarMenu', aria-expanded='false', aria-label='Toggle navigation')
           span.navbar-toggler-icon
         //input.form-control.form-control-dark.w-100(type='text', placeholder='Search', aria-label='Search')
@@ -54,7 +54,7 @@ html(lang='en')
           .sidebar-sticky.pt-3
             ul.nav.flex-column
               li.nav-item
-                a.nav-link.active(href='#')
+                a.nav-link.active(href='dashboard')
                   span(data-feather='home')
                   |               Dashboard 
                   span.sr-only (current)
@@ -66,12 +66,17 @@ html(lang='en')
                 a.nav-link(href='viewAllMotors')
                   span(data-feather='file')
                   |               View all motors
+              if isDev
+                li.nav-item
+                  a.nav-link(href='insertRandomData')
+                    span(data-feather='shopping-cart')
+                    |               Insert Random Data (DO NOT CLICK)
               li.nav-item
-                a.nav-link(href='insertRandomData')
-                  span(data-feather='shopping-cart')
-                  |               Insert Random Data (DO NOT CLICK)
+                a.nav-link(href='/')
+                  span(data-feather='file')
+                  |                 Logout
         main.col-md-9.ml-sm-auto.col-lg-10.px-md-4(role='main')
-        
+  
           .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
             h1.h2 Dashboard
             .btn-toolbar.mb-2.mb-md-0

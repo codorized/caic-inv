@@ -98,3 +98,9 @@
     border-radius:10px;
     height: 10px;;
   }
+
+
+  .navbar .navbar-brand
+  {
+    font-size: 0.95rem;
+  }

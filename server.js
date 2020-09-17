@@ -23,8 +23,40 @@ async function main() {
   const uri = "mongodb://codor2:codor2@caic-shard-00-00.ag1uv.gcp.mongodb.net:27017,caic-shard-00-01.ag1uv.gcp.mongodb.net:27017,caic-shard-00-02.ag1uv.gcp.mongodb.net:27017/test?ssl=true&replicaSet=atlas-jkfvz0-shard-0&authSource=admin&retryWrites=true&w=majority";
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-
   app.get('/', async function (req, res) {
+    res.render('login', {});
+  })
+
+  app.post('/', async function (req, res) {
+    console.log(req.body);
+    if(req.body.username == 'admin'){
+      if(req.body.password == 'admin'){
+        res.render('index', {title: "CAIC", 
+                         items: await getItems(client, 10), 
+                         stats: await getStats(client), 
+                         urgenCount: await getUrgents(client), 
+                         clientCount: await getClients(client), 
+                         statusStats: await getStatusStats(client),
+                         isDev: true
+                        });
+      }
+    }
+    else if(req.body.username == 'salesrep'){
+         if(req.body.password == 'salesrep'){
+            res.render('index', {title: "CAIC", 
+                          items: await getItems(client, 10), 
+                          stats: await getStats(client), 
+                          urgenCount: await getUrgents(client), 
+                          clientCount: await getClients(client), 
+                          statusStats: await getStatusStats(client),
+                          isDev: false
+                        });
+         }
+    }
+    
+  })
+
+  app.get('/dashboard', async function (req, res) {
     res.render('index', {title: "CAIC", 
                          items: await getItems(client, 10), 
                          stats: await getStats(client), 

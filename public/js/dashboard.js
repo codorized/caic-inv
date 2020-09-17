@@ -47,12 +47,13 @@ function loadSalesRep(ctx, data)
             },
             plugins: {
                 datalabels: {
-                    anchor: 'end',
+                    anchor: 'center',
                     color: 'black',
                     labels: {
                         title: {
                             font: {
-                                weight: 'bold'
+                                weight: 'bold',
+                                size: '14'
                             }
                         },
                         value: {
