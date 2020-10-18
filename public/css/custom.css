@@ -1,0 +1,98 @@
+.dropdown-menu{
+    left: -24px;
+}
+
+.logo{
+    width: 150px;
+}
+.navbar {
+    box-shadow: none !important;
+    background: white !important;
+    border-bottom: 1px solid;
+}
+
+
+.navbar-brand{
+    background: white;
+}
+
+#sidebarMenu .nav {
+    margin-top: 12px;
+}
+
+.account-button a svg
+{
+	width: 1.5em;
+    height: 1.5em;
+   
+}
+
+.account-button a span
+{
+    padding-right: 8px;
+}
+
+.nav-item{
+    border-radius: 3px;
+   
+}
+
+.nav-item:hover {
+	background: #ffbc13;
+}
+
+.nav-item a svg {
+    margin-right: 4px;
+}
+
+.nav-item:hover a svg {
+    color: black !important;
+   
+}
+
+.nav-item:hover .stage-title {
+	color: black;
+	font-weight: bold;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+	background-color: #ffbc13; 
+}
+
+.sidebar-sticky
+{
+    background: linear-gradient(215deg, rgba(96,96,96,1) 0%, rgba(0,0,0,1) 100%);
+    
+}
+
+.sidebar-sticky ul{
+    width: 100%;
+}
+
+.system-title{
+    padding: .5rem 1rem;
+    color: white;
+}
+
+.system-title h5 {
+    padding: 10px;
+    
+    border-radius: 4px;
+    border-bottom: 3px solid  #ffbc13;
+}
+
+.table-titles
+{
+    margin-right: 0;
+    margin-left: 0;
+    max-width: none;
+}
+
+.table-titles .row .col-sm{
+    padding: 0;
+}
+
+.page-title
+{
+    font-size: 1.75em;
+}

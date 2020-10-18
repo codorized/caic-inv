@@ -13,7 +13,7 @@
   }
 
   .row > nav {
-    box-shadow: none;
+    
     background-color: white;
   }
 
@@ -31,9 +31,7 @@
     margin: 0 auto;
   }
 
-  .row .sidebar{
-    position: unset;
-  }
+  
 
   .numberStats
   {
@@ -103,4 +101,9 @@
   .navbar .navbar-brand
   {
     font-size: 0.95rem;
+  }
+
+  .sidebar-sticky .logo{
+    width: 83%;
+    height: auto;
   }

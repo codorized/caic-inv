@@ -60,7 +60,12 @@ function loadSalesRep(ctx, data)
                             color: 'green'
                         }
                     }
-                }
+                },
+                colorschemes: {
+
+                    scheme: 'brewer.Paired12'
+            
+                  }
             }
         },
     

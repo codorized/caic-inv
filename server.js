@@ -9,14 +9,15 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
 
+//Methods
+const methods = require('./db/methods');
+
 app.set('view engine', 'pug')
 
 //Sockets IO
 var io = require('socket.io')(http);
 //MongoDb
 const { MongoClient } = require('mongodb');
-//Body parser
-
 
 async function main() {
 
@@ -32,11 +33,11 @@ async function main() {
     if(req.body.username == 'admin'){
       if(req.body.password == 'admin'){
         res.render('index', {title: "CAIC", 
-                         items: await getItems(client, 10), 
-                         stats: await getStats(client), 
-                         urgenCount: await getUrgents(client), 
-                         clientCount: await getClients(client), 
-                         statusStats: await getStatusStats(client),
+                         items: await methods.getItems(client, 10), 
+                         stats: await methods.getStats(client), 
+                         urgenCount: await methods.getUrgents(client), 
+                         clientCount: await methods.getClients(client), 
+                         statusStats: await methods.getStatusStats(client),
                          isDev: true
                         });
       }
@@ -44,11 +45,11 @@ async function main() {
     else if(req.body.username == 'salesrep'){
          if(req.body.password == 'salesrep'){
             res.render('index', {title: "CAIC", 
-                          items: await getItems(client, 10), 
-                          stats: await getStats(client), 
-                          urgenCount: await getUrgents(client), 
-                          clientCount: await getClients(client), 
-                          statusStats: await getStatusStats(client),
+                          items: await methods.getItems(client, 10), 
+                          stats: await methods.getStats(client), 
+                          urgenCount: await methods.getUrgents(client), 
+                          clientCount: await methods.getClients(client), 
+                          statusStats: await methods.getStatusStats(client),
                           isDev: false
                         });
          }
@@ -58,11 +59,11 @@ async function main() {
 
   app.get('/dashboard', async function (req, res) {
     res.render('index', {title: "CAIC", 
-                         items: await getItems(client, 10), 
-                         stats: await getStats(client), 
-                         urgenCount: await getUrgents(client), 
-                         clientCount: await getClients(client), 
-                         statusStats: await getStatusStats(client)});
+                         items: await methods.getItems(client, 10), 
+                         stats: await methods.getStats(client), 
+                         urgenCount: await methods.getUrgents(client), 
+                         clientCount: await methods.getClients(client), 
+                         statusStats: await methods.getStatusStats(client)});
   })
 
   app.get('/insertRandomData',async function (req, res) {
@@ -70,15 +71,15 @@ async function main() {
   })
 
   app.get('/viewAllMotors',async function (req, res) {
-    res.render('viewAll', {items: await getItems(client, -1)});
+    res.render('viewAll', {items: await methods.getItems(client, -1)});
   })
 
   app.post('/insertRandomData',async function (req, res) {
     for(var i=0; i< parseInt(req.body.noOfInput); i++)
     {
       try {
-        await sleep(3000);
-        await insertItem(client, await insertRandom(client));
+        await methods.sleep(3000);
+        await methods.insertItem(client, await methods.insertRandom(client));
       } catch(error){
 
       }
@@ -88,7 +89,7 @@ async function main() {
   })
 
   app.get('/motorForm', async (req, res) => {
-    res.render('motorForm', {maxTagID: await getMaxTagID(client)});
+    res.render('motorForm', {maxTagID: await methods.getMaxTagID(client)});
   });
   
 
@@ -206,8 +207,8 @@ async function main() {
       inputObj.kw = req.body['hp-kw'];
     }
     console.log(inputObj);
-    await insertItem(client, inputObj);
-    res.render('motorForm', {maxTagID: await getMaxTagID(client)});
+    await methods.insertItem(client, inputObj);
+    res.render('motorForm', {maxTagID: await methods.getMaxTagID(client)});
   })
 
 
@@ -222,14 +223,12 @@ async function main() {
       await client.connect();
       console.log('MongoDB connected...'); 
 
-
       const PORT = process.env.PORT || 5000;
       http.listen(PORT , () => {
         console.log('listening on: '+ PORT);
       });
 
-      await monitorListingsUsingHasNext(client, printCheapestSuburbs(client, "Australia", "Sydney", 10), io);
-     
+      await methods.monitorListingsUsingHasNext(client, methods.printCheapestSuburbs(client, "Australia", "Sydney", 10), io);
 
   } finally {
       // Close the connection to the MongoDB cluster
@@ -238,244 +237,3 @@ async function main() {
 }
 
 main().catch(console.error);
-
-async function monitorListingsUsingHasNext(client, pipeline = [], socket) {
-  console.log('Watching has started!');
-  const collection = client.db("caic-sample").collection("items");
-
-  const changeStream = collection.watch();
-  
-  while (await changeStream.hasNext()) {
-      socket.sockets.emit('db', JSON.stringify(await changeStream.next()));
-  }
-}
-
-async function printCheapestSuburbs(client, country, market, maxNumberToPrint) {
-  const pipeline = [
-      {
-        '$match': {
-          'bedrooms': 1, 
-          'address.country': country, 
-          'address.market': market, 
-          'address.suburb': {
-            '$exists': 1, 
-            '$ne': ''
-          }, 
-          'room_type': 'Entire home/apt'
-        }
-      }, {
-        '$group': {
-          '_id': '$address.suburb', 
-          'averagePrice': {
-            '$avg': '$price'
-          }
-        }
-      }, {
-        '$sort': {
-          'averagePrice': 1
-        }
-      }, {
-        '$limit': maxNumberToPrint
-      }
-    ];
-  
-
-  return pipeline;
-}
-
-async function insertItem(client, newListing){
-  const result = await client.db("caic-sample").collection("items").insertOne(newListing);
-  console.log(`New item created with the following id: ${result.insertedId}`);
-}
-
-async function getItems(client, count){
-  var result;
-  if(count == -1){
-    result = await client.db("caic-sample").collection("items").find({}).sort({ tagID: -1 });
-  }
-  else{
-    result = await client.db("caic-sample").collection("items").find({}).sort({ tagID: -1 }).limit(count);
-  }
-  
-  console.log(`Dsiplayed all the items!`);
-  return await result.toArray();
-}
-
-async function getStats(client){
-  const result = await client.db("caic-sample").collection("items").aggregate([
-    {
-      $group: {
-        _id: '$salesRep',
-          count: {$sum: 1}
-      }
-    },
-    {
-      $sort: {  
-        _id: 1
-      }
-    }
-  ]);
-  return await result.toArray();
-}
-
-async function getUrgents(client){
-  const result = await client.db("caic-sample").collection("items").aggregate([
-    {
-      $group: {
-        _id: '$urgent',
-        count: {$sum: 1}
-      }
-    },
-    {
-      $sort: {  
-        _id: 1
-      }
-    }
-  ]);
-  return await result.toArray();
-}
-
-async function getClients(client){
-  const result = await client.db("caic-sample").collection("items").aggregate([
-    {
-      $group: {
-        _id: '$company',
-        count: {$sum: 1}
-      }
-    },
-    {
-      $sort: {  
-        _id: 1
-      }
-    }
-  ]);
-  return await result.toArray();
-}
-
-async function insertRandom(client){
-  var statusx = ['Not Started','On Check-up','For Quotation','Awaiting Purchase Order','On Rewind','On Fabrication','In Baking','Waiting for Materials','Assembly and Testing','Painting','For Delivery','For Billing Statement','For OR','Completed']; 
-  var salesRepx = ['Dulce Importante', 'Evelyn Malabanan', 'Kate Banosong', 'Ronnie Uy', 'Walk-in'];
-  var urgentx = ['on', null];
-  var currDatex = '2020-09-15';
-  var datePulledOutx = '2020-09-15';
-  var companyx = ['Asia Brewery', 'Coca cola', 'Concepcion Durables Inc.', 'Enchanted Kingdom', 'Gardenia', 'Honda', 'Nestle'];
-  var motorTypex = ['Nidec Motor', 'Rockwell Automation', 'AMETEK', 'Regal Beloit'];
-  var HPx = 123;
-  var KWx = 123;
-  var RPMx = 123;
-
-  var randStatusIndx = Math.floor((Math.random() * 13) + 0);
-  var randSalesRepIndx = Math.floor((Math.random() * 4) + 0);
-  var randUrgentIndex = (Math.random() < 0.5) ? 'on' : null;
-  var randCompanyIndx = Math.floor((Math.random() * 6) + 0);
-  var randMotorTypeIndx = Math.floor((Math.random() * 3) + 0);
- 
-  try {
-    var autoIncTagID = parseInt( (await getMaxTagID(client))[0].maxNumber )+1;
-  } catch(err)
-  { 
-    console.log('error BITCh!!');
-    var autoIncTagID = 1000;
-  }
-  
-  var insertObject = {
-    tagID: autoIncTagID,
-    status: statusx[randStatusIndx],
-    currDate: currDatex,
-    urgent: randUrgentIndex,
-    salesRep: salesRepx[randSalesRepIndx],
-    datePulledOut: datePulledOutx,
-    company: companyx[randCompanyIndx],
-    motorType: motorTypex[randMotorTypeIndx],
-    hp: HPx,
-    kw: '',
-    rpm: RPMx,
-    others: [],
-    parts: [],
-    remarks: '' 
-  }
-
-  return insertObject;
-}
-
-
-async function updateAllByName(client, nameOfListing, updatedListing){
-  result = await client.db("caic-sample").collection("items")
-  .updateMany({ salesRep: nameOfListing },
-              { $set: {salesRep: updatedListing}}
-              );
-  console.log(`${result.matchedCount} document(s) matched the query criteria.`);
-}
-
-async function updateAllAddFields(client){
-  result = await client.db("caic-sample").collection("items")
-  .updateMany({ tagID: { $exists: false } },
-              { $set: { tagID: 0 } });
-
-  console.log(`${result.matchedCount} document(s) matched the query criteria.`);
-}
-
-async function updateAllAddFieldStatus(client){
-  result = await client.db("caic-sample").collection("items")
-  .updateMany({ status: { $exists: false } },
-              { $set: { status: 'Not Started' } });
-
-  console.log(`${result.matchedCount} document(s) matched the query criteria.`);
-}
-
-async function deleteAllByName(client, nameOfListing){
-  result = await client.db("caic-sample").collection("items")
-  .deleteMany({ salesRep: nameOfListing }
-              );
-  console.log(`${result.matchedCount} document(s) matched the query criteria.`);
-}
-
-async function getMaxTagID(client){
-  try{
-    result = await client.db("caic-sample").collection("items").aggregate(
-      [
-        {
-          $group: 
-          {
-            _id: null,
-            maxNumber: { $max: "$tagID" }
-          }
-        }
-      ]
-    )
-
-    return result.toArray();
-  }catch(err){
-      console.log('ERROR!');
-      return {
-        _id: null,
-        maxNumber: 1000 
-      };
-  }
-
-  return {
-    _id: null,
-    maxNumber: 1000 
-  };
-}
-
-async function getStatusStats(client){
-  result = await client.db("caic-sample").collection("items").aggregate(
-    [
-      {
-        $group: 
-        {
-          _id: '$status',
-          count: {
-            $sum: 1
-          }
-        }
-      }
-    ]
-  )
-  return result.toArray();
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
