@@ -27,6 +27,7 @@ html(lang='en')
     link(href='css/dashboard2.css' rel='stylesheet')
     link(href='css/db.css' rel='stylesheet')
     link(href='css/custom.css' rel='stylesheet')
+    link(rel='stylesheet' href='css/magnific-popup.css')
   body
     nav.navbar.navbar-light.sticky-top.bg-light.flex-md-nowrap.p-0.shadow
       a.navbar-brand.col-md-3.col-lg-2.mr-0.px-3(href='#')
@@ -48,96 +49,108 @@ html(lang='en')
               path(fill-rule='evenodd' d='M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z')
               path(fill-rule='evenodd' d='M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z')
           .dropdown-menu
-            a.dropdown-item(href='#one') Logout
+            a.dropdown-item(href='http://localhost:5000/') Logout
     .container-fluid
       .row
         nav#sidebarMenu.col-md-3.col-lg-2.d-md-block.sidebar.bg-dark.collapse
           .sidebar-sticky.pt-3
-            ul.nav.flex-column
+            ul.nav.flex-column.list-group
               li.system-title
                 h5
                   | Motor Rewinding 
                   br
                   |  Inv. System
-              li.nav-item
+                
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
                 a.nav-link.text-light(href='#')
                   svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
                     path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
                     path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
 
                   span.stage-title Not Started 
-                    
                   span.sr-only (current)
-              li.nav-item
+                span.badge.badge-primary.badge-pill 12
+                
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
                 a.nav-link.text-light(href='#')
                   svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
                     path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
                     path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
-
+                  
                   span.stage-title On Check-up
-              li.nav-item
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
                 a.nav-link.text-light(href='#')
                   svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
                     path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
                     path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
-
+                  
                   span.stage-title Prelim Docs
-              li.nav-item
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
                 a.nav-link.text-light(href='#')
                   svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
                     path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
                     path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
-
+                  
                   span.stage-title On Rewind
-              li.nav-item
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
                 a.nav-link.text-light(href='#')
                   svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
                     path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
                     path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
-
+                  
                   span.stage-title On Fabrication
-              li.nav-item.text-light
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
                 a.nav-link.text-light(href='#')
                   svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
                     path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
                     path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
-
+                  
                   span.stage-title On Checkup
-              li.nav-item.text-light
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
                 a.nav-link.text-light(href='#')
                   svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
                     path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
                     path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
 
                   span.stage-title In Baking
-              li.nav-item.text-light
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
                 a.nav-link.text-light(href='#')
                   svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
                     path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
                     path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
-
+                  
                   span.stage-title Assembly & Testing
-              li.nav-item.text-light
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
                 a.nav-link.text-light(href='#')
                   svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
                     path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
                     path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
-
+                  
                   span.stage-title Painting
-              li.nav-item.text-light
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
                 a.nav-link.text-light(href='#')
                   svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
                     path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
                     path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
-
+                  
                   span.stage-title For Delivery
-              li.nav-item.text-light
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
                 a.nav-link.text-light(href='#')
                   svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
                     path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
                     path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
-
+                  
                   span.stage-title For Billing Statement
+                span.badge.badge-primary.badge-pill 12
         main.col-md-9.ml-sm-auto.col-lg-10.px-md-4(role='main')
   
           .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
@@ -182,21 +195,47 @@ html(lang='en')
                   th Remarks
               tbody#newItem
                 each item in items
-                  tr
-                    td #{item.tagID}
-                    if item.urgent === 'on'
-                        td yes
-                    else 
-                        td no 
+                    tr
+                      td #{item.tagID}
+                      if item.urgent === 'on'
+                          td yes
+                      else 
+                          td no 
 
-                    td #{item.salesRep}
-                    td #{item.datePulledOut}
-                    td #{item.company}
-                    td #{item.motorType}
-                    td #{item.hp}
-                    td #{item.kw}
-                    td #{item.rpm}
-                    td #{item.remarks}
+                      td #{item.salesRep}
+                      td #{item.datePulledOut}
+                      td #{item.company}
+                      td #{item.motorType}
+                      td #{item.hp}
+                      td #{item.kw}
+                      td #{item.rpm}
+                      td #{item.remarks}
+
+          form#test-form.white-popup-block.mfp-hide
+            .stage-and-dropdown
+              h1 Stage: On Check-up
+            fieldset(style='border:0;')
+              p
+                | Lightbox has an option to automatically focus on the first input. It's strongly recommended to use 
+                code inline
+                |  popup type for lightboxes with form instead of 
+                code ajax
+                |  (to keep entered data if the user accidentally refreshed the page).
+              ol
+                li
+                  label(for='name') Name
+                  input#name(name='name' type='text' placeholder='Name' required='')
+                li
+                  label(for='email') Email
+                  input#email(name='email' type='email' placeholder='example@domain.com' required='')
+                li
+                  label(for='phone') Phone
+                  input#phone(name='phone' type='tel' placeholder='Eg. +447500000000' required='')
+                li
+                  label(for='textarea') Textarea
+                  br
+                  textarea#textarea Try to resize me to see how popup CSS-based resizing works.
+
                 
     script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js' integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj' crossorigin='anonymous')
     script.
@@ -205,8 +244,15 @@ html(lang='en')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js')
     script(src='https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js')
     script(src='/socket.io/socket.io.js')
     script(src='/js/dashboard.js')
+    
+
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
+    script(src='js/jquery.magnific-popup.js')
+    script(src='/js/custom.js')
+
     script.
       var socket = io();
       var ctx = document.getElementById('myChart').getContext('2d');
@@ -411,4 +457,5 @@ html(lang='en')
         }
       }
       
-      !{JSON.stringify(statusStats)}.forEach(addContent);
+
+      //!{JSON.stringify(statusStats)}.forEach(addContent);

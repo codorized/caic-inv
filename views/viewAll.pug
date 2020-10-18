@@ -35,40 +35,134 @@ html(lang='en')
       }
     // Custom styles for this template
     link(href='https://getbootstrap.com/docs/4.5/examples/dashboard/dashboard.css', rel='stylesheet')
-    link(href='css/bootstrap.min.css', rel='stylesheet')
+    link(href='css/bootstrap.min.css' rel='stylesheet')
+    link(href='css/dashboard2.css' rel='stylesheet')
+    link(href='css/db.css' rel='stylesheet')
+    link(href='css/custom.css' rel='stylesheet')
+    link(rel='stylesheet' href='css/magnific-popup.css')
   body#bodyStyle
-    nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0.shadow
-      div 
-        a.navbar-brand.col-md-3.col-lg-2.mr-0.px-3(href='#') CAIC Inventory System
-        button.navbar-toggler.position-absolute.d-md-none.collapsed(type='button', data-toggle='collapse', data-target='#sidebarMenu', aria-controls='sidebarMenu', aria-expanded='false', aria-label='Toggle navigation')
-          span.navbar-toggler-icon
-        //input.form-control.form-control-dark.w-100(type='text', placeholder='Search', aria-label='Search')
-      
-        //- ul.navbar-nav.px-3.header
-        //-   li.nav-item.text-nowrap
-        //-     a.nav-link(href='#') Sign out
+    nav.navbar.navbar-light.sticky-top.bg-light.flex-md-nowrap.p-0.shadow
+      a.navbar-brand.col-md-3.col-lg-2.mr-0.px-3(href='#')
+        img.logo(src='img/logo.png')
+      button.navbar-toggler.position-absolute.d-md-none.collapsed(type='button' data-toggle='collapse' data-target='#sidebarMenu' aria-controls='sidebarMenu' aria-expanded='false' aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      ul.nav.nav-pills
+        li.nav-item
+          a.nav-link.text-dark(href='dashboard') Dashboard
+        li.nav-item
+          a.nav-link.text-dark(href='viewAllMotors') Motor Items
+        li.nav-item
+          a.nav-link.text-dark(href='#fat') Company
+        li.nav-item.dropdown.text.account-button
+          a.nav-link.text-dark.dropdown-toggle(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false') 
+            span Hi Allann!
+            svg.bi.bi-person-circle(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+              path(d='M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z')
+              path(fill-rule='evenodd' d='M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z')
+              path(fill-rule='evenodd' d='M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z')
+          .dropdown-menu
+            a.dropdown-item(href='http://localhost:5000/') Logout
     .container-fluid
       .row
         nav#sidebarMenu.col-md-3.col-lg-2.d-md-block.bg-light.sidebar.collapse
-          .sidebar-sticky.pt-3
-            ul.nav.flex-column
-              li.nav-item
-                a.nav-link.active(href='/')
-                  span(data-feather='home')
-                  |               Dashboard 
+         .sidebar-sticky.pt-3
+            ul.nav.flex-column.list-group
+              li.system-title
+                h5
+                  | Motor Rewinding 
+                  br
+                  |  Inv. System
+                
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
+                a.nav-link.text-light(href='#')
+                  svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+                    path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
+                    path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
+
+                  span.stage-title Not Started 
                   span.sr-only (current)
-              li.nav-item
-                a.nav-link(href='motorForm')
-                  span(data-feather='file')
-                  |               Motor Pickup Form
-              li.nav-item
-                a.nav-link(href='viewAllMotors')
-                  span(data-feather='file')
-                  |               View all motors
-              li.nav-item
-                a.nav-link(href='insertRandomData')
-                  span(data-feather='shopping-cart')
-                  |               Insert Random Data (DO NOT CLICK)
+                span.badge.badge-primary.badge-pill 12
+                
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
+                a.nav-link.text-light(href='#')
+                  svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+                    path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
+                    path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
+                  
+                  span.stage-title On Check-up
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
+                a.nav-link.text-light(href='#')
+                  svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+                    path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
+                    path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
+                  
+                  span.stage-title Prelim Docs
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
+                a.nav-link.text-light(href='#')
+                  svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+                    path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
+                    path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
+                  
+                  span.stage-title On Rewind
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
+                a.nav-link.text-light(href='#')
+                  svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+                    path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
+                    path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
+                  
+                  span.stage-title On Fabrication
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
+                a.nav-link.text-light(href='#')
+                  svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+                    path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
+                    path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
+                  
+                  span.stage-title On Checkup
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
+                a.nav-link.text-light(href='#')
+                  svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+                    path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
+                    path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
+
+                  span.stage-title In Baking
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
+                a.nav-link.text-light(href='#')
+                  svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+                    path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
+                    path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
+                  
+                  span.stage-title Assembly & Testing
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
+                a.nav-link.text-light(href='#')
+                  svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+                    path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
+                    path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
+                  
+                  span.stage-title Painting
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
+                a.nav-link.text-light(href='#')
+                  svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+                    path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
+                    path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
+                  
+                  span.stage-title For Delivery
+                span.badge.badge-primary.badge-pill 12
+              li.nav-item.list-group-item.d-flex.justify-content-between.align-items-center
+                a.nav-link.text-light(href='#')
+                  svg.bi.bi-layers(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+                    path(fill-rule='evenodd' d='M3.188 8L.264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l-1.063.567L14.438 10 8 13.433 1.562 10 4.25 8.567 3.187 8z')
+                    path(fill-rule='evenodd' d='M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882l7.5-4zM1.563 6L8 9.433 14.438 6 8 2.567 1.562 6z')
+                  
+                  span.stage-title For Billing Statement
+                span.badge.badge-primary.badge-pill 12
         main.col-md-9.ml-sm-auto.col-lg-10.px-md-4(role='main')
         
           .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
@@ -85,7 +179,7 @@ html(lang='en')
          
           .table-responsive
             table.table.table-striped.table-sm
-              thead
+              thead.thead-dark
                 tr
                   th Tag ID
                   th Urgent? 
@@ -122,6 +216,30 @@ html(lang='en')
                     //-     - otherList.push(other.name)
                         
                     //- td #{otherList}
+        form#test-form.white-popup-block.mfp-hide
+          h1 Stage: On Checkup
+
+          fieldset(style='border:0;')
+            p
+              | Lightbox has an option to automatically focus on the first input. It's strongly recommended to use 
+              code inline
+              |  popup type for lightboxes with form instead of 
+              code ajax
+              |  (to keep entered data if the user accidentally refreshed the page).
+            ol
+              li
+                label(for='name') Name
+                input#name(name='name' type='text' placeholder='Name' required='')
+              li
+                label(for='email') Email
+                input#email(name='email' type='email' placeholder='example@domain.com' required='')
+              li
+                label(for='phone') Phone
+                input#phone(name='phone' type='tel' placeholder='Eg. +447500000000' required='')
+              li
+                label(for='textarea') Textarea
+                br
+                textarea#textarea Try to resize me to see how popup CSS-based resizing works.
 
                 
     script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js', integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj', crossorigin='anonymous')
@@ -132,212 +250,11 @@ html(lang='en')
     script(src='https://cdn.jsdelivr.net/npm/chart.js@2.7.3/dist/Chart.min.js')
     script(src='https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0')
     script(src='/js/dashboard.js')
-    script(src='/socket.io/socket.io.js')
-    script.
-      var socket = io();
-      var ctx = document.getElementById('myChart').getContext('2d');
-      var salesRepObject = loadSalesRep(ctx, !{JSON.stringify(stats)});
+    script(src='js/jquery.magnific-popup.js')
+       script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
+    script(src='/js/custom.js')
 
-      var ctx2 = document.getElementById('myPieChart1').getContext('2d');
-      var urgentCountObject = getUrgentCount(ctx2, !{JSON.stringify(urgenCount)});
-
-      
-      var ctx3 = document.getElementById('myPieChart2').getContext('2d');
-      var clientCountObject = getClients(ctx3, !{JSON.stringify(clientCount)});
     
 
-      socket.on('db', (msg) => {
-        //Load the initital data
-        var curr = JSON.parse(msg);
-        if(curr.operationType == 'insert'){
-          var myTable = document.getElementById('newItem');
-          var row = myTable.insertRow(0);
-
-          var c0 = row.insertCell(0);
-          var c1 = row.insertCell(1);
-          var c2 = row.insertCell(2);
-          var c3 = row.insertCell(3);
-          var c4 = row.insertCell(4);
-          var c5 = row.insertCell(5);
-          var c6 = row.insertCell(6);
-          var c7 = row.insertCell(7);
-          var c8 = row.insertCell(8);
-          var c9 = row.insertCell(9);
-
-          c0.innerHTML = curr.fullDocument.tagID;
-          curr.fullDocument.urgent === 'on'? c1.innerHTML = 'yes':
-                                          c1.innerHTML = 'no';
-          
-          c2.innerHTML = curr.fullDocument.salesRep;
-          c3.innerHTML = curr.fullDocument.datePulledOut;
-          c4.innerHTML = curr.fullDocument.company;
-          c5.innerHTML = curr.fullDocument.motorType;
-          c6.innerHTML = curr.fullDocument.hp;
-          c7.innerHTML = curr.fullDocument.kw;
-          c8.innerHTML = curr.fullDocument.rpm;
-          c9.innerHTML = curr.fullDocument.remarks;
-
-
-          //- myTable.deleteRow(10);
-        }
-
-        //Make changes to SalesRep Chart
-        var salesRepIndx = salesRepObject.data.labels.indexOf(curr.fullDocument.salesRep);
-        if(salesRepIndx >= 0)
-        {
-          salesRepObject.chart.data.datasets[0].data[salesRepIndx]++;
-          salesRepObject.update();
-        }
-        else{
-           salesRepObject.data.labels.push(curr.fullDocument.salesRep);
-           salesRepObject.data.datasets.forEach((dataset) => {
-              dataset.data.push(1);
-           });
-           salesRepObject.update();
-        }
-
-        //Make changes to Urgent Chart
-        var urgentIndx = '';
-        curr.fullDocument.urgent === 'on'? 
-          urgentIndx = urgentCountObject.data.labels.indexOf('urgent'):
-          urgentIndx = urgentCountObject.data.labels.indexOf('not');
-        urgentCountObject.chart.data.datasets[0].data[urgentIndx]++;
-        urgentCountObject.update();
-
-        //Make changes to Client Chart
-        var clientIndx = clientCountObject.data.labels.indexOf(curr.fullDocument.company);
-        if(clientIndx >= 0)
-        {
-          clientCountObject.chart.data.datasets[0].data[clientIndx]++;
-          clientCountObject.update();
-        }
-        else{
-           clientCountObject.data.labels.push(curr.fullDocument.company);
-           clientCountObject.data.datasets.forEach((dataset) => {
-              dataset.data.push(1);
-           });
-           clientCountObject.update();
-        }
-        console.log(curr.fullDocument.status);
-        switch(curr.fullDocument.status)  
-        {
-          case 'Not Started': 
-            document.getElementById('notStarted').innerHTML = parseInt(document.getElementById('notStarted').innerHTML) + 1;
-            break;
-          case 'On Check-up': 
-            document.getElementById('onCheckup').innerHTML = parseInt(document.getElementById('onCheckup').innerHTML) + 1;
-            break;
-          case 'For Quotation': 
-            document.getElementById('forQuotation').innerHTML = parseInt(document.getElementById('forQuotation').innerHTML) + 1;
-            break;
-          case 'Awaiting Purchase Order': 
-            document.getElementById('awaitingPo').innerHTML = parseInt(document.getElementById('awaitingPo').innerHTML) + 1;
-            break;
-          case 'On Rewind': 
-            document.getElementById('onRewind').innerHTML = parseInt(document.getElementById('onRewind').innerHTML) + 1;
-            break;
-          case 'On Fabrication': 
-            document.getElementById('onFabrication').innerHTML = parseInt(document.getElementById('onFabrication').innerHTML) + 1;
-            break;
-          case 'In Baking': 
-            document.getElementById('inBaking').innerHTML = parseInt(document.getElementById('inBaking').innerHTML) + 1;
-            break;
-          case 'Waiting for Materials': 
-            document.getElementById('waitingMaterials').innerHTML = parseInt(document.getElementById('waitingMaterials').innerHTML) + 1;
-            break;
-          case 'Assembly and Testing': 
-            document.getElementById('assAndTest').innerHTML = parseInt(document.getElementById('assAndTest').innerHTML) + 1;
-            break;
-          case 'Painting': 
-            document.getElementById('painting').innerHTML = parseInt(document.getElementById('painting').innerHTML) + 1;
-            break;
-          case 'For Delivery': 
-            document.getElementById('forDelivery').innerHTML = parseInt(document.getElementById('forDelivery').innerHTML) + 1;
-            break;
-          case 'For Billing Statement': 
-            document.getElementById('forBilling').innerHTML = parseInt(document.getElementById('forBilling').innerHTML) + 1;
-            break;
-          case 'For OR': 
-            document.getElementById('forOr').innerHTML = parseInt(document.getElementById('forOr').innerHTML) + 1;
-            break;
-          case 'Completed': 
-            document.getElementById('completed').innerHTML = parseInt(document.getElementById('completed').innerHTML) + 1;
-            break;
-        }
-
-      });
-
-    script.
-      $(window).resize(function() {
-        
-        var totalWidth=document.body.clientWidth;
-
-        if(totalWidth <= 600)
-        {
-            clientCountObject.options.legend.display = false;
-            clientCountObject.update();
-        }
-        else{
-          clientCountObject.options.legend.display = true;
-          clientCountObject.update();
-        }
-      });
-
-      function submitForm(e)
-      {
-          e.preventDefault();
-          alert('Success!');
-      }
-
-      function addContent(status, index){
-        switch(status._id)  
-        {
-          case 'Not Started': 
-            document.getElementById('notStarted').innerHTML = status.count;
-            break;
-          case 'On Check-up': 
-            document.getElementById('onCheckup').innerHTML = status.count;
-            break;
-          case 'For Quotation': 
-            document.getElementById('forQuotation').innerHTML = status.count;
-            break;
-          case 'Awaiting Purchase Order': 
-            document.getElementById('awaitingPo').innerHTML = status.count;
-            break;
-          case 'On Rewind': 
-            document.getElementById('onRewind').innerHTML = status.count;
-            break;
-          case 'On Fabrication': 
-            document.getElementById('onFabrication').innerHTML = status.count;
-            break;
-          case 'In Baking': 
-            document.getElementById('inBaking').innerHTML = status.count;
-            break;
-          case 'Waiting for Materials': 
-            document.getElementById('waitingMaterials').innerHTML = status.count;
-            break;
-          case 'Assembly and Testing': 
-            document.getElementById('assAndTest').innerHTML = status.count;
-            break;
-          case 'Painting': 
-            document.getElementById('painting').innerHTML = status.count;
-            break;
-          case 'For Delivery': 
-            document.getElementById('forDelivery').innerHTML = status.count;
-            break;
-          case 'For Billing Statement': 
-            document.getElementById('forBilling').innerHTML = status.count;
-            break;
-          case 'For OR': 
-            document.getElementById('forOr').innerHTML = status.count;
-            break;
-          case 'Completed': 
-            document.getElementById('completed').innerHTML = status.count;
-            break;
-        }
-      }
-      
-      !{JSON.stringify(statusStats)}.forEach(addContent);
-     
       
      
