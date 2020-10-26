@@ -1,7 +1,6 @@
 
 function loadSalesRep(ctx, data)
 {
-
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {

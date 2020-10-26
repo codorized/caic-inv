@@ -109,9 +109,10 @@ td {
 .mfp-content
 {
     background: white;
-    width: 80% !important;
+    width: 100% !important;
     padding: 25px;
     border-radius: 5px;
+    max-width: none;
 }
 
 .white-popup-block h1
@@ -131,3 +132,25 @@ td {
 .badge {
     /* margin-left: 5px; */
 }
+
+.recentItems tr:hover {
+    border: 2px solid gray;
+}
+
+.mfp-container .mfp-iframe-scaler iframe
+{
+    background: white;
+}
+
+.addmotorItem{
+    display: flex;
+    align-items: center;
+}
+.addmotorItem svg{
+    margin-left: 10px;
+}
+
+.mfp-iframe{
+    border-radius: 10px;
+}
+

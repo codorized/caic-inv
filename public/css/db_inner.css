@@ -1,0 +1,46 @@
+nav {
+    border-radius: 10px;
+    margin-top: 6px;
+}
+
+nav .prev form{
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+.navbar-brand {
+    padding-left: 0;
+}
+
+.motorinfo{
+    margin-top: 15px;
+}
+
+.pmcontent{
+	display: flex;
+}
+
+.pmcontent .radio{
+	width: 33%;
+}
+
+.powerrbset{
+	display: flex;
+    margin: 0;
+}
+
+.powerrbset .radio{
+	margin-right: 10px;
+}
+
+.text-muted{
+	cursor: pointer;
+}
+
+.delmotor svg {
+    color: red;
+}
+.motorcount2{
+    display: none;
+}

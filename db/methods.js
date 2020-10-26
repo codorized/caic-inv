@@ -1,6 +1,6 @@
 const monitorListingsUsingHasNext = async (client, pipeline = [], socket) => {
     console.log('Watching has started!');
-    const collection = client.db("caic-sample").collection("items");
+    const collection = client.db("caic-sample").collection("motors");
   
     const changeStream = collection.watch();
     
@@ -43,25 +43,36 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
   }
   
   const insertItem = async (client, newListing) => {
-    const result = await client.db("caic-sample").collection("items").insertOne(newListing);
+    const result = await client.db("caic-sample").collection("motors").insertOne(newListing);
     console.log(`New item created with the following id: ${result.insertedId}`);
   }
   
   const getItems = async (client, count) => {
     var result;
     if(count == -1){
-      result = await client.db("caic-sample").collection("items").find({}).sort({ tagID: -1 });
+      result = await client.db("caic-sample").collection("motors").find({}).sort({ tagID: -1 });
     }
     else{
-      result = await client.db("caic-sample").collection("items").find({}).sort({ tagID: -1 }).limit(count);
+      result = await client.db("caic-sample").collection("motors").find({}).sort({ tagID: -1 }).limit(count);
     }
     
     console.log(`Dsiplayed all the items!`);
     return await result.toArray();
   }
+
+  const getSingle = async (client, tagID) => {
+    var result;
+
+    result = await client.db("caic-sample").collection("motors").findOne({tagID: tagID});
+    if (result.matchedCount > 0){
+      return await result.toArray();
+    }
+
+    // return await ['No Item'];
+  }
   
   const getStats = async (client) => {
-    const result = await client.db("caic-sample").collection("items").aggregate([
+    const result = await client.db("caic-sample").collection("motors").aggregate([
       {
         $group: {
           _id: '$salesRep',
@@ -78,7 +89,7 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
   }
   
   const getUrgents = async (client) => {
-    const result = await client.db("caic-sample").collection("items").aggregate([
+    const result = await client.db("caic-sample").collection("motors").aggregate([
       {
         $group: {
           _id: '$urgent',
@@ -95,7 +106,7 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
   }
 
   const getClients = async(client) => {
-    const result = await client.db("caic-sample").collection("items").aggregate([
+    const result = await client.db("caic-sample").collection("motors").aggregate([
       {
         $group: {
           _id: '$company',
@@ -159,7 +170,7 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
   
   
   const updateAllByName = async (client, nameOfListing, updatedListing) => {
-    result = await client.db("caic-sample").collection("items")
+    result = await client.db("caic-sample").collection("motors")
     .updateMany({ salesRep: nameOfListing },
                 { $set: {salesRep: updatedListing}}
                 );
@@ -167,7 +178,7 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
   }
   
   const updateAllAddFields = async(client) => {
-    result = await client.db("caic-sample").collection("items")
+    result = await client.db("caic-sample").collection("motors")
     .updateMany({ tagID: { $exists: false } },
                 { $set: { tagID: 0 } });
   
@@ -175,7 +186,7 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
   }
   
   const updateAllAddFieldStatus = async (client) => {
-    result = await client.db("caic-sample").collection("items")
+    result = await client.db("caic-sample").collection("motors")
     .updateMany({ status: { $exists: false } },
                 { $set: { status: 'Not Started' } });
   
@@ -183,7 +194,7 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
   }
   
   const deleteAllByName = async (client, nameOfListing) => {
-    result = await client.db("caic-sample").collection("items")
+    result = await client.db("caic-sample").collection("motors")
     .deleteMany({ salesRep: nameOfListing }
                 );
     console.log(`${result.matchedCount} document(s) matched the query criteria.`);
@@ -191,7 +202,7 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
   
   const getMaxTagID = async (client) => {
     try{
-      result = await client.db("caic-sample").collection("items").aggregate(
+      var result = await client.db("caic-sample").collection("motors").aggregate(
         [
           {
             $group: 
@@ -202,24 +213,26 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
           }
         ]
       )
-  
-      return result.toArray();
-    }catch(err){
-        console.log('ERROR!');
-        return {
+      var alter;
+      const arrayres = await result.toArray();
+      console.log(arrayres.length);
+      if (await arrayres.length <= 0){
+        alter = [{
           _id: null,
-          maxNumber: 1000 
-        };
+          maxNumber: 999 
+        }]
+        console.log(alter);
+        return await alter;
+      } else {
+        return await result.toArray();
+      }
+    }catch(err){
+        console.log(err.messag);
     }
-  
-    return {
-      _id: null,
-      maxNumber: 1000 
-    };
   }
   
   const getStatusStats = async (client) => {
-    result = await client.db("caic-sample").collection("items").aggregate(
+    result = await client.db("caic-sample").collection("motors").aggregate(
       [
         {
           $group: 
@@ -245,6 +258,7 @@ exports.monitorListingsUsingHasNext = monitorListingsUsingHasNext;
 exports.printCheapestSuburbs = printCheapestSuburbs;
 exports.insertItem = insertItem;
 exports.getItems = getItems;
+exports.getSingle =  getSingle;
 exports.getStats = getStats;
 exports.getUrgents = getUrgents;
 exports.getClients = getClients;
