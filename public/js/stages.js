@@ -104,7 +104,7 @@ $( "#addsubmotor" ).click(function() {
                   + '</div>'
                   + '<div class="col-md-6 mb-3">'
                     + '<label for="firstName">Sales Representative</label>'
-                    + '<input type="text" class="form-control" name="salesrep-'+count+'" placeholder="" value="Allann" required disabled="">'
+                    + '<input type="text" id="#salesRep-'+count+'" class="form-control" name="salesrep-'+count+'" placeholder="" value="Allann" required disabled="">'
                     + '<div class="invalid-feedback">'
                       + 'Valid first name is required.'
                     + '</div>'

@@ -56,11 +56,11 @@ html(lang='en')
                 div
                   h6.my-0 Motor 1
                   small.text-muted ID: 1234
-            .input-group.card.p-2
-              button#addsubmotor.btn.btn-secondary Add Sub Motor
-            .input-group.card.p-2
-              input.form-control.motorcount2(type='text' name='submotorctr' placeholder='' value='1')
-              button.btn.btn-danger(type='submit') Submit
+            //- .input-group.card.p-2
+            //-   button#addsubmotor.btn.btn-secondary Add Sub Motor
+            //- .input-group.card.p-2
+            //-   input.form-control.motorcount2(type='text' name='submotorctr' placeholder='' value='1')
+            //-   button.btn.btn-danger(type='submit') Edit
           .col-md-8.order-md-1
             h4.mb-3 Motor Details
             form
@@ -89,26 +89,27 @@ html(lang='en')
                       .row
                         .col-md-6.mb-3
                           label(for='firstName') Date
-                          input.form-control.currdate(type='text' name='currdate' placeholder='' value='' required='' disabled='')
+                          input.form-control.currdate(type='text' name='currdate' placeholder='' value=motorobj.currDate required='' disabled='')
                         .col-md-6.mb-3
+                        
                           label(for='lastName') Motor ID 
-                          - var maxNo = maxTagID[0]['maxNumber']+1;
-                          input.form-control#maxID(type='text' name='motorid' placeholder='' value= maxNo required='' disabled='')
+                         
+                          input.form-control#maxID(type='text' name='motorid' placeholder='' value= motorobj.tagID required='' disabled='')
                           .invalid-feedback
                             | Valid last name is required.
                         .col-md-6.mb-3
                           label(for='firstName') Sales Representative
-                          select.form-control(name='salesrep' required='')
-                            option Kate Banosong
-                            option Evelyn Malabanan
-                            option Ronnie Uy
-                            option Dulce Importante
+                          select.form-control#salesRep(name='salesrep' required='')
+                            option(value="Kate Banosong") Kate Banosong
+                            option(value="Evelyn Malabanan") Evelyn Malabanan
+                            option(value="Ronnie Uy") Ronnie Uy
+                            option(value="Dulce Importante") Dulce Importante
                           
                           .invalid-feedback
                             | Valid first name is required.
                         .col-md-6.mb-3
                           label(for='firstName') Date Pulled Out
-                          input.form-control(type='date' name='datepulledout' placeholder='' value='' required='')
+                          input.form-control(type='date' name='datepulledout' placeholder='' value= motorobj.datePulledOut required='')
                           .invalid-feedback
                             | Valid first name is required.
                       .row
@@ -149,10 +150,10 @@ html(lang='en')
                               label
                                 input.pmcheck(type='radio' name='powerrb' value='kw')
                                 | KW
-                          input.form-control(type='text' name='powertext' placeholder='' value='' required='')
+                          input.form-control(type='text' name='powertext' placeholder='' value=motorobj.power.split(' ')[0] required='')
                         .col-md-6.mb-3
                           label(for='lastName') RPM
-                          input.form-control(type='text' name='rpm' placeholder='' value='' required='')
+                          input.form-control(type='text' name='rpm' placeholder='' value=motorobj.rpm required='')
                           .invalid-feedback
                             | Valid last name is required.
                       label(for='firstName') Others:
@@ -229,7 +230,7 @@ html(lang='en')
                           label.custom-control-label(for='coupling') Coupling
                       .form-group
                         label(for='exampleFormControlTextarea1') Remarks
-                        textarea#remarks.form-control(rows='3' name='remarks')
+                        textarea#remarks.form-control(rows='3' name='remarks') #{motorobj.remarks}
     footer.my-5.pt-5.text-muted.text-center.text-small
       p.mb-1 © 2020 Calamba Allied Industrial Corp.
       ul.list-inline
@@ -241,3 +242,131 @@ html(lang='en')
     script(src='https://getbootstrap.com/docs/4.5/dist/js/bootstrap.bundle.min.js' integrity='sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx' crossorigin='anonymous')
     script(src='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.js')
     script(src='../js/stages.js')
+    script. 
+      //console.log(!{JSON.stringify(motorobj.others)});
+      - $("#salesRep option").each(function(){
+        
+        if ($(this).text() == '#{motorobj.salesRep}')
+          $(this).attr("selected","selected");
+      });
+
+      - $("select[name='company'] option").each(function(){
+        if ($(this).text() == '#{motorobj.company}')
+          $(this).attr("selected","selected");
+      });
+
+      - $("select[name='motortype'] option").each(function(){
+        if ($(this).text() == '#{motorobj.motorType}')
+          $(this).attr("selected","selected");
+      });
+
+      var powerlist = '#{motorobj.power}'.split(' ');
+      - $("input[name='powerrb']").each(function(){
+        if(powerlist[1] == $(this).val().toUpperCase()){
+          
+          $(this).attr('checked', 'checked');
+        }
+      });
+
+      const checktable = [
+        { name: 'Motor Assy', idname: 'motor-assy' },
+        { name: 'AC ASSY', idname: 'ac-assy' },
+        { name: 'Fabrication', idname: 'fabrication' },
+        { name: 'Machining', idname: 'machining' }
+      ];
+
+      const checktable2 = [
+        { name: 'Fan Cover', idname: 'fan-cover' },
+        { name: 'Stator', idname: 'stator' },
+        { name: 'Keystock (CUÑA)', idname: 'keystock' },
+        { name: 'Fan Blade', idname: 'fan-blade' },
+        { name: 'Rotor', idname: 'rotor' },
+        { name: 'Centrifugal', idname: 'centrifugal' },
+        { name: 'Terminal Box', idname: 'terminal-box' },
+        { name: 'Pulley', idname: 'pulley' },
+        { name: 'Governor-Switch', idname: 'governor-switch' },
+        { name: 'Terminal', idname: 'terminal' },
+        { name: 'Carbon', idname: 'carbon' },
+        { name: 'Capacitor', idname: 'capacitor' },
+        { name: 'Terminal Block', idname: 'terminal-block' },
+        { name: 'Carbon Holder', idname: 'carbon-holder' },
+        { name: 'Impeller', idname: 'impeller' },
+        { name: 'Bolts and Nuts', idname: 'bolts-and-nuts' },
+        { name: 'Coupling', idname: 'coupling' }
+      ];
+
+      //Others
+      var ctr = 0;
+      - $.each(!{JSON.stringify(motorobj.others)}, function(){
+        if(checktable[ctr]['name'] == $(this)[0]['name']){
+          if($(this)[0]['isChecked']){
+              $('input[name='+ checktable[ctr]['idname'] +']').attr('checked', 'checked');
+          }
+        }
+        ctr++;
+      });
+
+      //Parts
+      ctr = 0;
+      - $.each(!{JSON.stringify(motorobj.parts)}, function(){
+        if(checktable2[ctr]['name'] == $(this)[0]['name']){
+          if($(this)[0]['isChecked']){
+              $('input[name='+ checktable2[ctr]['idname'] +']').attr('checked', 'checked');
+          }
+        }
+        ctr++;
+      })
+
+      //PM 
+      if(!{JSON.stringify(motorobj.pmID)}){
+        $('.pmcheck[value="pmexist"]').attr('checked', 'checked');
+        $('.pmcontent').append('<div class="col-md-6 pmexist"><label > Available PM</label><select class="form-control " name="pmcode"><option>'+!{JSON.stringify(motorobj.pmID)}+'</option></select></div></div>');
+      }
+
+      //Submotors 
+      if(!{JSON.stringify(motorobj.submotors)}.length > 0)
+      {
+        //alert('HEYZZ');
+        ctr=1;
+        - $.each(!{JSON.stringify(motorobj.submotors)}, function(){
+            - $('.accordion').append(motorform(ctr, !{JSON.stringify(motorobj.tagID)}));
+
+            - $("#salesRep option").each(function(){
+        
+              if ($(this).text() == '#{motorobj.salesRep}-'+ctr)
+                  $(this).attr("selected","selected");
+              });
+
+              - $("select[name='company'] option").each(function(){
+                if ($(this).text() == '#{motorobj.company}')
+                  $(this).attr("selected","selected");
+              });
+
+              - $("select[name='motortype'] option").each(function(){
+                if ($(this).text() == '#{motorobj.motorType}')
+                  $(this).attr("selected","selected");
+              });
+
+              var powerlist = '#{motorobj.power}'.split(' ');
+              - $("input[name='powerrb']").each(function(){
+                if(powerlist[1] == $(this).val().toUpperCase()){
+                  
+                  $(this).attr('checked', 'checked');
+                }
+              });
+
+            ctr++;
+            
+        }); 
+      }
+      
+
+
+
+      
+
+     
+
+
+
+     

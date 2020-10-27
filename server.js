@@ -468,12 +468,16 @@ async function main() {
     res.render('motorForm', {maxTagID: await methods.getMaxTagID(client)});
   })
 
-  app.get('/motorItemStage/:tagid',  (req, res) => {
+  app.get('/motorItemStage/:tagid',  async (req, res) => {
     res.send('Here\'s the ID: '+ req.params.tagid);
   });
 
-  app.get('/motorItem/:tagid',  (req, res) => {
-    res.send('This is page for : '+ req.params.tagid);
+  app.get('/motorItem/:tagid',  async (req, res) => {
+    const motorobject = await methods.getSingle(client, req.params.tagid);
+    if(motorobject)
+      res.render('innerpages/motoritem', {motorobj: motorobject});
+    else 
+      res.render('errorpages/error404', {id: req.params.tagid});
   });
 
 

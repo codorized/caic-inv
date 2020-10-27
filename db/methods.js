@@ -62,13 +62,14 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
 
   const getSingle = async (client, tagID) => {
     var result;
-
-    result = await client.db("caic-sample").collection("motors").findOne({tagID: tagID});
-    if (result.matchedCount > 0){
-      return await result.toArray();
+    result = await client.db("caic-sample").collection("motors").findOne({'tagID': parseInt(tagID)});
+    console.log(await result);
+    if(result){
+      return await result;
     }
-
-    // return await ['No Item'];
+    else {
+      return null;
+    }
   }
   
   const getStats = async (client) => {

@@ -295,7 +295,7 @@ html(lang='en')
           var c7 = row.insertCell(7);
           var c8 = row.insertCell(8);
 
-          c0.innerHTML = curr.fullDocument.tagID;
+          c0.innerHTML = '<a href="/motorItem/'+ curr.fullDocument.tagID +'">'+curr.fullDocument.tagID+'</a>';
           const diffTime = Math.abs(new Date(curr.fullDocument.currDate) - new Date(curr.fullDocument.datePulledOut));
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
           c1.innerHTML = diffDays;
