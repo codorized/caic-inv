@@ -44,3 +44,11 @@ nav .prev form{
 .motorcount2{
     display: none;
 }
+
+.form-check.form-inline{
+    padding: 0;
+}
+
+.form-check.form-inline select{
+    margin-left: 5px;
+}

@@ -50,8 +50,7 @@ html(lang='en')
           .col-md-4.order-md-2.mb-4
             h4.d-flex.justify-content-between.align-items-center.mb-3
               span.text-muted Motor Group Pane
-              - var smcount =  motorobj.submotors
-              span.badge.badge-secondary.badge-pill.motorcount #{smcount.length+1}
+              span.badge.badge-secondary.badge-pill.motorcount 1
             ul.list-group.mb-3.motorpane
               li.list-group-item.d-flex.justify-content-between.lh-condensed(data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne')
                 div
@@ -89,7 +88,7 @@ html(lang='en')
                     .card-body
                       .row
                         .col-md-6.mb-3
-                          label(for='firstName') Date Pulled Out
+                          label(for='firstName') Date
                           input.form-control.currdate(type='text' name='currdate' placeholder='' value=motorobj.currDate required='' disabled='')
                         .col-md-6.mb-3
                         
@@ -108,7 +107,11 @@ html(lang='en')
                           
                           .invalid-feedback
                             | Valid first name is required.
-                        
+                        .col-md-6.mb-3
+                          label(for='firstName') Date Pulled Out
+                          input.form-control(type='date' name='datepulledout' placeholder='' value= motorobj.datePulledOut required='')
+                          .invalid-feedback
+                            | Valid first name is required.
                       .row
                         .mb-3.col-md-6
                           label(for='username') Company
@@ -315,82 +318,47 @@ html(lang='en')
       })
 
       //PM 
-      if(!{JSON.stringify(motorobj.pmID)} == ''){
-          $('.pmcheck[value="pmno"]').attr('checked', 'checked');
-        }else {
-          $('.pmcheck[value="pmexist"]').attr('checked', 'checked');
-          $('.pmcontent').append('<div class="col-md-6 pmexist"><label > Available PM</label><select class="form-control " name="pmcode"><option>'+!{JSON.stringify(motorobj.pmID)}+'</option></select></div></div>');
-        }
-        
-      - $("ul.motorpane").delegate(".delmotor", "click", function(e) {
-          var classList = $(this).attr('class').split(/\s+/);
-          $('div.'+classList[2]).remove();
-          $('li.'+classList[2]).remove();
-          var count = $("ul.motorpane li").length;
-          count--;
-          $('li.submotor-'+count).append(
-                '<span class="text-muted delmotor submotor-'+count+'">'
-                    + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
-                      + '<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>'
-                      + '<path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>'
-                    + '</svg>'
-                + '</span></li>'
-          );
-          $('.motorcount').html(count+1);
-          $('.motorcount2').attr('value',count+1);
-        });
+      if(!{JSON.stringify(motorobj.pmID)}){
+        $('.pmcheck[value="pmexist"]').attr('checked', 'checked');
+        $('.pmcontent').append('<div class="col-md-6 pmexist"><label > Available PM</label><select class="form-control " name="pmcode"><option>'+!{JSON.stringify(motorobj.pmID)}+'</option></select></div></div>');
+      }
 
       //Submotors 
       if(!{JSON.stringify(motorobj.submotors)}.length > 0)
       {
         //alert('HEYZZ');
         ctr=1;
-        const motorSubmotors = !{JSON.stringify(motorobj.submotors)};
-        - $.each(motorSubmotors, function(index, value){
-            //- - var submotor = !{JSON.stringify(motorobj.submotors)};
-            - $('.accordion').append(motorform(ctr, !{JSON.stringify(motorobj.tagID)}, value));
+        - $.each(!{JSON.stringify(motorobj.submotors)}, function(){
+            - $('.accordion').append(motorform(ctr, !{JSON.stringify(motorobj.tagID)}));
 
-            var ctr2 = 0;
-            - $.each(value.others, function(index, value){
-              if(checktable[ctr2]['name'] == value['name']){
-                if(value['isChecked']){
-                    $('input[name='+ checktable[ctr2]['idname'] +'-'+ctr+']').attr('checked', 'checked');
+            - $("#salesRep option").each(function(){
+        
+              if ($(this).text() == '#{motorobj.salesRep}-'+ctr)
+                  $(this).attr("selected","selected");
+              });
+
+              - $("select[name='company'] option").each(function(){
+                if ($(this).text() == '#{motorobj.company}')
+                  $(this).attr("selected","selected");
+              });
+
+              - $("select[name='motortype'] option").each(function(){
+                if ($(this).text() == '#{motorobj.motorType}')
+                  $(this).attr("selected","selected");
+              });
+
+              var powerlist = '#{motorobj.power}'.split(' ');
+              - $("input[name='powerrb']").each(function(){
+                if(powerlist[1] == $(this).val().toUpperCase()){
+                  
+                  $(this).attr('checked', 'checked');
                 }
-              }
-              ctr2++;
-            });
+              });
 
-              
-            ctr2 = 0;
-            - $.each(value.parts, function(index, value){
-              if(checktable2[ctr2]['name'] == value['name']){
-                if(value['isChecked']){
-                    $('input[name='+ checktable2[ctr2]['idname'] +'-'+ctr+']').attr('checked', 'checked');
-                }
-              }
-              ctr2++;
-            })
-
-            //Submotor pane 
-            $('.delmotor').remove();
-            $('.motorpane').append('<li class="list-group-item d-flex justify-content-between lh-condensed smp-'+ctr+' submotor-'+ctr+'  data-toggle="collapse" data-target="#collapseOne-'+ctr+'" aria-expanded="false" aria-controls="collapseOne-'+ctr+' "><div><h6 class="my-0">Sub Motor '+ctr+'</h6><small class="text-muted">ID: 1234</small></div>'
-                                    +'</li>')
-            //- if(ctr == motorSubmotors.length)
-            //- {
-            //-   $('.smp-'+ctr+'.submotor-'+ctr).append(
-            //-     '<span class="text-muted delmotor submotor-'+ctr+'">'
-            //-         + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
-            //-           + '<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>'
-            //-           + '<path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>'
-            //-         + '</svg>'
-            //-     + '</span>'
-            //-   );
-            //- }
             ctr++;
+            
         }); 
       }
-
-
       
 
 

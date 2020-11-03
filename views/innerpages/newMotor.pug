@@ -28,7 +28,7 @@ html(lang='en')
     link(href='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.css' rel='stylesheet')
     link(href='../css/db_inner.css' rel='stylesheet')
   body.bg-light
-    .container
+    .container.page
       nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
         button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarTogglerDemo01' aria-controls='navbarTogglerDemo01' aria-expanded='false' aria-label='Toggle navigation')
           span.navbar-toggler-icon
@@ -68,16 +68,16 @@ html(lang='en')
                 .form-check.pmcontent.row
                   .radio
                     label
-                      input.pmcheck(type='radio' name='optradio' value='pmno')
-                      |  No PM
+                      input.pmcheck(type='radio' name='optradio' value='pmno' checked)
+                      |  No Gatepass
                   .radio
                     label
                       input.pmcheck(type='radio' name='optradio' value='pmnew')
-                      |  New PM
+                      |  New Gate Pass
                   .radio
                     label
                       input.pmcheck(type='radio' name='optradio' value='pmexist')
-                      |  Existing PM
+                      |  Existing Gate Pass
               #accordionExample.accordion
                 .card
                   #headingOne.card-header
@@ -88,7 +88,7 @@ html(lang='en')
                     .card-body
                       .row
                         .col-md-6.mb-3
-                          label(for='firstName') Date
+                          label(for='firstName') Data Pulled Out
                           input.form-control.currdate(type='text' name='currdate' placeholder='' value='' required='' disabled='')
                         .col-md-6.mb-3
                           label(for='lastName') Motor ID 
@@ -106,22 +106,12 @@ html(lang='en')
                           
                           .invalid-feedback
                             | Valid first name is required.
-                        .col-md-6.mb-3
-                          label(for='firstName') Date Pulled Out
-                          input.form-control(type='date' name='datepulledout' placeholder='' value='' required='')
-                          .invalid-feedback
-                            | Valid first name is required.
                       .row
                         .mb-3.col-md-6
                           label(for='username') Company
                           select.form-control(name='company' required='')
-                            option Coca Cola
-                            option Concepcion Durables Inc
-                            option Honda
-                            option Nestle
-                            option Asia Brewery
-                            option Enchanted Kingdom
-                            option Gardenia
+                            each company in companies
+                              option #{company._id}
                         .mb-3.col-md-6
                           label(for='username') Motor Type Brand
                           select.form-control(name='motortype' required='')
@@ -240,4 +230,6 @@ html(lang='en')
       window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\\/script>')
     script(src='https://getbootstrap.com/docs/4.5/dist/js/bootstrap.bundle.min.js' integrity='sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx' crossorigin='anonymous')
     script(src='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.js')
-    script(src='../js/stages.js')
+    script(src='../js/newMotor.js')
+
+    
