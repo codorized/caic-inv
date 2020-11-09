@@ -52,3 +52,15 @@ nav .prev form{
 .form-check.form-inline select{
     margin-left: 5px;
 }
+
+.gencard
+{
+    margin-bottom: 16px;
+}
+
+.gencard .card-body
+{
+    max-height: 10px;
+    display: flex;
+    align-items: center;
+}

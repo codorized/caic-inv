@@ -288,7 +288,8 @@ router.get('/motorItemStage/:tagid',  async (req, res) => {
       res.render('innerpages/oncheckup', {pdfURL: '../../io/asset/'+req.params.tagid, motorobj: motorObj});
       break;
     case 'oncheckup':
-      res.send('Prepare Prelim Docs. ID: '+motorObj.tagID);
+      let motorObjOncheckup = await methods.getSingleOnCheckup(client, req.params.tagid); 
+      res.render('innerpages/prelimdocs', {pdfURL: '../../io/asset/'+req.params.tagid, motorObjOncheckup: motorObjOncheckup});
       break;
   }
 
@@ -593,7 +594,8 @@ router.post('/motorItemStage/:id', async function (req, res) {
     
       break; 
     case 'oncheckup': 
-      res.send('Prelim docs with the ID'+ inputObj.tagID);
+      res.sendStatus(200);
+      //res.send('Prelim docs with the ID'+ inputObj.tagID);
   }
 })
 

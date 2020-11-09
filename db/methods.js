@@ -73,6 +73,18 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
   const getSingle = async (client, tagID) => {
     var result;
     result = await client.db("caic-sample").collection("motors").findOne({'tagID': parseInt(tagID)});
+    // console.log(await result);
+    if(result){
+      return await result;
+    }
+    else {
+      return null;
+    }
+  }
+
+  const getSingleOnCheckup = async (client, tagID) => {
+    var result;
+    result = await client.db("caic-sample").collection("oncheckup").findOne({'tagID': tagID});
     console.log(await result);
     if(result){
       return await result;
@@ -1101,6 +1113,7 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
     doc.end();
   }
 
+
   const insertCompany = async (client, newListing) => {
     const result = await client.db("caic-sample").collection("company").insertOne(newListing);
     console.log(`New item created with the following id: ${result.insertedId}`);
@@ -1173,3 +1186,4 @@ exports.createPDF = createPDF;
 exports.getCurrentStatus = getCurrentStatus;
 exports.getSubmotorCount = getSubmotorCount;
 exports.updateStatus = updateStatus;
+exports.getSingleOnCheckup = getSingleOnCheckup;

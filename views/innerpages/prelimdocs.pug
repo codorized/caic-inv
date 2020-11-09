@@ -1,0 +1,313 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description' content='')
+    meta(name='author' content='Mark Otto, Jacob Thornton, and Bootstrap contributors')
+    meta(name='generator' content='Jekyll v4.1.1')
+    title Checkout example · Bootstrap
+    link(rel='canonical' href='https://getbootstrap.com/docs/4.5/examples/checkout/')
+    // Bootstrap core CSS
+    link(href='https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2' crossorigin='anonymous')
+    style.
+      .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      }
+      @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+      }
+      }
+    // Custom styles for this template
+    link(href='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.css' rel='stylesheet')
+    link(href='../css/db_inner.css' rel='stylesheet')
+  body.bg-light
+    .container
+      nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
+        button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarTogglerDemo01' aria-controls='navbarTogglerDemo01' aria-expanded='false' aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        #navbarTogglerDemo01.collapse.navbar-collapse.prev
+          a.navbar-brand.col-sm-7(href='#') Stage: On Checkup -> Preliminary Docs
+          form.form-inline.col-sm-5
+            .btn-group
+              button.btn.btn-warning(type='button') Action
+              button.btn.btn-warning.dropdown-toggle.dropdown-toggle-split(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                span.sr-only Toggle Dropdown
+              .dropdown-menu.dropdown-menu-right
+                a.dropdown-item(href='#') On Checkup
+                a.dropdown-item(href='#') Another action
+                a.dropdown-item(href='#') Something else here
+                .dropdown-divider
+                a.dropdown-item(href='#') Separated link
+      form(method='post')
+        .row.motorinfo
+          .col-md-4.order-md-2.mb-4
+            h4.d-flex.justify-content-between.align-items-center.mb-3
+              span.text-muted Motor Group Pane
+            //-   - var smcount =  motorobj.submotors
+            //-   span.badge.badge-secondary.badge-pill.motorcount #{smcount.length+1}
+            ul.list-group.mb-3.motorpane
+              li.list-group-item.d-flex.justify-content-between.lh-condensed(data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne')
+                div
+                  h6.my-0 Motor 1
+                  small.text-muted ID: 1234
+
+            .input-group.card.p-2
+              input.form-control.motorcount2(type='text' name='submotorctr' placeholder='' value='1')
+              button.btn.btn-danger(type='submit') Submit
+          .col-md-8.order-md-1
+            h4.mb-3 Motor Details
+            form
+              #accordionExample.accordion
+                .card
+                  #headingOne.card-header
+                    h2.mb-0
+                      button.btn.btn-link(type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
+                        | Main Motor
+                  #collapseOne.collapse.show(aria-labelledby='headingOne' data-parent='#accordionExample')
+                    .card-body
+                      .row
+                        .col-md-6.mb-3  
+                          label(for='voltage') Name of Rewinder
+                          input.form-control(type='text' name='voltage' placeholder='' required='')
+                        .col-md-6.mb-3
+                          label(for='download') Before Image
+                          input.form-control.btn-warning(type='button' name='beforeimage' required='' value='Upload') 
+                      
+                      .row
+                        .col-md-6.mb-3#qformcont
+                          label(for='download') Quotation Form
+                          input.form-control.btn-warning#qform(type='button' name='beforeimage' required='' value='Generate') 
+
+                      .card
+                        #headingOne.card-header
+                          h5.mb-0
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#statorassembly' aria-expanded='true' aria-controls='statorassembly')
+                              | Stator Assembly
+                        #statorassembly.collapse.show(aria-labelledby='headingOne' data-parent='#statorassembly')
+                          .card-body
+                            table.table
+                             thead
+                                tr
+                                    th(scope='col') Name
+                                    th(scope='col') Qty
+                                    th(scope='col') Unit Cost
+                                    th(scope='col') Total Cost
+                                tbody
+                                each scope in motorObjOncheckup.stator
+                                    tr 
+                                        th #{scope.name}
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                      .card
+                        #headingOne.card-header
+                          h5.mb-0
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#rotorassembly' aria-expanded='true' aria-controls='rotorassembly')
+                              | Rotor Assembly
+                        #rotorassembly.collapse.show(aria-labelledby='headingOne' data-parent='#rotorassembly')
+                          .card-body
+                            table.table
+                             thead
+                                tr
+                                    th(scope='col') Name
+                                    th(scope='col') Qty
+                                    th(scope='col') Unit Cost
+                                    th(scope='col') Total Cost
+                                tbody
+                                each scope in motorObjOncheckup.rotor
+                                    tr 
+                                        th #{scope.name}
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                      .card
+                        #headingOne.card-header
+                          h5.mb-0
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#accessories' aria-expanded='true' aria-controls='accessories')
+                              | Accessories
+                        #accessories.collapse.show(aria-labelledby='headingOne' data-parent='#accessories')
+                          .card-body
+                            table.table
+                             thead
+                                tr
+                                    th(scope='col') Name
+                                    th(scope='col') Qty
+                                    th(scope='col') Unit Cost
+                                    th(scope='col') Total Cost
+                                tbody
+                                each scope in motorObjOncheckup.accessories
+                                    tr 
+                                        th #{scope.name}
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                      .card
+                        #headingOne.card-header
+                          h5.mb-0
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#dynamicbalance' aria-expanded='true' aria-controls='dynamicbalance')
+                              | Dynamic Balanacing of
+                        #dynamicbalance.collapse.show(aria-labelledby='headingOne' data-parent='#dynamicbalance')
+                          .card-body
+                            table.table
+                             thead
+                                tr
+                                    th(scope='col') Name
+                                    th(scope='col') Qty
+                                    th(scope='col') Unit Cost
+                                    th(scope='col') Total Cost
+                                tbody
+                                each scope in motorObjOncheckup.dynamic
+                                    tr 
+                                        th #{scope.name}
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                  
+                            		
+                  
+    footer.my-5.pt-5.text-muted.text-center.text-small
+      p.mb-1 © 2020 Calamba Allied Industrial Corp.
+      ul.list-inline
+        li.list-inline-item
+          a(href='#') Web App by Lan Cortez
+    script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js' integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj' crossorigin='anonymous')
+    script.
+      window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\\/script>');
+    script(src='https://getbootstrap.com/docs/4.5/dist/js/bootstrap.bundle.min.js' integrity='sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx' crossorigin='anonymous')
+    script(src='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.js')
+    script(src='../js/stages/prelimdocs.js')
+    script(src='https://code.jquery.com/jquery-3.5.1.min.js')
+    script. 
+        - $("form").bind('ajax:complete', function() {
+            alert('SUCCESS');
+        });
+
+        - $('#qform').on('click', function(){
+            
+            $.ajax({
+                method: 'POST',
+                url: 'http://localhost:5000/io/asset/quotation/'+!{JSON.stringify(motorObjOncheckup.tagID)},                        
+                success: function (data) {                        
+                    $('#qformcont').parent().append('<div class="col-md-6 mb-3"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="http://localhost:5000/io/asset/quotation/' + !{JSON.stringify(motorObjOncheckup.tagID)} + '">Click here</a></div></div></div>');
+                    //- alert('SUCCES!');
+                },
+                error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                }
+            })
+        })
+    //-    console.log(!{JSON.stringify(pdfURL)});
+    //-   - $("ul.motorpane").delegate(".delmotor", "click", function(e) {
+    //-       var classList = $(this).attr('class').split(/\s+/);
+    //-       $('div.'+classList[2]).remove();
+    //-       $('li.'+classList[2]).remove();
+    //-       var count = $("ul.motorpane li").length;
+    //-       count--;
+    //-       $('li.submotor-'+count).append(
+    //-             '<span class="text-muted delmotor submotor-'+count+'">'
+    //-                 + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
+    //-                   + '<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>'
+    //-                   + '<path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>'
+    //-                 + '</svg>'
+    //-             + '</span></li>'
+    //-       );
+    //-       $('.motorcount').html(count+1);
+    //-       $('.motorcount2').attr('value',count+1);
+    //-     });
+    
+      
+    //-   var pdfURL = !{JSON.stringify(pdfURL)};
+
+      //Download
+    //-   - $('input[name=download]').on('click', function(){
+    //-         var win = window.open(pdfURL, '_blank');
+    //-         if (win) {
+    //-             //Browser has allowed it to be opened
+    //-             win.focus();
+    //-         } else {
+    //-             //Browser has blocked it
+    //-             alert('Please allow popups for this website');
+    //-         }
+    //-   })
+      
+      //Submotors 
+    //-   if(!{JSON.stringify(motorobj.submotors)}.length > 0)
+    //-   {
+    //-     //alert('HEYZZ');
+    //-     ctr=1;
+    //-     const motorSubmotors = !{JSON.stringify(motorobj.submotors)};
+    //-     - $.each(motorSubmotors, function(index, value){
+    //-         //- - var submotor = !{JSON.stringify(motorobj.submotors)};
+    //-         - $('.accordion').append(oncheckup(ctr, value));
+
+            //- var ctr2 = 0;
+            //- - $.each(value.others, function(index, value){
+            //-   if(checktable[ctr2]['name'] == value['name']){
+            //-     if(value['isChecked']){
+            //-         $('input[name='+ checktable[ctr2]['idname'] +'-'+ctr+']').attr('checked', 'checked');
+            //-     }
+            //-   }
+            //-   ctr2++;
+            //- });
+
+              
+            //- ctr2 = 0;
+            //- - $.each(value.parts, function(index, value){
+            //-   if(checktable2[ctr2]['name'] == value['name']){
+            //-     if(value['isChecked']){
+            //-         $('input[name='+ checktable2[ctr2]['idname'] +'-'+ctr+']').attr('checked', 'checked');
+            //-     }
+            //-   }
+            //-   ctr2++;
+            //- })
+
+            //Submotor pane 
+            $('.delmotor').remove();
+            $('.motorpane').append('<li class="list-group-item d-flex justify-content-between lh-condensed smp-'+ctr+' submotor-'+ctr+'  data-toggle="collapse" data-target="#collapseOne-'+ctr+'" aria-expanded="false" aria-controls="collapseOne-'+ctr+'"><div><h6 class="my-0">Sub Motor '+ctr+'</h6><small class="text-muted">ID: 1234</small></div>'
+                                    +'</li>')
+            //- if(ctr == motorSubmotors.length)
+            //- {
+            //-   $('.smp-'+ctr+'.submotor-'+ctr).append(
+            //-     '<span class="text-muted delmotor submotor-'+ctr+'">'
+            //-         + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
+            //-           + '<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>'
+            //-           + '<path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>'
+            //-         + '</svg>'
+            //-     + '</span>'
+            //-   );
+            //- }
+            ctr++;
+        }); 
+      }
+
+
+      
+
+
+
+      
+
+     
+
+
+
+     
