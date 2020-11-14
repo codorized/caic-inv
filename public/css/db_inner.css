@@ -64,3 +64,24 @@ nav .prev form{
     display: flex;
     align-items: center;
 }
+
+#addmisc, #delmisc
+{
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.mainmotor 
+{
+    display: flex;
+}
+
+.mainmotor h2, .closepane
+{
+    width: 50%; 
+}
+
+.closepane{
+    display: flex;
+    justify-content: flex-end;
+}

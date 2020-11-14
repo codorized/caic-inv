@@ -48,10 +48,11 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
       case 'notstarted':
         result = await client.db("caic-sample").collection("motors").insertOne(newListing);
         console.log(`New item created with the following id: ${result.insertedId}`);
+        break;
       case 'oncheckup':
         result = await client.db("caic-sample").collection("oncheckup").insertOne(newListing);
         console.log(`New item created with the following id: ${result.insertedId}`);
-      break;
+        break;
     }
     
   }

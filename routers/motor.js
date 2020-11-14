@@ -320,7 +320,7 @@ router.post('/motorItemStage/:id', async function (req, res) {
   const ctr = ctr2['submotors'].length;
   switch(status.status){
     case 'notstarted': 
-      console.log('NOT STARTED!');
+      // console.log('NOT STARTED!');
       var inputObj = {
         tagID: req.params.id,
         voltage: req.body.voltage,
@@ -328,11 +328,13 @@ router.post('/motorItemStage/:id', async function (req, res) {
         phase: req.body.phase,
         stator: [
         ], 
-        rotor: [
-        ],
         accessories: [
         ],
+        mechanical: [
+        ],
         dynamic: [
+        ],
+        misc: [
         ],
         submotors:[]
       }
@@ -340,38 +342,41 @@ router.post('/motorItemStage/:id', async function (req, res) {
       if(req.body['stator-inspection'] == 'on'){
         inputObj.stator.push({name:'stator-inspection'});
       }
-      if(req.body['stator-complete'] == 'on'){
-        inputObj.stator.push({name:'stator-complete'});
+
+      if(req.body['stator-complete'] == 'complete-rewinding'){
+        inputObj.stator.push({name:'stator-complete-rewinding', formal: 'Complete Stator Coil Rewinding Package', list: ['Stator coil Rewinding', 'Surge Comparison Hi-pot Testing', 'Polarization and Resistance Test', 'Varnishing and Baking', 'Cleaning and Painting of Unit']});
       }
-      if(req.body['stator-complete-recon'] == 'on'){
-        inputObj.stator.push({name:'stator-complete-recon'});
+      else if(req.body['stator-complete'] == 'complete-reconditioning'){
+        inputObj.stator.push({name:'stator-complete-recon', formal: 'Complete Reconditioning Package', list: ['(Includes all stated above EXCEPT Stator coil Rewinding)']});
       }
+
       if(req.body['conversion'] == 'on'){
         inputObj.stator.push({name:'conversion:'});
       }
+
       if(req.body['rotor-loadside'] == 'on'){
-        inputObj.stator.push({name:'rotor-loadside'});
+        inputObj.accessories.push({name:'rotor-loadside'});
       }
       if(req.body['rotor-fanslide'] == 'on'){
-        inputObj.stator.push({name:'rotor-fanslide'});
+        inputObj.accessories.push({name:'rotor-fanslide'});
       }
       if(req.body['rotor-gearbox1'] == 'on'){
-        inputObj.rotor.push({name:'rotor-gearbox1'});
+        inputObj.accessories.push({name:'rotor-gearbox1'});
       }
       if(req.body['rotor-gearbox2'] == 'on'){
-        inputObj.rotor.push({name:'rotor-gearbox2'});
+        inputObj.accessories.push({name:'rotor-gearbox2'});
       }
       if(req.body['rotor-gearbox3'] == 'on'){
-        inputObj.rotor.push({name:'rotor-gearbox3'});
+        inputObj.accessories.push({name:'rotor-gearbox3'});
       }
       if(req.body['rotor-gearbox4'] == 'on'){
-        inputObj.rotor.push({name:'rotor-gearbox4'});
+        inputObj.accessories.push({name:'rotor-gearbox4'});
       }
       if(req.body['rotor-gearbox5'] == 'on'){
-        inputObj.rotor.push({name:'rotor-gearbox5'});
+        inputObj.accessories.push({name:'rotor-gearbox5'});
       }
       if(req.body['rotor-gearbox6'] == 'on'){
-        inputObj.rotor.push({name:'rotor-gearbox6'});
+        inputObj.accessories.push({name:'rotor-gearbox6'});
       }
       if(req.body['acce-options-capacitor'] == 'on'){
         inputObj.accessories.push({
@@ -408,44 +413,44 @@ router.post('/motorItemStage/:id', async function (req, res) {
         });
       }
       if(req.body['acce-fancover'] == 'on'){
-        inputObj.accessories.push({name:'acce-fancover'});
+        inputObj.mechanical.push({name:'acce-fancover'});
       }
       if(req.body['acce-terminal'] == 'on'){
-        inputObj.accessories.push({name:'acce-terminal'});
+        inputObj.mechanical.push({name:'acce-terminal'});
       }
       if(req.body['acce-wielding'] == 'on'){
-        inputObj.accessories.push({name:'acce-wielding'});
+        inputObj.mechanical.push({name:'acce-wielding'});
       }
       if(req.body['acce-terminalpost'] == 'on'){
-        inputObj.accessories.push({name:'acce-terminalpost'});
+        inputObj.mechanical.push({name:'acce-terminalpost'});
       }
       if(req.body['acce-options-capilla-or-gear'] == 'on'){
-        inputObj.accessories.push({
+        inputObj.mechanical.push({
           name:'acce-options-capilla-or-gear',
           'acce-options-capilla-or-gear1': req.body['acce-options-capilla-or-gear1'],
           'acce-options-capilla-or-gear2': req.body['acce-options-capilla-or-gear2']
         });
       }
       if(req.body['acce-cable'] == 'on'){
-        inputObj.accessories.push({name:'acce-cable'});
+        inputObj.mechanical.push({name:'acce-cable'});
       }
       if(req.body['acce-alignment'] == 'on'){
-        inputObj.accessories.push({name:'acce-alignment'});
+        inputObj.mechanical.push({name:'acce-alignment'});
       }
       if(req.body['acce-finge-coupling'] == 'on'){
-        inputObj.accessories.push({name:'acce-finge-coupling'});
+        inputObj.mechanical.push({name:'acce-finge-coupling'});
       }
       if(req.body['acce-shafting'] == 'on'){
-        inputObj.accessories.push({name:'acce-shafting'});
+        inputObj.mechanical.push({name:'acce-shafting'});
       }
       if(req.body['acce-welding-motor'] == 'on'){
-        inputObj.accessories.push({name:'acce-welding-motor'});
+        inputObj.mechanical.push({name:'acce-welding-motor'});
       }
       if(req.body['acce-reboring-housing'] == 'on'){
-        inputObj.accessories.push({name:'acce-reboring-housing'});
+        inputObj.mechanical.push({name:'acce-reboring-housing'});
       }
       if(req.body['acce-sleeving'] == 'on'){
-        inputObj.accessories.push({name:'acce-sleeving'});
+        inputObj.mechanical.push({name:'acce-sleeving'});
       }
       if(req.body['dynamic-options'] == 'on'){
         inputObj.dynamic.push({
@@ -453,57 +458,69 @@ router.post('/motorItemStage/:id', async function (req, res) {
           'dynamic-options2': req.body['dynamic-options2']
         });
       }
+       
+      for(var j=1; j<1000; j++){
+        if(req.body['misc-'+j]){
+          inputObj.misc.push({name:req.body['misc-'+j]});
+        }
+        else {
+          break;
+        }
+      }
+      
       for(var i=1; i<=ctr; i++){
         var inputObj2 = {
           tagID: req.params.id,
           'voltage': req.body['voltage-'+i],
           'current': req.body['current-'+i],
           'phase': req.body['phase-'+i],
-          'stator': [
+          stator: [
           ], 
-          'rotor': [
+          accessories: [
           ],
-          'accessories': [
+          mechanical: [
           ],
-          'dynamic': [
-          ]
+          dynamic: [
+          ],
+          misc:[]
         }
         //Stator
         if(req.body['stator-inspection-'+i] == 'on'){
           inputObj2.stator.push({name:'stator-inspection-'+i});
         }
-        if(req.body['stator-complete-'+i] == 'on'){
-          inputObj2.stator.push({name:'stator-complete-'+i});
+        if(req.body['stator-complete-'+i] == 'complete-rewinding'){
+          inputObj2.stator.push({name:'stator-complete-rewinding', formal: 'Complete Stator Coil Rewinding Package', list: ['Stator coil Rewinding', 'Surge Comparison Hi-pot Testing', 'Polarization and Resistance Test', 'Varnishing and Baking', 'Cleaning and Painting of Unit']});
         }
-        if(req.body['stator-complete-recon-'+i] == 'on'){
-          inputObj2.stator.push({name:'stator-complete-recon-'+i});
+        else if(req.body['stator-complete-'+i] == 'complete-reconditioning'){
+          inputObj2.stator.push({name:'stator-complete-recon', formal: 'Complete Reconditioning Package', list: ['(Includes all stated above EXCEPT Stator coil Rewinding)']});
         }
+      
         if(req.body['conversion-'+i] == 'on'){
           inputObj2.stator.push({name:'conversion-'+i});
         }
         if(req.body['rotor-loadside-'+i] == 'on'){
-          inputObj2.stator.push({name:'rotor-loadside-'+i});
+          inputObj2.accessories.push({name:'rotor-loadside-'+i});
         }
         if(req.body['rotor-fanslide-'+i] == 'on'){
-          inputObj2.stator.push({name:'rotor-fanslide-'+i});
+          inputObj2.accessories.push({name:'rotor-fanslide-'+i});
         }
         if(req.body['rotor-gearbox1-'+i] == 'on'){
-          inputObj2.rotor.push({name:'rotor-gearbox1-'+i});
+          inputObj2.accessories.push({name:'rotor-gearbox1-'+i});
         }
         if(req.body['rotor-gearbox2-'+i] == 'on'){
-          inputObj2.rotor.push({name:'rotor-gearbox2-'+i});
+          inputObj2.accessories.push({name:'rotor-gearbox2-'+i});
         }
         if(req.body['rotor-gearbox3-'+i] == 'on'){
-          inputObj2.rotor.push({name:'rotor-gearbox3-'+i});
+          inputObj2.accessories.push({name:'rotor-gearbox3-'+i});
         }
         if(req.body['rotor-gearbox4-'+i] == 'on'){
-          inputObj2.rotor.push({name:'rotor-gearbox4-'+i});
+          inputObj2.accessories.push({name:'rotor-gearbox4-'+i});
         }
         if(req.body['rotor-gearbox5-'+i] == 'on'){
-          inputObj2.rotor.push({name:'rotor-gearbox5-'+i});
+          inputObj2.accessories.push({name:'rotor-gearbox5-'+i});
         }
         if(req.body['rotor-gearbox6-'+i] == 'on'){
-          inputObj2.rotor.push({name:'rotor-gearbox6-'+i});
+          inputObj2.accessories.push({name:'rotor-gearbox6-'+i});
         }
         if(req.body['acce-options-capacitor-'+i] == 'on'){
           inputObj2.accessories.push({
@@ -540,44 +557,44 @@ router.post('/motorItemStage/:id', async function (req, res) {
           });
         }
         if(req.body['acce-fancover-'+i] == 'on'){
-          inputObj2.accessories.push({name:'acce-fancover-'+i});
+          inputObj2.mechanical.push({name:'acce-fancover-'+i});
         }
         if(req.body['acce-terminal-'+i] == 'on'){
-          inputObj2.accessories.push({name:'acce-terminal-'+i});
+          inputObj2.mechanical.push({name:'acce-terminal-'+i});
         }
         if(req.body['acce-wielding-'+i] == 'on'){
-          inputObj2.accessories.push({name:'acce-wielding-'+i});
+          inputObj2.mechanical.push({name:'acce-wielding-'+i});
         }
         if(req.body['acce-terminalpost-'+i] == 'on'){
-          inputObj2.accessories.push({name:'acce-terminalpost-'+i});
+          inputObj2.mechanical.push({name:'acce-terminalpost-'+i});
         }
         if(req.body['acce-options-capilla-or-gear-'+i] == 'on'){
-          inputObj2.accessories.push({
+          inputObj2.mechanical.push({
             name:'acce-options-capilla-or-gear-'+i,
             'acce-options-capilla-or-gear1': req.body['acce-options-capilla-or-gear1-'+i],
             'acce-options-capilla-or-gear2': req.body['acce-options-capilla-or-gear2-'+i]
           });
         }
         if(req.body['acce-cable-'+i] == 'on'){
-          inputObj2.accessories.push({name:'acce-cable-'+i});
+          inputObj2.mechanical.push({name:'acce-cable-'+i});
         }
         if(req.body['acce-alignment-'+i] == 'on'){
-          inputObj2.accessories.push({name:'acce-alignment-'+i});
+          inputObj2.mechanical.push({name:'acce-alignment-'+i});
         }
         if(req.body['acce-finge-coupling-'+i] == 'on'){
-          inputObj2.accessories.push({name:'acce-finge-coupling-'+i});
+          inputObj2.mechanical.push({name:'acce-finge-coupling-'+i});
         }
         if(req.body['acce-shafting-'+i] == 'on'){
-          inputObj2.accessories.push({name:'acce-shafting-'+i});
+          inputObj2.mechanical.push({name:'acce-shafting-'+i});
         }
         if(req.body['acce-welding-motor-'+i] == 'on'){
-          inputObj2.accessories.push({name:'acce-welding-motor-'+i});
+          inputObj2.mechanical.push({name:'acce-welding-motor-'+i});
         }
         if(req.body['acce-reboring-housing-'+i] == 'on'){
-          inputObj2.accessories.push({name:'acce-reboring-housing-'+i});
+          inputObj2.mechanical.push({name:'acce-reboring-housing-'+i});
         }
         if(req.body['acce-sleeving-'+i] == 'on'){
-          inputObj2.accessories.push({name:'acce-sleeving-'+i});
+          inputObj2.mechanical.push({name:'acce-sleeving-'+i});
         }
         if(req.body['dynamic-options-'+i] == 'on'){
           inputObj2.dynamic.push({
@@ -585,16 +602,30 @@ router.post('/motorItemStage/:id', async function (req, res) {
             'dynamic-options2': req.body['dynamic-options2-'+i]
           });
         }
+
+        for(var j=1; j<1000; j++){
+          if(req.body['misc-'+i+'-'+j]){
+            inputObj2.misc.push({name:req.body['misc-'+i+'-'+j]});
+          }
+          else {
+            break;
+          }
+        }
+
         inputObj.submotors.push(inputObj2);
       }
-
+      
+      console.log(inputObj.submotors);
       await methods.insertItem(client, 'oncheckup' ,inputObj);
       await methods.updateStatus(client, 'oncheckup', inputObj.tagID)
-      res.send('Data succesfully inserted! Prelim docs with the ID'+ inputObj.tagID);
-    
+     
+      let motorObjOncheckup = await methods.getSingleOnCheckup(client, inputObj.tagID); 
+      res.render('innerpages/prelimdocs', {pdfURL: '../../io/asset/'+inputObj.tagID, motorObjOncheckup: motorObjOncheckup});
+      //res.send('Data succesfully inserted! Prelim docs with the ID'+ inputObj.tagID);
       break; 
     case 'oncheckup': 
       res.sendStatus(200);
+      break;
       //res.send('Prelim docs with the ID'+ inputObj.tagID);
   }
 })

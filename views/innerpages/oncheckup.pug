@@ -95,16 +95,16 @@ html(lang='en')
                       .card
                         #headingOne.card-header
                           h5.mb-0
-                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#statorassembly' aria-expanded='true' aria-controls='statorassembly')
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#statorassembly' aria-expanded='false' aria-controls='statorassembly')
                               | Stator Assembly
-                        #statorassembly.collapse.show(aria-labelledby='headingOne' data-parent='#statorassembly')
+                        #statorassembly.collapse(aria-labelledby='headingOne' data-parent='#statorassembly')
                           .card-body
                             .form-check
                               input#defaultCheck1.form-check-input(type='checkbox' name='stator-inspection')
                               label.form-check-label(for='defaultCheck1')
                                 | Inspection and Checking of unit and Data Recording
                             .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='stator-complete')
+                              input#defaultCheck1.form-check-input(type='radio' name='stator-complete' value='complete-rewinding' checked='checked')
                               label.form-check-label(for='defaultCheck1')
                                 | Complete Stator Coil Rewinding Package (Includes the following:)
                                 ul 
@@ -114,7 +114,7 @@ html(lang='en')
                                   li Varnishing and Baking		
                                   li Cleaning and Painting of Unit	
                             .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox'  name='stator-complete-recon')
+                              input#defaultCheck1.form-check-input(type='radio'  name='stator-complete' value='complete-reconditioning')
                               label.form-check-label(for='defaultCheck1')
                                 | Complete Reconditioning Package (Includes all stated above EXCEPT Stator coil Rewinding)
                             .form-check
@@ -124,9 +124,9 @@ html(lang='en')
                       .card
                         #headingOne.card-header
                           h5.mb-0
-                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#rotorassembly' aria-expanded='true' aria-controls='rotorassembly')
-                              | Rotor Assembly
-                        #rotorassembly.collapse.show(aria-labelledby='headingOne' data-parent='#rotorassembly')
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#rotorassembly' aria-expanded='false' aria-controls='rotorassembly')
+                              | Accessories
+                        #rotorassembly.collapse(aria-labelledby='headingOne' data-parent='#rotorassembly')
                           .card-body
                             .form-check
                               input#defaultCheck1.form-check-input(type='checkbox' name='rotor-loadside')
@@ -160,13 +160,6 @@ html(lang='en')
                               input#defaultCheck1.form-check-input(type='checkbox' name='rotor-gearbox6')
                               label.form-check-label(for='defaultCheck1')
                                 | Replacement  of bearing (Gear Box)
-                      .card
-                        #headingOne.card-header
-                          h5.mb-0
-                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#accessories' aria-expanded='true' aria-controls='accessories')
-                              | Accessories
-                        #accessories.collapse.show(aria-labelledby='headingOne' data-parent='#accessories')
-                          .card-body
                             .form-check.form-inline
                               input#defaultCheck1.form-check-input(type='checkbox' name='acce-options-capacitor')
                               label.form-check-label(for='defaultCheck1')
@@ -178,7 +171,6 @@ html(lang='en')
                                   option(selected='Running') Running
                                   option(value='Starting') Starting
                                   option(value='Both') Both
-
                                 | Capacitor
                             .form-check.form-inline
                               input#defaultCheck1.form-check-input(type='checkbox' name='acce-options-fanblade')
@@ -223,6 +215,13 @@ html(lang='en')
                                 select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-oring-or-packing1')
                                   option(selected='Packing Seal') Packing Seal
                                   option(value='O-ring') O-ring
+                      .card
+                        #headingOne.card-header
+                          h5.mb-0
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#accessories' aria-expanded='false' aria-controls='accessories')
+                              | Mechanical
+                        #accessories.collapse(aria-labelledby='headingOne' data-parent='#accessories')
+                          .card-body
                             .form-check
                               input#defaultCheck1.form-check-input(type='checkbox' name='acce-fancover')
                               label.form-check-label(for='defaultCheck1')
@@ -280,9 +279,9 @@ html(lang='en')
                       .card
                         #headingOne.card-header
                           h5.mb-0
-                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#dynamicbalance' aria-expanded='true' aria-controls='dynamicbalance')
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#dynamicbalance' aria-expanded='false' aria-controls='dynamicbalance')
                               | Dynamic Balanacing of
-                        #dynamicbalance.collapse.show(aria-labelledby='headingOne' data-parent='#dynamicbalance')
+                        #dynamicbalance.collapse(aria-labelledby='headingOne' data-parent='#dynamicbalance')
                           .card-body
                             .form-check.form-inline
                               input#defaultCheck1.form-check-input(type='checkbox' name='dynamic-options')
@@ -292,6 +291,22 @@ html(lang='en')
                                   option(value='Rotor') Rotor
                                   option(value='Roller') Roller
                                   option(value='Impeller') Impeller
+                      .card
+                        #headingOne.card-header
+                          h5.mb-0
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#misc' aria-expanded='false' aria-controls='misc')
+                              | Miscelleneous
+                        #misc.collapse(aria-labelledby='headingOne' data-parent='#misc')
+                          .card-body
+                            .miscinputs
+                            //- input.form-control(type='text' placeholder='Input Miscelleneous here' name='misc') 
+                            .form-inline
+                              button.btn.btn-primary#addmisc(type='button') Add
+                              button.btn.btn-danger#delmisc(type='button') Remove
+                                  
+                                
+                              
+                      
                                   
                             		
                   
@@ -341,6 +356,27 @@ html(lang='en')
             }
       })
       
+      //Add misc
+      - $('#addmisc').on('click', function(){
+          var miscCount =  $('#misc').find('.card-body .miscinputs input').length;
+          $('#misc').find('.card-body .miscinputs').append('<input class="form-control" type="text" placeholder="Input Miscelleneous here" name="misc-' + (miscCount+1) + '">');
+      })
+      - $('#delmisc').on('click', function(){
+          $('#misc').find('.card-body .miscinputs input').last().remove();
+      })
+
+      //Submotor misc
+      - $('#accordionExample').on('click', '.addmisc', function() {
+          var subno = $(this)[0].classList[3].replace(/\D/g,'');
+          var miscCount =  $(this).parent().prev().find('input').length;
+          $(this).parent().prev().append('<input class="form-control" type="text" placeholder="Input Miscelleneous here" name="misc-' + subno + '-'+ (miscCount+1) + '">');
+      });
+      - $('#accordionExample').on('click', '.delmisc', function() {
+          var subno = $(this)[0].classList[3].replace(/\D/g,'');
+          var miscCount =  $(this).parent().prev().find('input').length;
+          $(this).parent().prev().find('input').last().remove();
+      });
+
       //Submotors 
       if(!{JSON.stringify(motorobj.submotors)}.length > 0)
       {
@@ -351,42 +387,10 @@ html(lang='en')
             //- - var submotor = !{JSON.stringify(motorobj.submotors)};
             - $('.accordion').append(oncheckup(ctr, value));
 
-            //- var ctr2 = 0;
-            //- - $.each(value.others, function(index, value){
-            //-   if(checktable[ctr2]['name'] == value['name']){
-            //-     if(value['isChecked']){
-            //-         $('input[name='+ checktable[ctr2]['idname'] +'-'+ctr+']').attr('checked', 'checked');
-            //-     }
-            //-   }
-            //-   ctr2++;
-            //- });
-
-              
-            //- ctr2 = 0;
-            //- - $.each(value.parts, function(index, value){
-            //-   if(checktable2[ctr2]['name'] == value['name']){
-            //-     if(value['isChecked']){
-            //-         $('input[name='+ checktable2[ctr2]['idname'] +'-'+ctr+']').attr('checked', 'checked');
-            //-     }
-            //-   }
-            //-   ctr2++;
-            //- })
-
             //Submotor pane 
             $('.delmotor').remove();
             $('.motorpane').append('<li class="list-group-item d-flex justify-content-between lh-condensed smp-'+ctr+' submotor-'+ctr+'  data-toggle="collapse" data-target="#collapseOne-'+ctr+'" aria-expanded="false" aria-controls="collapseOne-'+ctr+'"><div><h6 class="my-0">Sub Motor '+ctr+'</h6><small class="text-muted">ID: 1234</small></div>'
                                     +'</li>')
-            //- if(ctr == motorSubmotors.length)
-            //- {
-            //-   $('.smp-'+ctr+'.submotor-'+ctr).append(
-            //-     '<span class="text-muted delmotor submotor-'+ctr+'">'
-            //-         + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
-            //-           + '<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>'
-            //-           + '<path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>'
-            //-         + '</svg>'
-            //-     + '</span>'
-            //-   );
-            //- }
             ctr++;
         }); 
       }

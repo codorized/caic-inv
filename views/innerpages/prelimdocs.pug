@@ -47,11 +47,11 @@ html(lang='en')
                 a.dropdown-item(href='#') Separated link
       form(method='post')
         .row.motorinfo
-          .col-md-4.order-md-2.mb-4
+          .col-md-4.order-md-2.mb-4#closepane.show
             h4.d-flex.justify-content-between.align-items-center.mb-3
               span.text-muted Motor Group Pane
-            //-   - var smcount =  motorobj.submotors
-            //-   span.badge.badge-secondary.badge-pill.motorcount #{smcount.length+1}
+              - var smcount =  motorObjOncheckup.submotors
+              span.badge.badge-secondary.badge-pill.motorcount #{smcount.length+1}
             ul.list-group.mb-3.motorpane
               li.list-group-item.d-flex.justify-content-between.lh-condensed(data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne')
                 div
@@ -61,15 +61,17 @@ html(lang='en')
             .input-group.card.p-2
               input.form-control.motorcount2(type='text' name='submotorctr' placeholder='' value='1')
               button.btn.btn-danger(type='submit') Submit
-          .col-md-8.order-md-1
+          .col-md-8.order-md-1.motorcol
             h4.mb-3 Motor Details
             form
               #accordionExample.accordion
                 .card
-                  #headingOne.card-header
+                  #headingOne.card-header.mainmotor
                     h2.mb-0
                       button.btn.btn-link(type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
                         | Main Motor
+                    .closepane
+                      input.btn.btn-primary(type='button' name='closepane' value='Close Pane' data-toggle="collapse" data-target="#closepane" aria-expanded="true" aria-controls="closepane")
                   #collapseOne.collapse.show(aria-labelledby='headingOne' data-parent='#accordionExample')
                     .card-body
                       .row
@@ -88,9 +90,9 @@ html(lang='en')
                       .card
                         #headingOne.card-header
                           h5.mb-0
-                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#statorassembly' aria-expanded='true' aria-controls='statorassembly')
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#statorassembly' aria-expanded='false' aria-controls='statorassembly')
                               | Stator Assembly
-                        #statorassembly.collapse.show(aria-labelledby='headingOne' data-parent='#statorassembly')
+                        #statorassembly.collapse(aria-labelledby='headingOne' data-parent='#statorassembly')
                           .card-body
                             table.table
                              thead
@@ -102,7 +104,16 @@ html(lang='en')
                                 tbody
                                 each scope in motorObjOncheckup.stator
                                     tr 
-                                        th #{scope.name}
+                                        - var name = '';
+                                        if scope.name == 'stator-complete-rewinding'
+                                          - name = 'Complete Reconditioning Package';
+                                        else if scope.name == 'stator-inspection'
+                                          - name = 'Inspection and Checking of unit and Data Recording';
+                                        else if scope.name == 'stator-complete-recon'
+                                          - name = 'Complete Reconditioning Package';
+                                        else if scope.name == 'conversion:'
+                                          - name = 'Conversion of motor any parameter';
+                                        th #{name}
                                         td 
                                             input.form-control(type='text' name='voltage' placeholder='' required='')
                                         td 
@@ -112,45 +123,52 @@ html(lang='en')
                       .card
                         #headingOne.card-header
                           h5.mb-0
-                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#rotorassembly' aria-expanded='true' aria-controls='rotorassembly')
-                              | Rotor Assembly
-                        #rotorassembly.collapse.show(aria-labelledby='headingOne' data-parent='#rotorassembly')
-                          .card-body
-                            table.table
-                             thead
-                                tr
-                                    th(scope='col') Name
-                                    th(scope='col') Qty
-                                    th(scope='col') Unit Cost
-                                    th(scope='col') Total Cost
-                                tbody
-                                each scope in motorObjOncheckup.rotor
-                                    tr 
-                                        th #{scope.name}
-                                        td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
-                                        td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
-                                        td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
-                      .card
-                        #headingOne.card-header
-                          h5.mb-0
-                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#accessories' aria-expanded='true' aria-controls='accessories')
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#rotorassembly' aria-expanded='false' aria-controls='rotorassembly')
                               | Accessories
-                        #accessories.collapse.show(aria-labelledby='headingOne' data-parent='#accessories')
+                        #rotorassembly.collapse(aria-labelledby='headingOne' data-parent='#rotorassembly')
                           .card-body
                             table.table
                              thead
                                 tr
                                     th(scope='col') Name
+                                    th(scope='col') Item
                                     th(scope='col') Qty
                                     th(scope='col') Unit Cost
                                     th(scope='col') Total Cost
                                 tbody
                                 each scope in motorObjOncheckup.accessories
                                     tr 
-                                        th #{scope.name}
+                                        - var name = '';
+                                        if scope.name == 'rotor-loadside'
+                                          - name = 'Replacement  of bearing (Load Side)';
+                                        else if scope.name == 'rotor-fanslide'
+                                          - name = 'Replacement  of bearing (Fan Side)';
+                                        else if scope.name == 'rotor-gearbox1'
+                                          - name = 'Replacement  of bearing (Gear Box)';
+                                        else if scope.name == 'rotor-gearbox2'
+                                          - name = 'Replacement  of bearing (Gear Box)';
+                                        else if scope.name == 'rotor-gearbox3'
+                                          - name = 'Replacement  of bearing (Gear Box)';
+                                        else if scope.name == 'rotor-gearbox4'
+                                          - name = 'Replacement  of bearing (Gear Box)';
+                                        else if scope.name == 'rotor-gearbox5'
+                                          - name = 'Replacement  of bearing (Gear Box)';
+                                        else if scope.name == 'rotor-gearbox6'
+                                          - name = 'Replacement  of bearing (Gear Box)';
+                                        else if scope.name == 'acce-options-capacitor'
+                                          - name = scope['acce-options-capacitor1'] + ' of ' + scope['acce-options-capacitor2'] + ' Capacitor'; 
+                                        else if scope.name == 'acce-options-fanblade'
+                                          - name = scope['acce-options-fanblade1'] + ' of ' + scope['acce-options-fanblade2'] + ' Fan Blade'; 
+                                        else if scope.name == 'acce-options-oilseal'
+                                          - name = scope['acce-options-oilseal1'] + ' of ' + scope['acce-options-oilseal2'] + ' Oil Seal'; 
+                                        else if scope.name == 'acce-options-shaftseal'
+                                          - name = scope['acce-options-shaftseal1'] + ' of ' + scope['acce-options-shaftseal2'] + ' Shaft Seal'; 
+                                        else if scope.name == 'acce-options-oring-or-packing'
+                                          - name = 'Replacement of '+scope['acce-options-oring-or-packing1']; 
+
+                                        th #{name}
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
                                         td 
                                             input.form-control(type='text' name='voltage' placeholder='' required='')
                                         td 
@@ -160,9 +178,59 @@ html(lang='en')
                       .card
                         #headingOne.card-header
                           h5.mb-0
-                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#dynamicbalance' aria-expanded='true' aria-controls='dynamicbalance')
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#accessories' aria-expanded='false' aria-controls='accessories')
+                              | Mechanical
+                        #accessories.collapse(aria-labelledby='headingOne' data-parent='#accessories')
+                          .card-body
+                            table.table
+                             thead
+                                tr
+                                    th(scope='col') Name
+                                    th(scope='col') Qty
+                                    th(scope='col') Unit Cost
+                                    th(scope='col') Total Cost
+                                tbody
+                                each scope in motorObjOncheckup.mechanical
+                                    tr 
+                                        - var name2 = '';
+                                        if scope.name == 'acce-fancover'
+                                          - name2 = 'Fabrication of Fan Cover';
+                                        else if scope.name == 'acce-terminal'
+                                          - name2 = 'Fabrication of Terminal Cover';
+                                        else if scope.name == 'acce-wielding'
+                                          - name2 = 'Welding of Endplate';
+                                        else if scope.name == 'acce-terminalpost'
+                                          - name2 = 'Fabrication of Terminal Post';
+                                        else if scope.name == 'acce-options-capilla-or-gear'
+                                          - name2 = scope['acce-options-capilla-or-gear1']+' of '+scope['acce-options-capilla-or-gear2']
+                                        else if scope.name == 'acce-cable'
+                                          - name2 = 'Fabrication of Adaptor Cable';  
+                                        else if scope.name == 'acce-alignment'
+                                          - name2 = 'Fabrication of Shafting including Alignment'; 
+                                        else if scope.name == 'acce-finge-coupling'
+                                          - name2 = 'Replacement of Flange Coupling including Reboring'; 
+                                        else if scope.name == 'acce-shafting'
+                                          - name2 = 'Build up and Machining of Shafting'; 
+                                        else if scope.name == 'acce-welding-motor'
+                                          - name2 = 'Welding of Motor Base'; 
+                                        else if scope.name == 'acce-reboring-housing'
+                                          - name2 = 'Reboring of Bearing Housing'; 
+                                        else if scope.name == 'acce-sleeving'
+                                          - name2 = 'Sleeving of Bearing Housing'; 
+                                        
+                                        th #{name2}
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                      .card
+                        #headingOne.card-header
+                          h5.mb-0
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#dynamicbalance' aria-expanded='false' aria-controls='dynamicbalance')
                               | Dynamic Balanacing of
-                        #dynamicbalance.collapse.show(aria-labelledby='headingOne' data-parent='#dynamicbalance')
+                        #dynamicbalance.collapse(aria-labelledby='headingOne' data-parent='#dynamicbalance')
                           .card-body
                             table.table
                              thead
@@ -173,6 +241,33 @@ html(lang='en')
                                     th(scope='col') Total Cost
                                 tbody
                                 each scope in motorObjOncheckup.dynamic
+                                    tr 
+                                        - var name3 = '';
+                                        if scope['dynamic-options2']
+                                          - name3 = scope['dynamic-options2'];
+                                        th #{name3}
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                        td 
+                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                      .card
+                        #headingOne.card-header
+                          h5.mb-0
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#misc' aria-expanded='false' aria-controls='misc')
+                              | Miscelleneous
+                        #misc.collapse(aria-labelledby='headingOne' data-parent='#misc')
+                          .card-body
+                            table.table
+                             thead
+                                tr
+                                    th(scope='col') Name
+                                    th(scope='col') Qty
+                                    th(scope='col') Unit Cost
+                                    th(scope='col') Total Cost
+                                tbody
+                                each scope in motorObjOncheckup.misc
                                     tr 
                                         th #{scope.name}
                                         td 
@@ -197,9 +292,6 @@ html(lang='en')
     script(src='../js/stages/prelimdocs.js')
     script(src='https://code.jquery.com/jquery-3.5.1.min.js')
     script. 
-        - $("form").bind('ajax:complete', function() {
-            alert('SUCCESS');
-        });
 
         - $('#qform').on('click', function(){
             
@@ -215,90 +307,38 @@ html(lang='en')
                 }
             })
         })
-    //-    console.log(!{JSON.stringify(pdfURL)});
-    //-   - $("ul.motorpane").delegate(".delmotor", "click", function(e) {
-    //-       var classList = $(this).attr('class').split(/\s+/);
-    //-       $('div.'+classList[2]).remove();
-    //-       $('li.'+classList[2]).remove();
-    //-       var count = $("ul.motorpane li").length;
-    //-       count--;
-    //-       $('li.submotor-'+count).append(
-    //-             '<span class="text-muted delmotor submotor-'+count+'">'
-    //-                 + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
-    //-                   + '<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>'
-    //-                   + '<path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>'
-    //-                 + '</svg>'
-    //-             + '</span></li>'
-    //-       );
-    //-       $('.motorcount').html(count+1);
-    //-       $('.motorcount2').attr('value',count+1);
-    //-     });
+
+        - $("input[name=closepane]").on('click', function(){
+            if($('.motorcol').hasClass('col-md-8'))
+            {
+                $('.motorcol').removeClass('col-md-8');
+                $('.motorcol').addClass('col-md-12');
+            }else 
+            {
+                $('.motorcol').addClass('col-md-8');
+                $('.motorcol').removeClass('col-md-12');
+            }
+        })
+        
     
       
-    //-   var pdfURL = !{JSON.stringify(pdfURL)};
+         if(!{JSON.stringify(motorObjOncheckup.submotors)}.length > 0)
+         {
+            ctr=1;
+            const motorSubmotors = !{JSON.stringify(motorObjOncheckup.submotors)};
+            - $.each(motorSubmotors, function(index, value){
+              var submotor = !{JSON.stringify(motorObjOncheckup.submotors)};
+              - $('.accordion').append(prelimdocs(ctr, submotor[ctr-1]));
 
-      //Download
-    //-   - $('input[name=download]').on('click', function(){
-    //-         var win = window.open(pdfURL, '_blank');
-    //-         if (win) {
-    //-             //Browser has allowed it to be opened
-    //-             win.focus();
-    //-         } else {
-    //-             //Browser has blocked it
-    //-             alert('Please allow popups for this website');
-    //-         }
-    //-   })
-      
-      //Submotors 
-    //-   if(!{JSON.stringify(motorobj.submotors)}.length > 0)
-    //-   {
-    //-     //alert('HEYZZ');
-    //-     ctr=1;
-    //-     const motorSubmotors = !{JSON.stringify(motorobj.submotors)};
-    //-     - $.each(motorSubmotors, function(index, value){
-    //-         //- - var submotor = !{JSON.stringify(motorobj.submotors)};
-    //-         - $('.accordion').append(oncheckup(ctr, value));
+              //Submotor pane 
+              -$('.delmotor').remove();
+              -$('.motorpane').append('<li class="list-group-item d-flex justify-content-between lh-condensed smp-'+ctr+' submotor-'+ctr+'  data-toggle="collapse" data-target="#collapseOne-'+ctr+'" aria-expanded="false" aria-controls="collapseOne-'+ctr+'"><div><h6 class="my-0">Sub Motor '+ctr+'</h6><small class="text-muted">ID: 1234</small></div>'
+                                      +'</li>')
+              ctr++;
+            }); 
+        }
 
-            //- var ctr2 = 0;
-            //- - $.each(value.others, function(index, value){
-            //-   if(checktable[ctr2]['name'] == value['name']){
-            //-     if(value['isChecked']){
-            //-         $('input[name='+ checktable[ctr2]['idname'] +'-'+ctr+']').attr('checked', 'checked');
-            //-     }
-            //-   }
-            //-   ctr2++;
-            //- });
-
-              
-            //- ctr2 = 0;
-            //- - $.each(value.parts, function(index, value){
-            //-   if(checktable2[ctr2]['name'] == value['name']){
-            //-     if(value['isChecked']){
-            //-         $('input[name='+ checktable2[ctr2]['idname'] +'-'+ctr+']').attr('checked', 'checked');
-            //-     }
-            //-   }
-            //-   ctr2++;
-            //- })
-
-            //Submotor pane 
-            $('.delmotor').remove();
-            $('.motorpane').append('<li class="list-group-item d-flex justify-content-between lh-condensed smp-'+ctr+' submotor-'+ctr+'  data-toggle="collapse" data-target="#collapseOne-'+ctr+'" aria-expanded="false" aria-controls="collapseOne-'+ctr+'"><div><h6 class="my-0">Sub Motor '+ctr+'</h6><small class="text-muted">ID: 1234</small></div>'
-                                    +'</li>')
-            //- if(ctr == motorSubmotors.length)
-            //- {
-            //-   $('.smp-'+ctr+'.submotor-'+ctr).append(
-            //-     '<span class="text-muted delmotor submotor-'+ctr+'">'
-            //-         + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
-            //-           + '<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>'
-            //-           + '<path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>'
-            //-         + '</svg>'
-            //-     + '</span>'
-            //-   );
-            //- }
-            ctr++;
-        }); 
-      }
-
+        - alert(window.location.protocol + "//" + window.location.host + "/")
 
       
 
