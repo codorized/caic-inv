@@ -299,7 +299,7 @@ html(lang='en')
                 method: 'POST',
                 url: baseurl+'io/asset/quotation/'+!{JSON.stringify(motorObjOncheckup.tagID)},                        
                 success: function (data) {                        
-                    $('#qformcont').parent().append('<div class="col-md-6 mb-3"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="http://localhost:5000/io/asset/quotation/' + !{JSON.stringify(motorObjOncheckup.tagID)} + '">Click here</a></div></div></div>');
+                    $('#qformcont').parent().append('<div class="col-md-6 mb-3"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="' +baseurl+ 'io/asset/quotation/' + !{JSON.stringify(motorObjOncheckup.tagID)} + '">Click here</a></div></div></div>');
                     //- alert('SUCCES!');
                 },
                 error: function (xhr, text, error) {              
