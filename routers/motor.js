@@ -283,13 +283,13 @@ router.get('/motorItemStage/:tagid',  async (req, res) => {
       },});
       
       pdfURL = 'public/pdfs/'+ req.params.tagid+'.pdf';
-
       methods.createPDF(fs, doc, pdfURL, motorObj);
       res.render('innerpages/oncheckup', {pdfURL: '../../io/asset/'+req.params.tagid, motorobj: motorObj});
       break;
     case 'oncheckup':
       let motorObjOncheckup = await methods.getSingleOnCheckup(client, req.params.tagid); 
-      res.render('innerpages/prelimdocs', {pdfURL: '../../io/asset/'+req.params.tagid, motorObjOncheckup: motorObjOncheckup});
+      let motorrpmpower = await methods.getRpmAndHP(client, req.params.tagid);
+      res.render('innerpages/prelimdocs', {pdfURL: '../../io/asset/'+req.params.tagid, motorObjOncheckup: motorObjOncheckup, motorrpmpower: motorrpmpower});
       break;
   }
 
@@ -326,6 +326,7 @@ router.post('/motorItemStage/:id', async function (req, res) {
         voltage: req.body.voltage,
         current: req.body.current,
         phase: req.body.phase,
+        frequency: req.body.freq,
         stator: [
         ], 
         accessories: [
@@ -474,6 +475,7 @@ router.post('/motorItemStage/:id', async function (req, res) {
           'voltage': req.body['voltage-'+i],
           'current': req.body['current-'+i],
           'phase': req.body['phase-'+i],
+          'frequency': req.body['freq-'+i],
           stator: [
           ], 
           accessories: [
@@ -611,16 +613,15 @@ router.post('/motorItemStage/:id', async function (req, res) {
             break;
           }
         }
-
         inputObj.submotors.push(inputObj2);
       }
       
-      console.log(inputObj.submotors);
+      //console.log(inputObj.submotors);
       await methods.insertItem(client, 'oncheckup' ,inputObj);
       await methods.updateStatus(client, 'oncheckup', inputObj.tagID)
-     
       let motorObjOncheckup = await methods.getSingleOnCheckup(client, inputObj.tagID); 
-      res.render('innerpages/prelimdocs', {pdfURL: '../../io/asset/'+inputObj.tagID, motorObjOncheckup: motorObjOncheckup});
+      let motorrpmpower = await methods.getRpmAndHP(client, inputObj.tagID);
+      res.render('innerpages/prelimdocs', {pdfURL: '../../io/asset/'+inputObj.tagID, motorObjOncheckup: motorObjOncheckup, motorrpmpower: motorrpmpower});
       //res.send('Data succesfully inserted! Prelim docs with the ID'+ inputObj.tagID);
       break; 
     case 'oncheckup': 
@@ -628,6 +629,46 @@ router.post('/motorItemStage/:id', async function (req, res) {
       break;
       //res.send('Prelim docs with the ID'+ inputObj.tagID);
   }
+})
+
+// @route   GET motor/hpTable/:hpval
+// @desc    Get the record for a specific hp
+// @access  Public
+router.get('/hpTable/:hpval', async function (req, res) {
+  res.send(await methods.getHP(client, req.params.hpval));
+})
+
+// @route   GET motor/hpTable/:hpval
+// @desc    Get the record for a specific hp
+// @access  Public
+router.get('/hpTable2/:hpval', async function (req, res) {
+  res.send(await methods.getHP2(client, req.params.hpval));
+})
+
+
+// @route   GET motor/priceList
+// @desc    Get the table
+// @access  Public
+router.get('/priceList', async function (req, res) {
+  res.send(await methods.getItemList(client));
+})
+
+// @route   GET motor/hpTable/itemprice
+// @desc    Get item price single
+// @access  Public
+router.get('/priceList/:itemname', async function (req, res) {
+  res.send(await methods.getSingleItem(client, req.params.itemname));
+})
+
+
+
+
+ 
+// @route   GET motor/tester
+// @desc    Register a motor
+// @access  Public
+router.get('/test/:tagid', async function (req, res) {
+  res.send(await methods.getRpmAndHP(client, req.params.tagid));
 })
 
 

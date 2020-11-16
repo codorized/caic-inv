@@ -59,7 +59,7 @@ html(lang='en')
                   small.text-muted ID: 1234
 
             .input-group.card.p-2
-              input.form-control.motorcount2(type='text' name='submotorctr' placeholder='' value='1')
+              input.form-control.motorcount2(type='text' name='submotorctr' placeholder='')
               button.btn.btn-danger(type='submit') Submit
           .col-md-8.order-md-1.motorcol
             h4.mb-3 Motor Details
@@ -77,7 +77,7 @@ html(lang='en')
                       .row
                         .col-md-6.mb-3  
                           label(for='voltage') Name of Rewinder
-                          input.form-control(type='text' name='voltage' placeholder='' required='')
+                          select.form-control.rewinders(name='rewindername' placeholder='' required='')
                         .col-md-6.mb-3
                           label(for='download') Before Image
                           input.form-control.btn-warning(type='button' name='beforeimage' required='' value='Upload') 
@@ -102,9 +102,11 @@ html(lang='en')
                                     th(scope='col') Unit Cost
                                     th(scope='col') Total Cost
                                 tbody
+                                - counter = 1
                                 each scope in motorObjOncheckup.stator
                                     tr 
                                         - var name = '';
+                                        - test = 'JHJISADJIASJD';
                                         if scope.name == 'stator-complete-rewinding'
                                           - name = 'Complete Reconditioning Package';
                                         else if scope.name == 'stator-inspection'
@@ -115,11 +117,12 @@ html(lang='en')
                                           - name = 'Conversion of motor any parameter';
                                         th #{name}
                                         td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                            input.form-control.qty(type='text' name='stator-qty-'+counter placeholder='' required='' value='1')
                                         td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                            input.form-control.unitcost(type='text' name='stator-unitcost-'+counter placeholder='' required='' disabled value='0')
                                         td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                            input.form-control(type='text' name='stator-totalcost-'+counter placeholder='' required='' disabled value='0')
+                                        - counter++;
                       .card
                         #headingOne.card-header
                           h5.mb-0
@@ -136,6 +139,7 @@ html(lang='en')
                                     th(scope='col') Unit Cost
                                     th(scope='col') Total Cost
                                 tbody
+                                - counter = 1
                                 each scope in motorObjOncheckup.accessories
                                     tr 
                                         - var name = '';
@@ -166,15 +170,20 @@ html(lang='en')
                                         else if scope.name == 'acce-options-oring-or-packing'
                                           - name = 'Replacement of '+scope['acce-options-oring-or-packing1']; 
 
-                                        th #{name}
-                                        td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
-                                        td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
-                                        td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
-                                        td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                        td #{name}
+                                        if(scope.name != 'acce-options-capacitor' && scope.name != 'acce-options-fanblade' && scope.name != 'acce-options-oilseal' && scope.name != 'acce-options-shaftseal'  && scope.name != 'acce-options-oring-or-packing')
+                                          td.acce-parent
+                                              select.form-control.acce.acce(name = 'acce-item-'+counter )
+                                        else 
+                                          td
+                                            input.form-control(type='text' name='acce-item-'+counter placeholder='' required='' )
+                                        td
+                                            input.form-control.qty(type='text' name='acce-qty-'+counter placeholder='' required='' value='1')
+                                        td
+                                            input.form-control.unitcost(type='text' name='acce-unitcost-'+counter placeholder='' required='' value='0')
+                                        td
+                                            input.form-control(type='text' name='acce-totalcost-'+counter placeholder='' required='' disabled value='0')
+                                        - counter++;
                       .card
                         #headingOne.card-header
                           h5.mb-0
@@ -186,12 +195,14 @@ html(lang='en')
                              thead
                                 tr
                                     th(scope='col') Name
+                                    th(scope='col') Item
                                     th(scope='col') Qty
                                     th(scope='col') Unit Cost
                                     th(scope='col') Total Cost
                                 tbody
+                                - counter = 1
                                 each scope in motorObjOncheckup.mechanical
-                                    tr 
+                                    tr(class = scope.name) 
                                         - var name2 = '';
                                         if scope.name == 'acce-fancover'
                                           - name2 = 'Fabrication of Fan Cover';
@@ -218,13 +229,23 @@ html(lang='en')
                                         else if scope.name == 'acce-sleeving'
                                           - name2 = 'Sleeving of Bearing Housing'; 
                                         
-                                        th #{name2}
+                                        td #{name2}
+                                        if(scope.name != 'acce-fancover' && scope.name != 'acce-terminal' && scope.name != 'acce-wielding' && scope.name != 'acce-terminalpost'  && scope.name != 'acce-options-capilla-or-gear' && scope.name != 'acce-cable' && scope.name != 'acce-alignment' && scope.name != 'acce-finge-coupling' && scope.name != 'acce-welding-motor' && scope.name != 'acce-shafting')
+                                          td.acce-parent
+                                              select.form-control(name = 'mech-item-'+counter )
+                                                option Loan Side
+                                                option Fan Side
+                                                option Both Sides
+                                        else 
+                                          td
+                                            input.form-control(type='text' name='mech-item-'+counter placeholder='' required='' )
                                         td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                            input.form-control.qty(type='text' name='mech-qty-'+counter placeholder='' required='' value='1')
                                         td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                            input.form-control.unitcost(type='text' name='mech-unitcost-'+counter placeholder='' required='' value='0')
                                         td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                            input.form-control.totalcost(type='text' name='mech-totalcost-'+counter placeholder='' required='' disabled value='0')
+                                        - counter++
                       .card
                         #headingOne.card-header
                           h5.mb-0
@@ -240,18 +261,20 @@ html(lang='en')
                                     th(scope='col') Unit Cost
                                     th(scope='col') Total Cost
                                 tbody
+                                - counter = 1
                                 each scope in motorObjOncheckup.dynamic
-                                    tr 
+                                    tr(class = scope.name) 
                                         - var name3 = '';
                                         if scope['dynamic-options2']
                                           - name3 = scope['dynamic-options2'];
                                         th #{name3}
                                         td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                            input.form-control.qty(type='text' name='dynamic-qty-'+counter placeholder='' required='' value='1')
                                         td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                            input.form-control.unitcost(type='text' name='dynamic-unitcost-'+counter placeholder='' required='' disabled value='0')
                                         td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                            input.form-control.totalcost(type='text' name='dynamic-totalcost-'+counter placeholder='' required='' disabled value='0')
+                                        - counter++
                       .card
                         #headingOne.card-header
                           h5.mb-0
@@ -267,16 +290,17 @@ html(lang='en')
                                     th(scope='col') Unit Cost
                                     th(scope='col') Total Cost
                                 tbody
+                                - counter = 1
                                 each scope in motorObjOncheckup.misc
                                     tr 
                                         th #{scope.name}
                                         td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                            input.form-control.qty(type='text' name='misc-qty-'+counter placeholder='' required='' value='1')
                                         td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
+                                            input.form-control.unitcost(type='text' name='misc-unitcost-'+counter placeholder='' required='' value='0')
                                         td 
-                                            input.form-control(type='text' name='voltage' placeholder='' required='')
-                                  
+                                            input.form-control(type='text' name='misc-totalcost-'+counter placeholder='' required='' disabled value='0')
+                                        - counter++;
                             		
                   
     footer.my-5.pt-5.text-muted.text-center.text-small
@@ -292,20 +316,290 @@ html(lang='en')
     script(src='../js/stages/prelimdocs.js')
     script(src='https://code.jquery.com/jquery-3.5.1.min.js')
     script. 
-
-        - $('#qform').on('click', function(){
+        
+         $( document ).ready(function() {
+            var motorobject = !{JSON.stringify(motorObjOncheckup)}
+            var motorrpm = !{JSON.stringify(motorrpmpower[0].rpm)}
+            var motorpower = !{JSON.stringify(motorrpmpower[0].power)}
+            var motorpowerval = motorpower.split(' ')[0]
+            var motorpowertype = motorpower.split(' ')[1]
+            var tableurl = null
             var baseurl = window.location.protocol + "//" + window.location.host + "/"
-            $.ajax({
-                method: 'POST',
-                url: baseurl+'io/asset/quotation/'+!{JSON.stringify(motorObjOncheckup.tagID)},                        
-                success: function (data) {                        
-                    $('#qformcont').parent().append('<div class="col-md-6 mb-3"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="' +baseurl+ 'io/asset/quotation/' + !{JSON.stringify(motorObjOncheckup.tagID)} + '">Click here</a></div></div></div>');
-                    //- alert('SUCCES!');
+            var hzspeed = Math.floor((120*motorobject.frequency)/motorrpm);
+            if(hzspeed >= 8) hzspeed = 5
+            else if(hzspeed >= 6 && hzspeed < 8) hzspeed = 4
+            else if(hzspeed < 4) hzspeed = 3
+            else hzspeed = 2
+
+            if(motorpowertype == 'HP') tableurl = baseurl+'motor/hpTable/'+motorpowerval;
+            else if (motorpowertype == 'KW') tableurl = baseurl+'motor/kwTable/'+motorpowerval;
+            
+            if(tableurl)
+            {
+              var hptable = function () {
+                  var tmp = null;
+                  $.ajax({   
+                      async: false, 
+                      method: 'GET',
+                      url: tableurl,                        
+                      success: function (data) {                        
+                          tmp = data;
+                      },
+                      error: function (xhr, text, error) {              
+                          alert('Error: ' + error);
+                      }
+                  })
+                  return tmp;
+              }();
+            }
+          //-GENERAL STUFF
+          //-Qty
+          var numberOnly ='';
+          $('.qty').on('change', function(){
+            
+            if($(this).attr('name').includes('stator'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($(this).val());
+              var unit = parseFloat($('input[name=stator-unitcost-' + numberOnly + ']').val());
+              - $('input[name="stator-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('acce-qty'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($(this).val());
+              var unit = parseFloat($('input[name=acce-unitcost-' + numberOnly + ']').val());
+              - $('input[name="acce-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('mech-qty'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($(this).val());
+              var unit = parseFloat($('input[name=mech-unitcost-' + numberOnly + ']').val());
+              - $('input[name="mech-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('dynamic-qty'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($(this).val());
+              var unit = parseFloat($('input[name=dynamic-unitcost-' + numberOnly + ']').val());
+              - $('input[name="dynamic-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('misc-qty'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($(this).val());
+              var unit = parseFloat($('input[name=misc-unitcost-' + numberOnly + ']').val());
+              - $('input[name="misc-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+          })
+
+          
+          rewinderurl = baseurl+'company/getRewinders/'
+          $.ajax({   
+              async: false, 
+              method: 'GET',
+              url: rewinderurl,                        
+              success: function (data) {    
+               
+                  for(var i=0; i<data.length; i++)
+                  {
+                    -$('.rewinders').append('<option>' + data[0].rewindername + '</option>');
+                  }                
+              },
+              error: function (xhr, text, error) {              
+                  alert('Error: ' + error);
+              }
+          })
+
+          -$('.unitcost').on('change', function(){
+            if($(this).attr('name').includes('stator'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($('input[name=stator-qty-' + numberOnly + ']').val());
+              var unit = parseFloat($('input[name=stator-unitcost-' + numberOnly + ']').val());
+              - $('input[name="stator-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('acce-unitcost'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+             var qty = parseFloat($('input[name=acce-qty-' + numberOnly + ']').val());
+              var unit = parseFloat($('input[name=acce-unitcost-' + numberOnly + ']').val());
+              - $('input[name="acce-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('mech-unitcost'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($('input[name=mech-qty-' + numberOnly + ']').val());
+              var unit = parseFloat($('input[name=mech-unitcost-' + numberOnly + ']').val());
+              - $('input[name="mech-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('dynamic-unitcost'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($('input[name=dynamic-qty-' + numberOnly + ']').val());
+              var unit = parseFloat($('input[name=dynamic-unitcost-' + numberOnly + ']').val());
+              - $('input[name="dynamic-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('misc-unitcost'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($('input[name=misc-qty-' + numberOnly + ']').val());
+              var unit = parseFloat($('input[name=misc-unitcost-' + numberOnly + ']').val());
+              - $('input[name="misc-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+          })
+
+          - $('.acce').on('change', function(){
+            const selectdd = $(this);
+            - $.ajax({   
+                method: 'GET',
+                url: baseurl + 'motor/priceList/'+$(this).val().replace(' ', '_'),                        
+                success: function (data) {    
+
+                  numberOnly = $(selectdd).attr('name').replace(/\D/g,'');   
+                  var qty = parseFloat($('input[name=acce-qty-' + numberOnly + ']').val());
+                  $('input[name=acce-unitcost-' + numberOnly + ']').val(data[0].price);   
+                  var unit = parseFloat($('input[name=acce-unitcost-' + numberOnly + ']').val());         
+                  - $('input[name="acce-totalcost-' + numberOnly+'"]').val(qty*unit)
                 },
                 error: function (xhr, text, error) {              
                     alert('Error: ' + error);
                 }
             })
+
+          })
+
+          //-STATOR ASSEMBLE
+
+          //-Complete Package Option
+          if(motorobject.stator[1].name == 'stator-complete-recon'){
+            - $('input[name="stator-unitcost-2"]').attr('value', (hptable[0]['rpm-'+(hzspeed-1)])/2);
+            - $('input[name="stator-totalcost-2"]').attr('value', (hptable[0]['rpm-'+(hzspeed-1)])/2);
+          } else if(motorobject.stator[1].name == 'stator-complete-rewinding')
+          {
+            - $('input[name="stator-unitcost-2"]').attr('value', (hptable[0]['rpm-'+(hzspeed-1)]));
+            - $('input[name="stator-totalcost-2"]').attr('value', (hptable[0]['rpm-'+(hzspeed-1)]));
+          }
+          
+          //-Conversion of motor any parameter
+          - $('input[name="stator-unitcost-3"]').attr('value', 0.15*(hptable[0]['rpm-'+(hzspeed-1)]));
+          - $('input[name="stator-totalcost-3"]').attr('value', 0.15*(hptable[0]['rpm-'+(hzspeed-1)]));
+
+          //Reboring of Bearing Housing
+          tableurl = null;
+          if(motorpowertype == 'HP') tableurl = baseurl+'motor/hpTable2/'+motorpowerval;
+          else if (motorpowertype == 'KW') tableurl = baseurl+'motor/kwTable2/'+motorpowerval;
+          
+          if(tableurl)
+            {
+              var hptable2 = function () {
+                  var tmp = null;
+                  $.ajax({   
+                      async: false, 
+                      method: 'GET',
+                      url: tableurl,                        
+                      success: function (data) {                        
+                          tmp = data;
+                      },
+                      error: function (xhr, text, error) {              
+                          alert('Error: ' + error);
+                      }
+                  })
+                  return tmp;
+              }();
+            }
+          //- console.log(hptable2);
+
+          if(hptable2)
+          {
+            -$('.acce-shafting').find('.unitcost').attr('value', (hptable2[0]['shafting']));
+            -$('.acce-shafting').find('.totalcost').attr('value', (hptable2[0]['shafting']));
+            //- -$('.acce-shafting').find('.unitcost').attr('disabled', 'disabled');
+            -$('.acce-reboring-housing').find('.unitcost').attr('value', (hptable2[0]['bearinghousing']));
+            -$('.acce-reboring-housing').find('.totalcost').attr('value', (hptable2[0]['bearinghousing']));
+            //- -$('.acce-reboring-housing').find('.unitcost').attr('disabled', 'disabled');
+            -$('.acce-sleeving').find('.unitcost').attr('value', (hptable2[0]['bearinghousing']));
+            -$('.acce-sleeving').find('.totalcost').attr('value', (hptable2[0]['bearinghousing']));
+            //- -$('.acce-sleeving').find('.unitcost').attr('disabled', 'disabled');
+            -$('.dynamic-options').find('.unitcost').attr('value', (hptable2[0]['dynamicbalancing']));
+            -$('.dynamic-options').find('.totalcost').attr('value', (hptable2[0]['dynamicbalancing'])); 
+            //- -$('.dynamic-options').find('.unitcost').attr('disabled', 'disabled');
+          }
+         
+
+          //-ACCESSORIES
+          pricelisturl = baseurl + 'motor/priceList/';
+          -$.ajax({   
+              async: true,
+              method: 'GET',
+              url: pricelisturl,                        
+              success: function (data) {                        
+                  for(var i=0; i<data.length; i++){
+                    - $('.acce').append('<option>' + data[i].bearing + '</option>')
+                  }
+                  //- console.log(data);
+              },
+              error: function (xhr, text, error) {              
+                  alert('Error: ' + error);
+              }
+          }).done(function(data)
+          {
+              var  test = $('.acce option:selected').val();
+              
+              for(var i=0; i<motorobject.accessories.length; i++)
+              {
+                if(motorobject.accessories)
+                {
+                  //- console.log(motorobject.accessories)
+                  if(motorobject.accessories[i].name == 'rotor-loadside' || motorobject.accessories[i].name == 'rotor-fanslide' || motorobject.accessories[i].name == 'rotor-gearbox1' || motorobject.accessories[i].name == 'rotor-gearbox2' || motorobject.accessories[i].name == 'rotor-gearbox3' || motorobject.accessories[i].name == 'rotor-gearbox4' || motorobject.accessories[i].name == 'rotor-gearbox5' || motorobject.accessories[i].name == 'rotor-gearbox6')  
+                  {
+                    //alert('Yes!');
+                    $('input[name="acce-unitcost-' + (i+1) + '"]').val(data[0].price);
+                    $('input[name="acce-totalcost-' + (i+1) + '"]').val(data[0].price);
+                  }
+                 
+                }  
+              }
+          })
+        })
+
+        
+        //-   $.ajax({   
+        //-       async: true,
+        //-       method: 'GET',
+        //-       url: pricelisturl,                        
+        //-       success: function (data) {                        
+        //-           for(var i=0; i<priceList.length; i++){
+        //-             - $('.acce').append('<option>' + priceList[i].bearing + '</option>')
+        //-           }
+        //-       },
+        //-       error: function (xhr, text, error) {              
+        //-           alert('Error: ' + error);
+        //-       }
+        //-   })   
+        //- })
+
+
+        - $("form input").prop("disabled", false);
+        - $('#qform').on('click', function(){
+            $('.generatedlink').remove();
+            var motorobject = !{JSON.stringify(motorObjOncheckup)}
+            var baseurl = window.location.protocol + "//" + window.location.host + "/"
+            $.ajax({
+                method: 'POST',
+                url: baseurl+'io/asset/quotation/'+!{JSON.stringify(motorObjOncheckup.tagID)},    
+                data:  $('form').serialize() + '&' + $.param(motorobject),                    
+                success: function (data) {                        
+                    $('#qformcont').parent().append('<div class="col-md-6 mb-3 generatedlink"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="' +baseurl+ 'io/asset/quotation/' + !{JSON.stringify(motorObjOncheckup.tagID)} + '">Click here</a></div></div></div>');
+                    //- alert('SUCCES!');
+                    
+                },
+                error: function (xhr, text, error) {               
+                    alert('Error: ' + text);
+                }
+            })
+            
         })
 
         - $("input[name=closepane]").on('click', function(){
@@ -320,8 +614,7 @@ html(lang='en')
             }
         })
         
-    
-      
+
          if(!{JSON.stringify(motorObjOncheckup.submotors)}.length > 0)
          {
             ctr=1;
@@ -338,8 +631,8 @@ html(lang='en')
             }); 
         }
 
-       
-
+        
+        
       
 
 

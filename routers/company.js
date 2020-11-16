@@ -45,5 +45,24 @@ router.post('/newCompany',  async (req, res) => {
 });
 
 
+router.get('/newRewinder',  async (req, res) => {
+    res.render('innerpages/newRewinder', {});
+});
+
+router.post('/newRewinder',  async (req, res) => {
+
+    var inputObj = {}
+    inputObj.rewindername = req.body.rewindername;
+    inputObj.currdate = req.body.currdate;
+
+    await methods.insertRewinder(client, inputObj);
+    res.render('innerpages/newRewinder', {});
+});
+
+router.get('/getRewinders',  async (req, res) => {
+    res.send(await methods.getRewinders(client));
+});
+
+
 
 module.exports  = router;

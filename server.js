@@ -18,8 +18,8 @@ const methods = require('./db/methods');
 //Routers
 app.use('/', require('./routers/dashboard'));
 app.use('/motor', require('./routers/motor'));
-app.use('/io', require('./routers/io'));
 app.use('/company', require('./routers/company'));
+app.use('/io', require('./routers/io'));
 //View Engine
 app.set('view engine', 'pug');
 

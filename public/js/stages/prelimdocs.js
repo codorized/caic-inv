@@ -2,7 +2,7 @@
 function stator(ctr, scope)
 {
     var a = '';
-    console.log(scope);
+    // console.log(scope);
     for(var i=0; i<scope.length; i++)
     {
         var name = ''
@@ -94,9 +94,9 @@ function mechanical(ctr, scope)
 
         a  +=  '<tr>'
                 + '<th>' + name + '</th>'
-                + '<td>'
-                + '<input class="form-control" type="text" name="mech-item-' +ctr+ '-'+ (i+1) +'" placeholder="" required="">'
-                + '</td>'
+                // + '<td>'
+                // + '<input class="form-control" type="text" name="mech-item-' +ctr+ '-'+ (i+1) +'" placeholder="" required="">'
+                // + '</td>'
                 + '<td>'
                 + '<input class="form-control" type="text" name="mech-qty-' +ctr+ '-'+ (i+1) +'" placeholder="" required="">'
                 + '</td>'
@@ -147,13 +147,13 @@ function misc(ctr, scope)
         a  +=  '<tr>'
                 + '<th>' + scope[i].name + '</th>'
                 + '<td>'
-                + '<input class="form-control" type="text" name="dynamic-qty-' +ctr+ '-'+ (i+1) +'" placeholder="" required="">'
+                + '<input class="form-control" type="text" name="misc-qty-' +ctr+ '-'+ (i+1) +'" placeholder="" required="">'
                 + '</td>'
                 + '<td>'
-                + '<input class="form-control" type="text" name="dynamic-unitcost-' +ctr+ '-'+ (i+1) +'" placeholder="" required="">'
+                + '<input class="form-control" type="text" name="misc-unitcost-' +ctr+ '-'+ (i+1) +'" placeholder="" required="">'
                 + '</td>'
                 + '<td>'
-                + '<input class="form-control" type="text" name="dynamic-totalcost-' +ctr+ '-'+ (i+1) +'" placeholder="" required="">'
+                + '<input class="form-control" type="text" name="misc-totalcost-' +ctr+ '-'+ (i+1) +'" placeholder="" required="">'
                 + '</td>'
             + '</tr>';
     }
@@ -164,7 +164,7 @@ function misc(ctr, scope)
 
 
 function prelimdocs(ctr, submotor){
-    console.log(submotor);
+    // console.log(submotor);
         
             
     return '<div class="card" submotor-'+ctr+'">'

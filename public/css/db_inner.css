@@ -85,3 +85,12 @@ nav .prev form{
     display: flex;
     justify-content: flex-end;
 }
+
+.acce-parent
+{
+    width: 25%;
+}
+
+.table td, .table th {
+    padding: 6.5px;
+}

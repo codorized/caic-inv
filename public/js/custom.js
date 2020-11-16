@@ -30,6 +30,16 @@ $( "#addCompany" ).click(function() {
     });
 });
 
+$( "#addRewinder" ).click(function() {
+  $.magnificPopup.open({
+      items: {
+        src: getBaseUrl()+'company/newRewinder'
+      },
+      closeOnBgClick: true,
+      type: 'iframe',
+    });
+});
+
 $("tbody.recentItems").delegate("tr", "click", function(e) {
   const tagID = $(this).find('.tagid a')[0].innerHTML;
   console.log(tagID);

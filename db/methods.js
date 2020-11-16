@@ -71,6 +71,57 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
     return await result.toArray();
   }
 
+  const getRpmAndHP = async (client, tagID) => {
+    var result;
+    result = await client.db("caic-sample").collection("motors").find({'tagID': parseInt(tagID)}).project({rpm: 1, power: 1,'_id': 0});
+    if(result){
+      console.log(`Got all the items!`);
+      return await result.toArray();
+    }
+    return null;
+  }
+
+  const getHP = async (client, hpval) => {
+    var result;
+    result = await client.db("caic-sample").collection("price_list_hp").find({hp: parseFloat(hpval)}).project({'_id': 0}).sort({ hp: 1 });
+    if(result){
+      console.log(`Got all the items!`);
+      return await result.toArray();
+    }
+    return null;
+  }
+
+  const getHP2 = async (client, hpval) => {
+    var result;
+    result = await client.db("caic-sample").collection("price_list_hp2").find({hp: parseFloat(hpval)}).project({'_id': 0}).sort({ hp: 1 });
+    if(result){
+      console.log(`Got all the items!`);
+      return await result.toArray();
+    }
+    return null;
+  }
+
+  const getItemList = async (client) => {
+    var result;
+    result = await client.db("caic-sample").collection("item_type").find({}).sort({ bearing: 1 });
+    if(result){
+      console.log(`Got all the items!`);
+      return await result.toArray();
+    }
+    return null;
+  }
+
+  const getSingleItem = async (client, itemname) => {
+    var result;
+    console.log(itemname.replace('_', ' ' ));
+    result = await client.db("caic-sample").collection("item_type").find({bearing: itemname.replace('_', ' ').toUpperCase()}).project({_id: 0});
+    if(result){
+      
+      return await result.toArray();
+    }
+    return null;
+  }
+
   const getSingle = async (client, tagID) => {
     var result;
     result = await client.db("caic-sample").collection("motors").findOne({'tagID': parseInt(tagID)});
@@ -82,6 +133,20 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
       return null;
     }
   }
+
+  const getSingleCompany = async (client, companyname) => {
+    var result;
+    result = await client.db("caic-sample").collection("company").findOne({'compname': companyname});
+    // console.log(await result);
+    if(result){
+      return await result;
+    }
+    else {
+      return null;
+    }
+  }
+
+ 
 
   const getSingleOnCheckup = async (client, tagID) => {
     var result;
@@ -1119,6 +1184,10 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
     const result = await client.db("caic-sample").collection("company").insertOne(newListing);
     console.log(`New item created with the following id: ${result.insertedId}`);
   }
+  const insertRewinder = async (client, newListing) => {
+    const result = await client.db("caic-sample").collection("rewinder").insertOne(newListing);
+    console.log(`New item created with the following id: ${result.insertedId}`);
+  }
 
  const getCompanies = async (client) => {
   const result2 = await client.db("caic-sample").collection("company").aggregate([
@@ -1128,6 +1197,11 @@ const printCheapestSuburbs = async (client, country, market, maxNumberToPrint) =
       }
     }
   ]);
+  return await result2.toArray();
+ }
+
+ const getRewinders = async (client) => {
+  const result2 = await client.db("caic-sample").collection("rewinder").find({}, { projection:({ _id: 0 })});
   return await result2.toArray();
  }
 
@@ -1169,7 +1243,11 @@ exports.monitorListingsUsingHasNext = monitorListingsUsingHasNext;
 exports.printCheapestSuburbs = printCheapestSuburbs;
 exports.insertItem = insertItem;
 exports.getItems = getItems;
+exports.getRpmAndHP = getRpmAndHP;
+exports.getHP = getHP;
+exports.getHP2 = getHP2;
 exports.getSingle =  getSingle;
+exports.getSingleCompany = getSingleCompany;
 exports.getStats = getStats;
 exports.getUrgents = getUrgents;
 exports.getClients = getClients;
@@ -1182,9 +1260,13 @@ exports.getMaxTagID = getMaxTagID;
 exports.getStatusStats = getStatusStats;
 exports.sleep = sleep;
 exports.insertCompany = insertCompany;
+exports.insertRewinder = insertRewinder;
 exports.getCompanies = getCompanies;
+exports.getRewinders = getRewinders;
 exports.createPDF = createPDF;
 exports.getCurrentStatus = getCurrentStatus;
 exports.getSubmotorCount = getSubmotorCount;
 exports.updateStatus = updateStatus;
 exports.getSingleOnCheckup = getSingleOnCheckup;
+exports.getItemList = getItemList;
+exports.getSingleItem = getSingleItem;
