@@ -881,19 +881,19 @@ html(lang='en')
 
           
           //MOD: STATOR - Fillout Stator details
-          if(draft)
-          {
-            -$('input[name*="stator-qty"]').each(function(i) {
-              var grandparent = $(this).parent().parent()
-              $(this).val(draft[0].stator[i].qty)
-              var currqty = parseInt(draft[0].stator[i].qty)
+          //- if(draft)
+          //- {
+          //-   -$('input[name*="stator-qty"]').each(function(i) {
+          //-     var grandparent = $(this).parent().parent()
+          //-     $(this).val(draft[0].stator[i].qty)
+          //-     var currqty = parseInt(draft[0].stator[i].qty)
               
-              //- grandparent.find('.unitcost').val(draft[0].stator[i].unitcost)
-              var currunitcost = parseFloat(grandparent.find('.unitcost').val())
+          //-     //- grandparent.find('.unitcost').val(draft[0].stator[i].unitcost)
+          //-     var currunitcost = parseFloat(grandparent.find('.unitcost').val())
               
-              grandparent.find('.totalcost').val(currunitcost*currqty)
-            })
-          }
+          //-     grandparent.find('.totalcost').val(currunitcost*currqty)
+          //-   })
+          //- }
 
           //Reboring of Bearing Housing
           tableurl = null;
