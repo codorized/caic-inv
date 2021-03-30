@@ -1,7 +1,7 @@
 doctype html
 html(lang='en')
   head
-    meta(charset='utf-8')
+    meta(charset='utf-8') 
     meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
     meta(name='description' content='')
     meta(name='author' content='Mark Otto, Jacob Thornton, and Bootstrap contributors')
@@ -40,11 +40,17 @@ html(lang='en')
               button.btn.btn-warning.dropdown-toggle.dropdown-toggle-split(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
                 span.sr-only Toggle Dropdown
               .dropdown-menu.dropdown-menu-right
+                a.dropdown-item(href='#') Not Started
                 a.dropdown-item(href='#') On Checkup
-                a.dropdown-item(href='#') Another action
-                a.dropdown-item(href='#') Something else here
-                .dropdown-divider
-                a.dropdown-item(href='#') Separated link
+                a.dropdown-item(href='#') PrelimDocs
+                a.dropdown-item(href='#') On Rewind
+                a.dropdown-item(href='#') On Fabrication
+                a.dropdown-item(href='#') In Baking
+                a.dropdown-item(href='#') Assembly and Testing
+                a.dropdown-item(href='#') Painting
+                a.dropdown-item(href='#') For Delivery
+                a.dropdown-item(href='#') For Billing Statement
+                
       form(method='post')
         .row.motorinfo
           .col-md-4.order-md-2.mb-4
@@ -323,42 +329,6 @@ html(lang='en')
         $('.pmcontent').append('<div class="col-md-6 pmexist"><label > Available PM</label><select class="form-control " name="pmcode"><option>'+!{JSON.stringify(motorobj.pmID)}+'</option></select></div></div>');
       }
 
-      //Submotors 
-      if(!{JSON.stringify(motorobj.submotors)}.length > 0)
-      {
-        //alert('HEYZZ');
-        ctr=1;
-        - $.each(!{JSON.stringify(motorobj.submotors)}, function(){
-            - $('.accordion').append(motorform(ctr, !{JSON.stringify(motorobj.tagID)}));
-
-            - $("#salesRep option").each(function(){
-        
-              if ($(this).text() == '#{motorobj.salesRep}-'+ctr)
-                  $(this).attr("selected","selected");
-              });
-
-              - $("select[name='company'] option").each(function(){
-                if ($(this).text() == '#{motorobj.company}')
-                  $(this).attr("selected","selected");
-              });
-
-              - $("select[name='motortype'] option").each(function(){
-                if ($(this).text() == '#{motorobj.motorType}')
-                  $(this).attr("selected","selected");
-              });
-
-              var powerlist = '#{motorobj.power}'.split(' ');
-              - $("input[name='powerrb']").each(function(){
-                if(powerlist[1] == $(this).val().toUpperCase()){
-                  
-                  $(this).attr('checked', 'checked');
-                }
-              });
-
-            ctr++;
-            
-        }); 
-      }
       
 
 

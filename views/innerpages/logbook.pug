@@ -1,0 +1,117 @@
+doctype html
+html(lang='en')
+  include ../components/header.pug
+  body#bodyStyle
+    .container-fluid
+      .row
+        main.col 
+          .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+            h1.h2 Logbook
+            .btn-toolbar.mb-2.mb-md-0
+          .table-responsive
+            table.table.table-striped.table-sm
+              thead.thead-dark
+                tr         
+                  th Log ID          
+                  th User
+                  th Activity
+                  th Timestamp
+              tbody#newItem.loglist
+                each item in items[0].docs
+                  tr.logRows
+                    td.logid.id #{item._id} 
+                    td.user #{item.fullName}
+                    td.activity Operation Type: #{item.message}
+                    - var today = new Date(item.timestamp);
+                    - var dd = String(today.getDate()).padStart(2, '0');
+                    - var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                    - var yyyy = today.getFullYear();
+                    - var date = yyyy + '-' + mm + '-' + dd;
+
+                    td.timestamp #{date}
+          if items[0].docs.length > 0 && items[0].count[0].count > 10
+            nav.paginationnav(aria-label='Page navigation example')
+              ul.pagination.justify-content-center
+                -var no = (items[0].count[0].count)/10
+                -var no2 = Math.ceil(no)
+                -var n = 1
+                while n <= no2
+                  li.page-item
+                    button.page-link #{n++}
+              p 
+                if items[0].count.length > 0
+                  i#totalcount #{items[0].count[0].count} items total
+                else 
+                  i#totalcount 0 item total
+                    
+
+  include ../components/footer.pug
+  script.
+    var baseurl = window.location.protocol + "//" + window.location.host + "/"
+    const items = !{JSON.stringify(items)};
+     
+    $('.pagination').on('click', '.page-link',  function(){
+        var baseurl = window.location.protocol + "//" + window.location.host + "/";
+        var paginateNum = parseInt($(this).html())
+
+        var ajaxurl = baseurl+'logbook/page/'+paginateNum
+        $.ajax({   
+            async: true, 
+            method: 'GET',           
+            url: ajaxurl,        
+            success: function (rawdata) {
+               
+                $('.loglist').empty()
+                var myTable = document.getElementById('newItem');
+                var skipNo = 0
+                var data
+
+                if(rawdata[0].docs.length > 0)
+                    data = rawdata[0].docs   
+                else 
+                    data = []
+
+                if(rawdata[0].count.length > 0)
+                    $('#totalcount').html(rawdata[0].count[0].count + ' items total')
+                else 
+                    $('#totalcount').html('0 items total')
+
+                
+                
+                if(data.length > 0)
+                {
+                   
+
+                    for(var i=data.length-1; i >= 0; i--)
+                    {
+                        var row = myTable.insertRow(0);
+                        row.className += 'motorRows'
+                        var c0 = row.insertCell(0);
+                        var c1 = row.insertCell(1);
+                        var c2 = row.insertCell(2);
+                        var c3 = row.insertCell(3);
+                        
+                        c0.innerHTML = data[i]._id
+                        c1.innerHTML = data[i].fullName
+                        c2.innerHTML = data[i].message
+                        
+
+                        var today = new Date(data[i].timestamp);
+                        var dd = String(today.getDate()).padStart(2, '0');
+                        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                        var yyyy = today.getFullYear();
+                        date = yyyy + '-' + mm + '-' + dd;
+                        c3.innerHTML = date
+                    }
+                }
+                else if(data.length <= skipNo || data.length <= 0)
+                    $('.paginationnav').hide();
+            },
+            error: function (xhr, text, error) {              
+                alert('Error: ' + error);
+            }
+        
+        })
+    })
+      
+     

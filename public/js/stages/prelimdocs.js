@@ -1,4 +1,6 @@
 
+
+
 function stator(ctr, scope)
 {
     var a = '';

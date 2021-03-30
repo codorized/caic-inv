@@ -1,0 +1,388 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description' content='')
+    meta(name='author' content='Mark Otto, Jacob Thornton, and Bootstrap contributors')
+    meta(name='generator' content='Jekyll v4.1.1')
+    title Checkout example · Bootstrap
+    link(rel='canonical' href='https://getbootstrap.com/docs/4.5/examples/checkout/')
+    // Bootstrap core CSS
+    link(href='https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2' crossorigin='anonymous')
+    style.
+      .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      }
+      @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+      }
+      }
+    // Custom styles for this template
+    link(href='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.css' rel='stylesheet')
+    link(href='../../css/db_inner.css' rel='stylesheet')
+  body.bg-light
+    .container.page.newMotor
+      include ../components/mod_navbar.pug
+      include ../components/mod_navstages.pug
+      if isAllowed
+        form(method='post')
+          include ../components/buttons.pug
+          .row.motorinfo
+            .col-md-4.order-md-2.mb-4
+              h4.d-flex.justify-content-between.align-items-center.mb-3
+                span.text-muted Motor Group Pane
+                span.badge.badge-secondary.badge-pill.motorcount 1
+              ul.list-group.mb-3.motorpane
+                  li.list-group-item.d-flex.justify-content-between.lh-condensed(data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne')
+                    div
+                      if oncheckup != null
+                        h6.my-0 #{motordetails.notstarted[0].motorType} - #{oncheckup.power}
+                        small.text-muted Motor/TAG ID: #{motordetails.notstarted[0].tagID}
+                      else 
+                        h6.my-0 #{motordetails.notstarted[0].motorType}
+                        small.text-muted Motor/TAG ID: #{motordetails.notstarted[0].tagID}
+            .col-md-8.order-md-1
+              h4.mb-3 Motor Details
+              form
+                .card.card-body
+                  .row
+                    .col-md-6.mb-3
+                        label Gatepass
+                        input.form-control(type='text' name='gatepass' placeholder='' value='')
+                    .col
+                      .form-check.submotor
+                        input#autoSizingCheck.form-check-input(type='checkbox', name='isSubmotor' value='submotor')
+                        label.form-check-label.submotor-label(for='autoSizingCheck')
+                          | Is this a submotor?
+                  .form-check.pmcontent.row
+                    .radio.col-md-6.mb-3
+                      label
+                        input.pmcheck(type='radio' name='optradio' value='pmnew')
+                        |  New PM
+                    .radio.col-md-6.mb-3
+                      label
+                        input.pmcheck(type='radio' name='optradio' value='pmexist')
+                        |  Existing PM
+                #accordionExample.accordion
+                  .card
+                    #headingOne.card-header
+                      h2.mb-0
+                        button.btn.btn-link(type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
+                          | Main Motor
+                    #collapseOne.collapse.show(aria-labelledby='headingOne' data-parent='#accordionExample')
+                      .card-body
+                        .row
+                          .col-md-6.mb-3
+                            label(for='firstName') Data Pulled Out
+                            input.form-control.currdate(type='text' name='datePulledOut' placeholder='' value='' required='' readonly='')
+                          .col-md-6.mb-3
+                            label(for='lastName') Motor ID 
+                            input.form-control#maxID(type='text' name='tagID' placeholder='' value='' required='' readonly)
+                            .invalid-feedback
+                              | Valid last name is required.
+                          .col-md-6.mb-3
+                            label(for='firstName') Sales Representative
+                            select.form-control(name='salesRep' required='')
+                            
+                            .invalid-feedback
+                              | Valid first name is required.
+                        .row
+                          .mb-3.col-md-6
+                            label(for='username') Company
+                            select.form-control(name='company' required='')
+                          .mb-3.col-md-6
+                            label(for='username') Motor Type Brand
+                            input.form-control(type='text' name='motorType')
+                        label(for='firstName') Others:
+                        .row.col.mb-3
+                          .col.custom-control.custom-checkbox
+                            input#motor-assy.custom-control-input(type='checkbox' name='motor-assy')
+                            label.custom-control-label(for='motor-assy') Motor Assy
+                          .col.custom-control.custom-checkbox
+                            input#ac-assy.custom-control-input(type='checkbox' name='ac-assy')
+                            label.custom-control-label(for='ac-assy') A/C ASSY
+                          .col.custom-control.custom-checkbox
+                            input#fabrication.custom-control-input(type='checkbox' name='fabrication')
+                            label.custom-control-label(for='fabrication') Fabrication
+                          .col.custom-control.custom-checkbox
+                            input#machining.custom-control-input(type='checkbox' name='machining')
+                            label.custom-control-label(for='machining') Machining
+                        label(for='firstName') Parts Checklist/Inspection Remarks: 
+                        .row.col.mb-3
+                          .col.custom-control.custom-checkbox
+                            input#fan-cover.custom-control-input(type='checkbox' name='fan-cover')
+                            label.custom-control-label(for='fan-cover') Fan Cover
+                          .col.custom-control.custom-checkbox
+                            input#stator.custom-control-input(type='checkbox' name='stator')
+                            label.custom-control-label(for='stator') Stator
+                          .col.custom-control.custom-checkbox
+                            input#keystock.custom-control-input(type='checkbox' name='keystock')
+                            label.custom-control-label(for='keystock') Keystock (CUÑA)
+                        .row.col.mb-3
+                          .col.custom-control.custom-checkbox
+                            input#fan-blade.custom-control-input(type='checkbox' name='fan-blade')
+                            label.custom-control-label(for='fan-blade') Fan Blade
+                          .col.custom-control.custom-checkbox
+                            input#rotor.custom-control-input(type='checkbox' name='rotor')
+                            label.custom-control-label(for='rotor') Rotor
+                          .col.custom-control.custom-checkbox
+                            input#centrifugal.custom-control-input(type='checkbox' name='centrifugal')
+                            label.custom-control-label(for='centrifugal') Centrifugal Switch
+                        .row.col.mb-3
+                          .col.custom-control.custom-checkbox
+                            input#terminal-box.custom-control-input(type='checkbox' name='terminal-box')
+                            label.custom-control-label(for='terminal-box') Terminal Box
+                          .col.custom-control.custom-checkbox
+                            input#pulley.custom-control-input(type='checkbox' name='pulley')
+                            label.custom-control-label(for='pulley') Pulley
+                          .col.custom-control.custom-checkbox
+                            input#governor-switch.custom-control-input(type='checkbox' name='governor-switch')
+                            label.custom-control-label(for='governor-switch') Governor Switch
+                        .row.col.mb-3
+                          .col.custom-control.custom-checkbox
+                            input#terminal.custom-control-input(type='checkbox' name='terminal')
+                            label.custom-control-label(for='terminal') Terminal Cover
+                          .col.custom-control.custom-checkbox
+                            input#carbon.custom-control-input(type='checkbox' name='carbon')
+                            label.custom-control-label(for='carbon') Carbon Brush
+                          .col.custom-control.custom-checkbox
+                            input#capacitor.custom-control-input(type='checkbox' name='capacitor')
+                            label.custom-control-label(for='capacitor') Capacitor
+                        .row.col.mb-3
+                          .col.custom-control.custom-checkbox
+                            input#terminal-block.custom-control-input(type='checkbox' name='terminal-block')
+                            label.custom-control-label(for='terminal-block') Terminal Block
+                          .col.custom-control.custom-checkbox
+                            input#carbon-holder.custom-control-input(type='checkbox' name='carbon-holder')
+                            label.custom-control-label(for='carbon-holder') Carbon Holder
+                          .col.custom-control.custom-checkbox
+                            input#impeller.custom-control-input(type='checkbox' name='impeller')
+                            label.custom-control-label(for='impeller') Impeller
+                        .row.col.mb-3
+                          .col-md-4.custom-control.custom-checkbox
+                            input#bolts-and-nuts.custom-control-input(type='checkbox' name='bolts-and-nuts')
+                            label.custom-control-label(for='bolts-and-nuts') Bolts & Nuts
+                          .col-md-4.custom-control.custom-checkbox
+                            input#coupling.custom-control-input(type='checkbox' name='coupling')
+                            label.custom-control-label(for='coupling') Coupling
+                        .form-group
+                          label(for='exampleFormControlTextarea1') Remarks
+                          textarea#remarks.form-control(rows='3' name='remarks')
+      else 
+        body.text-center
+          main.form-signin
+              .alert(role='alert' class="alert-danger")
+                  h5 Restricted
+                  p You are not allowed to access this.
+
+    footer.my-5.pt-5.text-muted.text-center.text-small
+      p.mb-1 © 2020 Calamba Allied Industrial Corp.
+      ul.list-inline
+        li.list-inline-item
+          a(href='#') Web App by Lan Cortez
+    script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js' integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj' crossorigin='anonymous')
+    script.
+      window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\\/script>')
+    script(src='https://getbootstrap.com/docs/4.5/dist/js/bootstrap.bundle.min.js' integrity='sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx' crossorigin='anonymous')
+    script(src='https://code.jquery.com/jquery-3.5.1.min.js')
+    script(src='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.js')
+    script(src='../../js/newMotor.js')
+    script. 
+        - $(document).ready(function() {
+            const tagID = !{JSON.stringify(tagID)};
+            const motorobj = !{JSON.stringify(motorobj)};
+            var baseurl = window.location.protocol + "//" + window.location.host + "/";
+            const company = !{JSON.stringify(company)};
+            console.log(company)
+
+            //Fillout all text fields
+             $('input[type="text"]').each(function( index ) {
+                var name = $(this).prop('name')
+                //- if(name == 'power'){
+                //-   $(this).val(motorobj[name].split(' ')[0]);
+                //-   if(motorobj[name].split(' ')[1] == 'HP') $('input[value="hp"]').prop('checked', true)
+                //-   else $('input[value="kw"]').prop('checked', true)
+                //- }
+                //- else
+                  $(this).val(motorobj[name]);
+             });
+            
+            //Fillout text area
+            $('textarea').val(motorobj['remarks'])
+           
+
+            //Get salesRep
+            $.ajax({   
+                async: false,  
+                method: 'GET',
+                url: baseurl+'motor/list/users/name',                        
+                success: function (data) {   
+                    for(var i=0; i<data.length; i++)  
+                      if(motorobj.salesRep == data[i]._id)                     
+                        $('select[name="salesRep"]').append('<option selected>'+data[i]._id+'</option>')
+                      else 
+                        $('select[name="salesRep"]').append('<option>'+data[i]._id+'</option>')
+                },
+                error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                }
+            })
+
+            //Get company
+            $.ajax({   
+                async: false,  
+                method: 'GET',
+                url: baseurl+'motor/list/company/compname',                        
+                success: function (data) {   
+                    console.log(data)
+                    for(var i=0; i<data.length; i++)  
+                    {
+                      if(company && company.compname == data[i]._id)            
+                        $('select[name="company"]').append('<option selected>'+data[i]._id+'</option>')
+                      else if(motorobj.company == data[i]._id)   
+                        $('select[name="company"]').append('<option selected>'+data[i]._id+'</option>')
+                      else 
+                        $('select[name="company"]').append('<option>'+data[i]._id+'</option>')
+                    }
+                },
+                error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                }
+            })
+
+            
+            //Get PMS
+            if(motorobj.pmID)
+            {
+              $('input[value="pmexist"]').prop('checked', true)
+              $('.pmcontent').append('<div class="col-md-6 loading pmexist"></div>');
+              $('.loading').append(' <div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>');
+              $.ajax({   
+                  async: false,  
+                  method: 'GET',
+                  url: baseurl+'motor/list/motors/pmID',                        
+                  success: function (data) {   
+                      $('.loading').empty();
+                      $('.pmexist').append('<label>Available PM</label><select class="form-control " name="pmcode"></select></div>');
+                      for(var i=0; i<data.length; i++)
+                      {
+                        if(data[i]._id == motorobj.pmID)
+                          $('select[name="pmcode"]').append('<option selected>'+data[i]._id+'</option>');
+                        else
+                          $('select[name="pmcode"]').append('<option>'+data[i]._id+'</option>');
+                      }
+                  },
+                  error: function (xhr, text, error) {              
+                      alert('Error: ' + error);
+                  }
+              })
+              $('.pmnew').remove();
+            }
+            
+
+            //Checkboxes
+            var others_compat = {
+              'Motor Assy': 'motor-assy',
+              'AC ASSY': 'ac-assy',
+              'Fabrication': 'fabrication',
+              'Machining': 'machining'
+            }
+
+            for(var i=0; i<motorobj.others.length; i++)
+              if(motorobj.others[i].isChecked == 'on')
+                $('input[name="'+others_compat[motorobj.others[i].name]+'"]').prop('checked', true)
+
+            var parts_compat = {
+              'Fan Cover': 'fan-cover',
+              'Stator': 'stator',
+              'Keystock (CUÑA)': 'keystock',
+              'Fan Blade': 'fan-blade',
+              'Rotor': 'rotor',
+              'Centrifugal': 'centrifugal',
+              'Terminal Box': 'terminal-box',
+              'Pulley': 'pulley',
+              'Governor-Switch': 'governor-switch',
+              'Terminal': 'terminal',
+              'Carbon': 'carbon',
+              'Capacitor': 'capacitor',
+              'Terminal Block': 'terminal-block',
+              'Carbon Holder': 'carbon-holder',
+              'Impeller': 'impeller',
+              'Bolts and Nuts': 'bolts-and-nuts',
+              'Coupling': 'coupling'
+            }
+
+            for(var i=0; i<motorobj.parts.length; i++)
+              if(motorobj.parts[i].isChecked == 'on')
+                $('input[name="'+parts_compat[motorobj.parts[i].name]+'"]').prop('checked', true)
+
+            //DELETE
+            $('#delete').on('click', function(){
+              var answer = window.confirm("Are you sure you want to delete this data? Note: It will delete all its succeeding stages but the preceeding will be retained");
+                if (answer) {
+                    $.ajax({   
+                        async: false,  
+                        method: 'POST',
+                        url: baseurl+'motor/delete/notstarted/'+tagID,                        
+                        success: function (data) {   
+                           alert('Successfully deleted: '+ data.stage + ' and all succeeding stages (if there are any)')
+                          var stages = ['notstarted','oncheckup','prelimdocs','onrewind', 'onfabrication', 'inbaking', 'assemblyandtesting', 'painting', 'fordelivery', 'forbillingstatement', 'foror', 'completed'];
+                          if(data.stage != 'notstarted')
+                            window.location.replace(baseurl+'motor/motorItem/'+(stages[indexOf(data.stage)-1])+'/'+data.tagID);
+                          else 
+                            window.location.replace(baseurl);
+                        },
+                        error: function (xhr, text, error) {              
+                            alert('Error: ' + error);
+                        }
+                    })
+                }
+                else {
+                    //some code
+              }
+            })
+
+            $('input[name="isSubmotor"]').on('change', function(){
+             if($(this).prop('checked') == true)
+             {
+                $.ajax({   
+                  async: true, 
+                  method: 'GET',
+                  url: baseurl+'motor/tagID/all',                          
+                  success: function (data) {  
+
+                      if(data.length > 0)
+                      {
+                        $('.submotor').append('<select class="form-control mt-2" name="submotorTagID"></select>')
+                        $('.submotor-label').html('Please indicate the mother motor')
+                        for(var i=0; i<data.length; i++)
+                        {
+                            $('select[name="submotorTagID"]').append('<option>'+data[i]._id+'</option>')
+                        }
+                      }else 
+                      {
+                        $('.submotor').append('<p class="form-control mt-2" id="noMotherMotor">No mother motors. Please create one.</p>')
+                      }
+                      
+                     
+                  },
+                  error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                  }
+                })
+             }
+             else 
+             {  
+               $('.submotor-label').html('Is this a submotor?')
+                $('select[name="submotorTagID"]').remove()
+                $('#noMotherMotor').remove()
+             }
+          })
+        })

@@ -1,0 +1,248 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description' content='')
+    meta(name='author' content='Mark Otto, Jacob Thornton, and Bootstrap contributors')
+    meta(name='generator' content='Jekyll v4.1.1')
+    title Checkout example · Bootstrap
+    link(rel='canonical' href='https://getbootstrap.com/docs/4.5/examples/checkout/')
+    // Bootstrap core CSS
+    link(href='https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2' crossorigin='anonymous')
+    style.
+      .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      }
+      @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+      }
+      }
+    // Custom styles for this template
+    link(href='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.css' rel='stylesheet')
+    link(href='../../css/db_inner.css' rel='stylesheet')
+    link(href='../../css/magnific-popup.css' rel='stylesheet')
+    
+  body.bg-light
+    .container.prelimdocs
+      include ../components/mod_navbar.pug
+      include ../components/mod_navstages.pug
+      if isAllowed 
+        if isSubmotor == false 
+          form(method='post', enctype="multipart/form-data")
+            include ../components/buttons.pug
+            .row.motorinfo
+              .col-md-4.order-md-2.mb-4#closepane.show
+                h4.d-flex.justify-content-between.align-items-center.mb-3
+                  span.text-muted Motor Group Pane
+                  //- var smcount =  motorObjOncheckup.submotors
+                  //span.badge.badge-secondary.badge-pill.motorcount #{smcount.length+1}
+                ul.list-group.mb-3.motorpane
+                  li.list-group-item.d-flex.justify-content-between.lh-condensed(data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne')
+                    div
+                      h6.my-0 #{motordetails.notstarted[0].motorType} - #{oncheckup.power}
+                      small.text-muted Motor/TAG ID: #{motordetails.notstarted[0].tagID}
+                .card.mb-3
+                    .card-header
+                        h6 Downloads
+                    ul.list-group.list-group-flush 
+                        - var id = tagID
+                        if parent != null
+                          - id = parent
+                        if typeof prelimdocs.qNo == 'object'
+                          - var scopes = ['stator', 'accessories', 'mechanical', 'dynamic', 'misc']
+                          - var i = 0
+                          each val in prelimdocs.qNo
+                            li.list-group-item 
+                              a(href=url+"/io/downloadPDF/prelimdocs/subqform/"+tagID+"/"+tagID+"-"+scopes[i]+".pdf") Quotation: #{val}
+                              - i++
+                        else if typeof prelimdocs.qNo == 'string'
+                          li.list-group-item 
+                              a(href=url+"/io/downloadPDF/prelimdocs/qform/"+tagID+"/"+tagID+".pdf") Quotation: #{prelimdocs.qNo}
+                        li.list-group-item 
+                          a(href=url+"/io/downloadUploaded/assemblyandtesting/"+tagID+"/uploaded-mtr-"+tagID+".jpg") Scanned MTR
+                        li.list-group-item 
+                          a(href=url+"/io/downloadPDF/assemblyandtesting/mtr/"+tagID+"/mtr-"+tagID+".pdf") MTR PDF
+                        li.list-group-item 
+                          a(href=url+"/io/downloadUploaded/fordelivery/"+tagID+"/po-"+id+".jpg") Uploaded PO
+                        li.list-group-item 
+                          a(href=url+"/io/downloadUploaded/fordelivery/"+tagID+"/dr-"+id+".jpg") Uploaded DR
+                        li.list-group-item 
+                          a(href=url+"/io/downloadPDF/fordelivery/dr/"+tagID+"/dr-"+id+".pdf") DR
+
+                //- .input-group.card.p-2
+                //-   input.form-control.motorcount2(type='text' name='submotorctr' placeholder='' value='1')
+                //-   button.btn.btn-primary#submit(type='submit' disabled) Edit
+                //- .input-group.card.p-2
+                //-   input.form-control.motorcount2(type='text' name='submotorctr' placeholder='' value='1')
+                //-   button.btn.btn-danger#delete(type='button') Delete
+
+              .col-md-8.order-md-1.motorcol
+                h4.mb-3 Motor Details
+                form
+                  #accordionExample.accordion
+                    .card
+                      #headingOne.card-header.mainmotor
+                        h2.mb-0
+                          button.btn.btn-link(type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
+                            | Main Motor
+                        .closepane
+                          input.btn.btn-primary(type='button' name='closepane' value='Close Pane' data-toggle="collapse" data-target="#closepane" aria-expanded="true" aria-controls="closepane")
+                      #collapseOne.collapse.show(aria-labelledby='headingOne' data-parent='#accordionExample')
+                        .card-body
+                          .row
+                            .col-md-6.mb-3
+                              label(for='download') Upload Scanned PO
+                              input#uploadselect(type='file' name='uploadedPO' value='Upload') 
+                            .col-md-6.mb-3  
+                              label(for='voltage') PO#
+                              input.form-control(type='text' name='pono' placeholder='' required='')
+                          .row
+                              .col-md-6.mb-3  
+                                label(for='voltage') Generate DR
+                                input.form-control.btn-primary(type='button' name='genDR' placeholder='' required='' value='Generate')
+                              .col-md-6.mb-3.genDR 
+                          .row
+                            .col-md-6.mb-3   
+                              label(for='voltage') DR No.
+                              input.form-control(type='text' name='drno' placeholder='' required='')
+                            .col-md-6.mb-3
+                                label.form-label(for='download') Upload Scanned DR 
+                                input#uploadselect.form-control-plaintext(type='file' name='uploadedDR' value='Upload') 
+                            .col-12
+                              .form-check
+                                input#invalidCheck2.form-check-input(type='checkbox' value='invoice' name='invoice')
+                                label.form-check-label(for='invalidCheck2')
+                                  | Invoice to Follow?
+                          .row
+                            .mb-3.col-md-6.mt-3
+                              label(for='username') Delivered by
+                              select.form-control(name='deliveredby' required='')
+                                each delivery_user in fordelivery_user
+                                  option #{delivery_user.name}
+                          .row
+                            .col-md-6.mb-3  
+                              label(for='voltage') Start Date
+                              input.form-control(type='date' name='startdate' placeholder='' required='')
+                            .col-md-6.mb-3  
+                              label(for='voltage') Finish Date
+                              input.form-control(type='date' name='finishdate' placeholder='' required='')
+        else 
+          main.form-signin
+          .alert(role='alert' class="alert-"+errorType)
+              h5 #{title}
+              p #{message}
+      else 
+        body.text-center 
+          main.form-signin
+              .alert(role='alert' class="alert-danger")
+                  h5 Restricted
+                  p You are not allowed to access this.   
+                  
+    include ../components/stage_footer.pug
+    script(src='/../../js/common.js') 
+    script. 
+        - $(document).ready(function() {
+           
+            const tagID = !{JSON.stringify(tagID)};
+            const fordelivery = !{JSON.stringify(fordelivery)};
+            var baseurl = window.location.protocol + "//" + window.location.host + "/";
+
+            var now = new Date(fordelivery.startdate); 
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var startdate = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+            var now2 = new Date(fordelivery.finishdate); 
+            var day2 = ("0" + now2.getDate()).slice(-2);
+            var month2 = ("0" + (now2.getMonth() + 1)).slice(-2);
+            var finishdate = now2.getFullYear()+"-"+(month2)+"-"+(day2) ;
+
+            $('input[name="startdate"]').val(startdate);
+            $('input[name="finishdate"]').val(finishdate);
+
+            $.ajax({   
+                async: true,  
+                method: 'GET',
+                url: baseurl+'motor/rewinder/'+tagID,                        
+                success: function (data) {                        
+                    tmp = data;
+                    $('.rewinders').val(data[0].rewindername)
+                },
+                error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                }
+            })
+
+            $('input[name="genDR"]').on('click', function(){   
+                $("#submit").prop('disabled', false);
+                var grandparent = $(this).parent().parent();
+                grandparent.find('.genDR').remove();
+                $('.genDR').remove()
+                $.ajax({   
+                  async: true, 
+                  method: 'POST',
+                  data:  $('form').serialize(),   
+                  url: baseurl+'io/asset/fordelivery/dr/exists/'+tagID,                          
+                  success: function (data) {  
+                    grandparent.append('<div class="col-md-6 mb-3 genDR"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="'+baseurl+'io/asset/fordelivery/dr/exists/'+tagID+'">Click here</a></div></div></div>');
+                  },
+                  error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                  }
+                })
+              
+            })
+
+            //DELETE
+            -$('#delete').on('click', function(){
+              var answer = window.confirm("Are you sure you want to delete this data? Note: It will delete all its succeeding stages but the preceeding will be retained");
+              if (answer) {
+                  $.ajax({   
+                      async: false,  
+                      method: 'POST',
+                      url: baseurl+'motor/delete/fordelivery/'+tagID,                        
+                      success: function (data) {   
+                          alert('Successfully deleted: '+ data.stage + ' and all succeeding stages (if there are any)')
+                          var stages = ['notstarted','oncheckup','prelimdocs','onrewind', 'onfabrication', 'inbaking', 'assemblyandtesting', 'painting', 'fordelivery', 'forbillingstatement', 'foror', 'completed'];
+                          if(data.stage != 'notstarted')
+                            window.location.replace(baseurl+'motor/motorItem/'+(stages[stages.indexOf(data.stage)-1])+'/'+data.tagID);
+                          else 
+                            window.location.replace(baseurl);
+                      },
+                      error: function (xhr, text, error) {              
+                          alert('Error: ' + error);
+                      }
+                  })
+              } 
+              else {
+                  //some code
+              }
+            })
+
+            $('input[name="pono"]').val(fordelivery.pono)
+            $('input[name="drno"]').val(fordelivery.drno)
+
+            const fordelivery_user = !{JSON.stringify(fordelivery_user)};
+            for(var i=0; i<fordelivery_user.length; i++)  
+            {
+              if(fordelivery.deliveredby == fordelivery_user[i].name)                     
+                $('select[name="deliveredby"]').append('<option selected>'+fordelivery_user[i].name+'</option>')
+              else 
+                $('select[name="deliveredby"]').append('<option>'+fordelivery_user[i].name+'</option>')
+            }
+
+            if(fordelivery.invoice != null)
+              $('input[name="invoice"]').prop('checked', true)
+            else 
+              $('input[name="invoice"]').prop('checked', false)
+        })
+
+
+     

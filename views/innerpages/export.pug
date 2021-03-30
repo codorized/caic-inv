@@ -1,0 +1,49 @@
+doctype html
+html(lang='en')
+  include ../components/header.pug
+  body#bodyStyle
+    include ../components/navbar.pug
+    .container-fluid
+      .row
+        include ../components/sidebar.pug 
+        main.col-md-9.ml-sm-auto.col-lg-10.px-md-4(role='main')
+            .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+                h1.h2 Export Motors
+                .btn-toolbar.mb-2.mb-md-0
+            .card
+                .card-body
+                    .row 
+                        .col-md-4
+                            .row.g-3.addgroup
+                                .col 
+                                    button.btn.btn-primary.form-control#export Export
+                        .card.col-md-4
+                            div#readyDownload 
+                                    
+                                
+
+            table.table.table-striped#itemtable
+                thead
+                tbody
+    include ../components/footer.pug
+    script.     
+        
+        
+        -$('#export').on('click', function(){
+           var baseurl = window.location.protocol + "//" + window.location.host + "/"
+           $('#readyDownload').append('<div class="spinner-border text-primary" role="status"><span class="visually-hidden"></span></div>')
+           $.ajax({   
+                async: true, 
+                method: 'GET',
+                url: baseurl+'motor/export/extract',
+                success: function (data) {    
+                    $('#readyDownload').empty().append(data)
+                },
+                error: function (xhr, text, error) {              
+                    alert(error);
+                }
+            })  
+        })
+    
+      
+     

@@ -1,6 +1,6 @@
-.dropdown-menu{
+/* .dropdown-menu{
     left: -24px;
-}
+} */
 
 .logo{
     width: 150px;
@@ -154,4 +154,64 @@ td {
     border-radius: 10px;
 }
 
+.notifs .dropdown-menu
+{
+    width: 300px;
+}
 
+.dropdown-item
+{
+    padding: .25rem 0.5rem;
+}
+
+.logout button 
+{
+    width: 100%;
+    text-align: left;
+}
+
+#search
+{
+    cursor: pointer;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#search span 
+{
+    background: none;
+    border: none;
+}
+
+.pagination
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.pagination p i
+{
+    margin-left: 5px;
+}
+
+.page-item
+{
+    width: 50px;
+}
+
+.page-item .page-link
+{
+    width: 85%;
+}
+
+#readyDownload
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}

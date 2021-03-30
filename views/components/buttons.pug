@@ -1,0 +1,15 @@
+.row  
+    .col-md-12.mt-3
+        .card.text-right
+            .card-body
+                -var isMod = currStage.includes("mod")
+                if isMod
+                    button.btn.btn-danger#delete.mr-3(type="button") Delete
+                    button.btn.btn-primary#submit(type="submit") Edit  
+                else 
+                    if currStage != 'notstarted'
+                        button.btn.btn-info#save.mr-3(type="button") Save
+                    if currStage == 'oncheckup' || currStage == 'prelimdocs' || currStage == 'onrewind' || currStage == 'assemblyandtesting' || currStage == 'fordelivery' || currStage == 'forbillingstatement'
+                        button.btn.btn-danger.submit#submit(type="submit" disabled) Submit  
+                    else 
+                        button.btn.btn-danger#submit(type="submit") Submit  

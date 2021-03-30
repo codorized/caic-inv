@@ -1,7 +1,7 @@
 
 
 
-function oncheckup(ctr, submotor){
+function oncheckup2(ctr, submotor){
   
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');

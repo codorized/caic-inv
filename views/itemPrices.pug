@@ -1,0 +1,375 @@
+doctype html
+html(lang='en')
+  include components/header.pug
+  body#bodyStyle
+    include components/navbar.pug
+    .container-fluid
+      .row
+        include components/sidebar.pug
+        main.col-md-9.ml-sm-auto.col-lg-10.px-md-4(role='main')
+            .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+                h1.h2 Prices
+                .btn-toolbar.mb-2.mb-md-0
+            .card
+                .card-body
+                    h5 Configuration
+                    .row 
+                        .col-md-4
+                            .form-group
+                                label(for='formGroupExampleInput') Choose Item Type
+                                select.form-control#itemtype(name="itemtype")
+                                    each model in models
+                                        option(class=(model.name).replace('pricelist_', '')) #{(model.name).replace('pricelist_', '')}
+                        .col-md-4
+                            .row.g-3
+                                .col
+                                    label.form-label(for='formGroupExampleInput') Item
+                            .row.g-3.addgroup
+                                .col 
+                                    button.btn.btn-primary.form-control.additeminit Add a new ITEM
+                        .col-md-4
+                            .row.g-3
+                                .col
+                                    label.form-label(for='formGroupExampleInput') Collection
+                            .row.g-3.addgroup2
+                                .col 
+                                    button.btn.btn-primary.form-control.addcollectioninit Add a new COLLECTION
+                                
+
+            table.table.table-striped#itemtable
+                thead
+                tbody
+    include components/footer.pug
+    script.
+        var baseurl = window.location.protocol + "//" + window.location.host + "/"
+        var prev_input = {'prev_model': '', 'prev_price': ''};
+        
+         $( document ).ready(function() {
+            //Display the first selection at onload
+            var selected = $( "select option:selected" ).html();
+            var model='';
+            var classList = $( "select option:selected" ).attr('class').split(/\s+/);
+            $('tbody').removeClass();
+            $('tbody').addClass(classList[0]);
+            $.ajax({   
+                async: false, 
+                method: 'GET',
+                url: baseurl+'prices/items/'+classList[0],                        
+                success: function (data) {    
+                   
+                    if(data.length > 0)
+                    {
+                        var keyNames = Object.keys(data[0]);
+                        $('#itemtable thead th').remove();
+                        $('#itemtable tbody tr').remove();
+                        for(var i=0; i<keyNames.length; i++)
+                        {
+                            var title = keyNames[i].charAt(0).toUpperCase() + keyNames[i].slice(1);
+                            $('#itemtable thead').append('<th scope="col" class="model-name">'+ title +'</th>')
+                        }
+
+                        $('#itemtable thead').append('<th scope="col">Modify</th>');
+
+                        for(var i=0; i<data.length; i++)
+                        {
+                            $('#itemtable tbody').append('<tr class="row-'+i+'"></tr>');
+                            for(var j=0; j<=keyNames.length; j++)
+                            {
+
+                                if( j == keyNames.length)
+                                {
+                                    if (role == 'admin')
+                                        $('#itemtable tbody .row-'+i).append('<td class="item-buttons"><input type="button" class="btn btn-primary" value="Edit" name="edit_item"><input type="button" class="btn btn-danger ml-2" value="Delete" name="delete_item"></td>');
+                                    else 
+                                        $('#itemtable tbody .row-'+i).append('<td class="item-buttons"><input type="button" class="btn btn-primary" value="Edit" name="edit_item"></td>');
+                                }
+                                else {
+                                    $('#itemtable tbody .row-'+i).append('<td class="item-'+keyNames[j]+'">'+data[i][keyNames[j]]+'</td>');
+                                }
+                            }
+                        }
+                    }      
+                    else 
+                    {
+                        var keyNames = ['Model','Price', 'Modify']
+                        for(var i=0; i<keyNames.length; i++)
+                        {
+                            var title = keyNames[i]
+                            $('#itemtable thead').append('<th scope="col" class="model-name">'+ title +'</th>')
+                            
+                        }
+                    }          
+                    
+
+                    //$('#itemtable thead').append('<th scope="col" class="model-edit-button">Modify</th>');
+                },
+                error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                }
+            })
+            //Display Items on Load
+            - $('#itemtype').on('change', function(){
+                var selected = $( "select option:selected" ).html();
+                var model='';
+                var classList = $( "select option:selected" ).attr('class').split(/\s+/);
+                $('tbody').removeClass();
+                $('tbody').addClass(classList[0]);
+                $.ajax({   
+                      async: false, 
+                      method: 'GET',
+                      url: baseurl+'prices/items/'+classList[0],                        
+                      success: function (data) {           
+                        $('#itemtable thead th').remove();
+                        $('#itemtable tbody tr').remove();
+                        
+
+                        if(data.length > 0)
+                        {
+                            var keyNames = Object.keys(data[0]);  
+                            for(var i=0; i<keyNames.length; i++)
+                            {
+                                var title = keyNames[i].charAt(0).toUpperCase() + keyNames[i].slice(1);
+                                $('#itemtable thead').append('<th scope="col" class="model-name">'+ title +'</th>')
+                                
+                            }
+
+                            $('#itemtable thead').append('<th scope="col">Modify</th>');
+
+                            for(var i=0; i<data.length; i++)
+                            {
+                                $('#itemtable tbody').append('<tr class="row-'+i+'"></tr>');
+                                for(var j=0; j<=keyNames.length; j++)
+                                {
+
+                                    if( j == keyNames.length)
+                                    {
+                                        $('#itemtable tbody .row-'+i).append('<td class="item-buttons"><input type="button" class="btn btn-primary" value="Edit" name="edit_item"><input type="button" class="btn btn-danger ml-2" value="Delete" name="delete_item"></td>');
+                                    }
+                                    else {
+                                        $('#itemtable tbody .row-'+i).append('<td class="item-'+keyNames[j]+'">'+data[i][keyNames[j]]+'</td>');
+                                    }
+                                }
+                            }
+                        }  
+                        else 
+                        {
+                            var keyNames = ['Model','Price', 'Modify']
+                            for(var i=0; i<keyNames.length; i++)
+                            {
+                                var title = keyNames[i]
+                                $('#itemtable thead').append('<th scope="col" class="model-name">'+ title +'</th>')
+                                
+                            }
+                        }        
+
+                      },
+                      error: function (xhr, text, error) {              
+                          alert('Error: ' + error);
+                      }
+                })
+            })
+
+            $('.addgroup').delegate('.additeminit', 'click',  function(){
+                var grandparent = $(this).parent().parent()
+                $('.additeminit').parent().remove()
+                grandparent.prepend('<div class="col"><button class="btn btn-primary form-control additem"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg></button></div><div class="col"><input class="form-control" type="text" placeholder="Model Name" aria-label="First name" name="addmodelname"></div><div class="col"><input class="form-control" type="text" placeholder="Price" aria-label="Last name" name="addprice"></div><div class="col"><button class="btn btn-danger form-control cancelitem"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/></svg></div>')
+            })
+
+            $('.addgroup2').delegate('.addcollectioninit', 'click',  function(){
+                var grandparent = $(this).parent().parent()
+                $('.addcollectioninit').parent().remove()
+                grandparent.prepend('<div class="col"><button class="btn btn-primary form-control addcollection"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg></button></div><div class="col"><input class="form-control" type="text" placeholder="Model Name" aria-label="First name" name="addcollname"></div><div class="col"><button class="btn btn-danger form-control cancelitem"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/></svg></div>')
+            })
+
+            $('.addgroup').delegate('.additem', 'click', function(){
+                var classList = $( "select option:selected" ).attr('class').split(/\s+/);
+                if ($('input[name="addmodelname"]').val() != '' && $('input[name="addprice"]').val() != '')
+                {
+                    $.ajax({   
+                        async: true, 
+                        method: 'POST',
+                        data: {'item-model': $('input[name="addmodelname"]').val(), 'item-price': $('input[name="addprice"]').val()},
+                        url: baseurl+'prices/items/single/add/'+classList[0]+'/'+$('input[name="addmodelname"]').val(),                        
+                        success: function (data) {    
+                            
+                            var rowNo = $('#itemtable').find('.'+classList[0]).find('tr').length
+                            $('#itemtable').find('tbody').removeClass()
+                            $('#itemtable').find('tbody').addClass(classList[0])
+                            if(rowNo > 0)
+                            {
+                                var classList2 = $('#itemtable').find('.'+classList[0]).find('tr:last').attr('class').split(/\s+/);
+                                $('#itemtable').find('.'+classList[0]).append('<tr class="row-'+classList2[0].split('-')[1]+'"><td class="item-model">'+data.ops[0].model+'</td><td class="item-price">'+data.ops[0].price+'</td><td class="item-buttons"><input type="button" class="btn btn-primary" value="Edit" name="edit_item"><input type="button" class="btn btn-danger ml-2" value="Delete" name="delete_item"></td></tr>');
+                            }
+                            else {
+                               
+                                $('#itemtable').find('.'+classList[0]).append('<tr class="row-0"><td class="item-model">'+data.ops[0].model+'</td><td class="item-price">'+data.ops[0].price+'</td><td class="item-buttons"><input type="button" class="btn btn-primary" value="Edit" name="edit_item"><input type="button" class="btn btn-danger ml-2" value="Delete" name="delete_item"></td></tr>');
+                            }
+                            
+                        },
+                        error: function (xhr, text, error) {              
+                            alert('Error: ' + error);
+                            $('input[name="addmodelname"]').val() = ''
+                            $('input[name="addprice"]').val() = ''
+                        }
+                    })  
+                }
+                else {
+                    alert('Please input both modelname and price')
+                }
+            })
+
+             $('.addgroup2').delegate('.addcollection', 'click', function(){
+                var classList = $( "select option:selected" ).attr('class').split(/\s+/);
+                if ($('input[name="addcollname"]').val())
+                {
+                    if(($('input[name="addcollname"]').val()).includes(' '))
+                        alert('Please use dash or underscore instead of space. Space is not allowed')
+                    else 
+                        $.ajax({   
+                            async: true, 
+                            method: 'POST',
+                            data: {'modelname': $('input[name="addcollname"]').val()},
+                            url: baseurl+'motor/modelcoll',
+                            success: function (data) {    
+                                alert('Collection Successfully Added!')
+                                var newmodelname = $('input[name="addcollname"]').val()
+                                $( "select option:selected" ).prop('selected', false)
+                                $('#itemtype').prepend('<option class="'+newmodelname+'" selected>'+newmodelname+'</option>')
+                                $('input[name="addcollname"]').val('')
+
+                                $('tbody').empty()
+
+                            },
+                            error: function (xhr, text, error) {              
+                                alert('Error: ' + error);
+                                $('input[name="addmodelname"]').val() = ''
+                                $('input[name="addprice"]').val() = ''
+                            }
+                        })  
+                }
+                else {
+                    alert('Please input a model name')
+                }
+            })
+
+            $('.addgroup').delegate('.cancelitem', 'click', function(){
+                var grandparent = $(this).parent().parent()
+                grandparent.empty().append('<div class="col"> <button class="btn btn-primary form-control additeminit">Add a new item</button></div>')
+            })
+
+            $('.addgroup2').delegate('.cancelitem', 'click', function(){
+                var grandparent = $(this).parent().parent()
+                grandparent.empty().append('<div class="col"> <button class="btn btn-primary form-control addcollectioninit">Add a new item</button></div>')
+            })
+         })
+
+        $('table').delegate('input[name="edit_item"]', 'click', function(){
+            
+
+            $('input[name="edit_item"]').attr('disabled', 'disabled');
+            $('input[name="edit_item"]').addClass('disabled');
+
+            $('input[name="delete_item"]').attr('disabled', 'disabled');
+            $('input[name="delete_item"]').addClass('disabled');
+            
+            $(this).parent().empty().append('<input type="button" class="btn btn-primary" value="Submit" name="submit_item"><input type="button" class="btn btn-danger ml-2" value="Cancel" name="cancel_item">').clone();
+            
+            var item_model = $('input[name="submit_item"]').parent().parent().find('.item-model');
+            var item_price = $('input[name="submit_item"]').parent().parent().find('.item-price');
+
+            var text_model = item_model.html();
+            var text_price = item_price.html();
+            prev_input['prev_model'] = text_model;
+            prev_input['prev_price'] = text_price;
+
+            item_model.empty();
+            item_price.empty();
+            item_model.append('<input name="item-model" value="'+text_model+'">');
+            item_price.append('<input name="item-price" value="'+text_price+'">');
+        });
+
+        $('table').delegate('input[name="submit_item"]', 'click', function(){
+            var classList = $( "tbody").attr('class').split(/\s+/);
+            var my_parent = $(this).parent();
+            //alert(classList[0]);
+            $.ajax({   
+                async: true, 
+                method: 'POST',
+                data: {'item-model': $('.item-model input').val(), 'item-price': $('.item-price input').val()},
+                url: baseurl+'prices/items/single/update/'+classList[0]+'/'+prev_input['prev_model'],                        
+                success: function (data) {    
+                    if(data == 'Duplicate')
+                    {
+                        alert('The new model name/price you are trying to edit has duplicate');
+                    }else{
+                        var modelname = $('.item-model input').val();
+                        var modelprice = $('.item-price input').val();
+                        $('.item-model input').parent().empty().append(modelname);
+                        $('.item-price input').parent().empty().append(modelprice);
+                        my_parent.empty().append('<input type="button" class="btn btn-primary" value="Edit" name="edit_item"><input type="button" class="btn btn-danger ml-2" value="Delete" name="delete_item">').clone();
+                        $('input[name="edit_item"]').removeAttr('disabled');
+                        $('input[name="delete_item"]').removeAttr('disabled');
+                        $('input[name="edit_item"]').removeClass('disabled');
+                        $('input[name="delete_item"]').removeClass('disabled');
+                    }
+                    
+                },
+                error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                }
+            })            
+        });
+
+        $('table').delegate('input[name="cancel_item"]', 'click', function(){
+            
+            $('input[name="edit_item"]').removeAttr('disabled');
+            $('input[name="delete_item"]').removeAttr('disabled');
+            $('input[name="edit_item"]').removeClass('disabled');
+            $('input[name="delete_item"]').removeClass('disabled');
+            var parent = $(this).parent();
+
+            if (role == 'admin')
+                $(this).parent().empty().append('<input type="button" class="btn btn-primary" value="Edit" name="edit_item"><input type="button" class="btn btn-danger ml-2" value="Delete" name="delete_item">').clone();
+            else
+                if(role == 'marketing' || role == 'warehouse')
+                    $(this).parent().empty().append('<input type="button" class="btn btn-primary" value="Edit" name="edit_item">').clone();
+                
+
+            var item_model = parent.parent().find('.item-model');
+            var item_price = parent.parent().find('.item-price');
+
+            var text_model = prev_input['prev_model'];
+            var text_price = prev_input['prev_price'];
+            
+
+            item_model.empty().append(text_model).clone();
+            item_price.empty().append(text_price).clone();
+
+        });
+
+        $('table').delegate('input[name="delete_item"]', 'click', function(){
+            var classList = $( "tbody").attr('class').split(/\s+/);
+
+            var isDelete = confirm("Are you sure you want to delete this item?"); 
+            var grandparent = $(this).parent().parent();
+            var item = grandparent.find('.item-model').html();
+            if(isDelete) { 
+                $.ajax({   
+                    async: true, 
+                    method: 'POST',
+                    url: baseurl+'prices/items/single/delete/'+classList[0]+'/'+item,                        
+                    success: function (data) {    
+                        grandparent.empty().clone();
+                    },
+                    error: function (xhr, text, error) {              
+                        alert('Error: ' + error);
+                    }
+                })            
+            }
+            else { 
+                alert('NOT DELETED!')
+            }
+        });
+        
+      
+     

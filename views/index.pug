@@ -6,37 +6,105 @@ html(lang='en')
     .container-fluid
       .row
         include components/sidebar.pug
-        main.col-md-9.ml-sm-auto.col-lg-10.px-md-4.maincontent(role='main')
+        main.col-md-9.ml-md-auto.col-lg-10.maincontent(role='main')
   
           .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
             h1.h2.page-title Dashboard
+            h1.h2.page-title#nexTagID Next: #{currTagID}
             
+          if role == 'admin'
+            div.pieCharts.row
+              div.col-6#motorCountWrapper
+                canvas#motorCounts.my-4.w-100
+                .row 
+                  .col-5
+                    .input-group
+                      button.form-control.day day
+                      button.form-control.month month
+                      button.form-control.year year
+                  .col-7
+                    .input-group.mb-12
+                      - var today = new Date();
+                      - var dd = String(today.getDate()).padStart(2, '0');
+                      - var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                      - var yyyy = today.getFullYear();
+                      - today = yyyy + '-01-01';
+                      - yearafter = (yyyy+1) + '-01-01';
+                      
+                      input.form-control.fromdate(type='date' placeholder='From' aria-label='Username' value=today)
+                      span.input-group-text -
+                      input.form-control.todate(type='date' placeholder='To' aria-label='Server' value=yearafter)
 
-          div.pieCharts.row
-            div.col-6
-              canvas#myPieChart1.my-4.w-100
-            div.col-6
-              canvas#myPieChart2.my-4.w-100
-          div
-            canvas#myChart.my-4.w-100(width='900', height='350')
+              div.col-6#motorStagesByDateWrapper
+                canvas#motorStagesByDate.my-4.w-100
+                .row 
+                  .col-5
+                    .input-group
+                      button.form-control.day day
+                      button.form-control.month month
+                      button.form-control.year year
+                  .col-7
+                    .input-group.mb-12
+                      - var today = new Date();
+                      - var dd = String(today.getDate()).padStart(2, '0');
+                      - var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                      - var yyyy = today.getFullYear();
+                      - today = yyyy + '-01-01';
+                      - yearafter = (yyyy+1) + '-01-01';
+                      
+                      input.form-control.fromdate(type='date' placeholder='From' aria-label='Username' value=today)
+                      span.input-group-text -
+                      input.form-control.todate(type='date' placeholder='To' aria-label='Server' value=yearafter)
+              
+            .row
+              .col-6
+                canvas#myPieChart2.my-4.w-100
+              .col-6
+                canvas#HpandKw.my-4.w-100
+            .row 
+              div.col-6#salesRepByDateWrapper
+                canvas#salesRepByDate.my-4.w-100
+                .row 
+                  .col-5
+                    .input-group
+                      button.form-control.day day
+                      button.form-control.month month
+                      button.form-control.year year
+                  .col-7
+                    .input-group.mb-12
+                      - var today = new Date();
+                      - var dd = String(today.getDate()).padStart(2, '0');
+                      - var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                      - var yyyy = today.getFullYear();
+                      - today = yyyy + '-01-01';
+                      - yearafter = (yyyy+1) + '-01-01';
+                      
+                      input.form-control.fromdate(type='date' placeholder='From' aria-label='Username' value=today)
+                      span.input-group-text -
+                      input.form-control.todate(type='date' placeholder='To' aria-label='Server' value=yearafter)
+
+              div.col-6
+                canvas#myChart
          
           
           div.container.table-titles 
             .row 
               h2.col-sm.page-title Motor Items
-              .input-group.mb-3.col-sm
-                .input-group-prepend
-                  span#inputGroup-sizing-default.input-group-text 
-                    svg.bi.bi-search(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
-                      path(fill-rule='evenodd' d='M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z')
-                      path(fill-rule='evenodd' d='M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z')
+              form#searchForm(method="POST")
+                .input-group.mb-3.col-sm
+                  button.input-group-prepend#search(type="submit")
+                    span#inputGroup-sizing-default.input-group-text 
+                      svg.bi.bi-search(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+                        path(fill-rule='evenodd' d='M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z')
+                        path(fill-rule='evenodd' d='M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z')
 
-                input.form-control(type='text' aria-label='Default' aria-describedby='inputGroup-sizing-default')
+                  input.form-control(type='text' aria-label='Default' aria-describedby='inputGroup-sizing-default' name='searchfield')
 
           .table-responsive
             table.table.table-striped.table-sm
               thead.thead-dark
                 tr
+                  //- th isSubmotor
                   th Motor ID
                   th Pulled out days 
                   th Status
@@ -44,15 +112,15 @@ html(lang='en')
                   th Motor Type
                   th Power
                   th PM
-                  th Submotors
                   th Remarks
+                  th Submotor
               tbody#newItem.recentItems
                 each item in items
-                    tr
+                    tr.motorRows
                       td.tagid 
                         - var motorID = item.tagID
                         
-                        a(href="motor/motorItem/"+motorID) #{motorID}
+                        a(href="motor/motorItem/notstarted/"+motorID, class=motorID) #{motorID}
                       - var today = new Date();
                       - var dd = String(today.getDate()).padStart(2, '0');
                       - var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -63,43 +131,46 @@ html(lang='en')
                       td #{diffDays}
                       - var convertedstatus = '' 
                       if (item.status == 'notstarted')
-                        td Not Started
+                        td.stage Not Started
                       else if (item.status == 'oncheckup')
-                        td On Checkup
-                      td #{item.company}
-                      td #{item.motorType}
-                      td #{item.power}
-                      if item.pmID == ''
-                        td NO GP
+                        td.stage On Checkup
+                      else if (item.status == 'prelimdocs')
+                        td.stage Prelimdocs
+                      else if (item.status == 'onrewind')
+                        td.stage On Rewind
+                      else if (item.status == 'onfabrication')
+                        td.stage On Fabrication
+                      else if (item.status == 'inbaking')
+                        td.stage In Baking
+                      else if (item.status == 'assemblyandtesting')
+                        td.stage Assembly and Testing
+                      else if (item.status == 'painting')
+                        td.stage Painting
+                      else if (item.status == 'fordelivery')
+                        td.stage For Delivery
+                      else if (item.status == 'forbillingstatement')
+                        td.stage For Billing Statement
+                      else if (item.status == 'foror')
+                        td.stage For OR
+                      else if (item.status == 'completed')
+                        td.stage Completed
+                      if(item.company_.length > 0)
+                        td #{item.company_[0].compname}
+                      td #{item.motorType}  
+                      if item.power_rpm.length > 0
+                        td.power #{item.power_rpm[0].power}
                       else 
-                        td HAS GP
-                      td #{item.submotors.length}
+                        td.power 
+                      if item.pmID == null
+                        td None
+                      else 
+                        td HAS PM
+                      //- td #{item.submotors.length}
                       td #{item.remarks}
-
-          form#test-form.white-popup-block.mfp-hide
-            .stage-and-dropdown
-              h1 Stage: On Check-up
-            fieldset(style='border:0;')
-              p
-                | Lightbox has an option to automatically focus on the first input. It's strongly recommended to use 
-                code inline
-                |  popup type for lightboxes with form instead of 
-                code ajax
-                |  (to keep entered data if the user accidentally refreshed the page).
-              ol
-                li
-                  label(for='name') Name
-                  input#name(name='name' type='text' placeholder='Name' required='')
-                li
-                  label(for='email') Email
-                  input#email(name='email' type='email' placeholder='example@domain.com' required='')
-                li
-                  label(for='phone') Phone
-                  input#phone(name='phone' type='tel' placeholder='Eg. +447500000000' required='')
-                li
-                  label(for='textarea') Textarea
-                  br
-                  textarea#textarea Try to resize me to see how popup CSS-based resizing works.
-
+                      if item.submotor.parent != null
+                        td Submotor of #{item.submotor.parent}
+                      else
+                        td No Submotor
   include components/footer.pug
+    
     

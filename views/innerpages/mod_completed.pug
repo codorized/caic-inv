@@ -1,0 +1,197 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description' content='')
+    meta(name='author' content='Mark Otto, Jacob Thornton, and Bootstrap contributors')
+    meta(name='generator' content='Jekyll v4.1.1')
+    title Checkout example · Bootstrap
+    link(rel='canonical' href='https://getbootstrap.com/docs/4.5/examples/checkout/')
+    // Bootstrap core CSS
+    link(href='https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2' crossorigin='anonymous')
+    style.
+      .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      }
+      @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+      }
+      }
+    // Custom styles for this template
+    link(href='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.css' rel='stylesheet')
+    link(href='../../css/db_inner.css' rel='stylesheet')
+    link(href='../../css/magnific-popup.css' rel='stylesheet')
+    
+  body.bg-light
+    .container.prelimdocs
+      include ../components/mod_navbar.pug
+      include ../components/mod_navstages.pug
+      if isSubmotor == false 
+        form(method='post', enctype="multipart/form-data")
+          include ../components/buttons.pug
+          .row.motorinfo
+            .col-md-4.order-md-2.mb-4#closepane.show
+              h4.d-flex.justify-content-between.align-items-center.mb-3
+                span.text-muted Files
+              //- ul.list-group.mb-3.motorpane
+              //-   li.list-group-item.d-flex.justify-content-between.lh-condensed(data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne')
+              //-     div
+              //-       h6.my-0 Motor 1
+              //-       small.text-muted ID: #{tagID}
+              .card.mb-3
+                  .card-header
+                      h6 Downloads
+                  ul.list-group.list-group-flush
+                      - var id = tagID
+                      if parent != null
+                        - id = parent
+                      li.list-group-item 
+                        a(href=url+"/io/downloadUploaded/oncheckup/"+tagID+"/iarfront-"+tagID+".jpg") IAR Front (Image)
+                      li.list-group-item 
+                        a(href=url+"/io/downloadUploaded/oncheckup/"+tagID+"/iarback-"+tagID+".jpg") IAR Back (Image)
+                      li.list-group-item 
+                        a(href=url+"/io/downloadUploaded/oncheckup/"+tagID+"/beforeimage-"+tagID+".jpg") Before Motor (Image)
+                      li.list-group-item 
+                        a(href=url+"/io/downloadUploaded/inbaking/"+tagID+"/afterimage-"+tagID+".jpg") After Motor (Image)
+                      li.list-group-item 
+                        a(href=url+"/io/downloadUploaded/assemblyandtesting/"+tagID+"/uploaded-mtr-"+tagID+".jpg") MTR (Image)
+                      li.list-group-item 
+                        a(href=url+"/io/downloadUploaded/fordelivery/"+tagID+"/po-"+tagID+".jpg") PO (Image)
+                      li.list-group-item 
+                        a(href=url+"/io/downloadUploaded/fordelivery/"+tagID+"/dr-"+tagID+".jpg") DR (Image)
+                      li.list-group-item 
+                        a(href=url+"/io/downloadUploaded/forbillingstatement/"+tagID+"/si-"+tagID+".jpg") SI (Image)
+                      li.list-group-item 
+                          a(href=url+"/io/downloadPDF/oncheckup/iar/"+tagID+"/iar-front-"+tagID+".pdf") IAR Front (PDF)
+                      li.list-group-item 
+                        a(href=url+"/io/downloadPDF/oncheckup/iar/"+tagID+"/iar-back-"+tagID+".pdf") IAR Back (PDF)
+                      if typeof summaryObj.prelimdocs[0].qNo == 'object'
+                        - var scopes = ['stator', 'accessories', 'mechanical', 'dynamic', 'misc']
+                        - var i = 0
+                        each val in summaryObj.prelimdocs[0].qNo
+                          li.list-group-item 
+                            a(href=url+"/io/downloadPDF/prelimdocs/subqform/"+tagID+"/"+tagID+"-"+scopes[i]+".pdf") Quotation: #{val} (PDF)
+                            - i++
+                      else if typeof summaryObj.prelimdocs[0].qNo == 'string'
+                        li.list-group-item 
+                            a(href=url+"/io/downloadPDF/prelimdocs/qform/"+tagID+"/"+tagID+".pdf") Quotation: #{summaryObj.prelimdocs[0].qNo} (PDF)
+                      li.list-group-item 
+                        a(href=url+"/io/downloadPDF/onrewind/ris/"+tagID+"/ris-"+tagID+".pdf") RIS (PDF)
+                      li.list-group-item 
+                        a(href=url+"/io/downloadPDF/assemblyandtesting/mtr/"+tagID+"/mtr-"+tagID+".pdf") MTR (PDF)
+                      li.list-group-item 
+                        a(href=url+"/io/downloadPDF/fordelivery/dr/"+tagID+"/dr-"+tagID+".pdf") DR (PDF)
+                      li.list-group-item 
+                        a(href=url+"/io/downloadPDF/forbillingstatement/si/"+tagID+"/si-"+tagID+".pdf") SI (PDF)
+
+              //- .input-group.card.p-2
+              //-   button.btn.btn-info#save(type="button") Save
+              //- .input-group.card.p-2
+              //-   button.btn.btn-danger(type='submit') Submit
+              
+            .col-md-8.order-md-1.motorcol
+              h4.mb-3 Motor Details
+              form
+                #accordionExample.accordion
+                  .card
+                    #headingOne.card-header.mainmotor
+                      h2.mb-0
+                        button.btn.btn-link(type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
+                          | Sumamry
+                      .closepane
+                        input.btn.btn-primary(type='button' name='closepane' value='Close Pane' data-toggle="collapse" data-target="#closepane" aria-expanded="true" aria-controls="closepane")
+                    #collapseOne.collapse.show(aria-labelledby='headingOne' data-parent='#accordionExample')
+                      .card-body
+                        .row.mb-3
+                          .card.col.ml-3.mr-3.pl-0.pr-0
+                            .card-header
+                              | Motor Specifications
+                            .card-body
+                              //- h5.card-title Special title treatment
+                              .row
+                                .col.ml-3  
+                                  h6 Motor type: #{summaryObj.notstarted[0].motorType}
+                                .col.ml-3  
+                                  h6 Power: #{summaryObj.notstarted[0].power}
+                                .col.ml-3  
+                                  h6 RPM: #{summaryObj.notstarted[0].rpm}
+                              .row
+                                .col.ml-3  
+                                  h6 Voltage: #{summaryObj.oncheckup[0].voltage}
+                                .col.ml-3  
+                                  h6 Current: #{summaryObj.oncheckup[0].current}
+                                .col.ml-3  
+                                  h6 Phase: #{summaryObj.oncheckup[0].phase}
+                              .row
+                                .col.ml-3  
+                                  h6 Frequency: #{summaryObj.oncheckup[0].frequency}
+                        .row
+                          .card.col.ml-3.mr-3.pl-0.pr-0.mb-3
+                              .card-header
+                                | CAIC-related Information
+                              .card-body
+                                .row
+                                  .col.ml-3  
+                                    h6 Gatepass #: #{summaryObj.notstarted[0].gatepass}
+                                  .col.ml-3  
+                                    h6 Rewinder Name: #{summaryObj.prelimdocs[0].rewindername}
+                                .row
+                                  .col.ml-3  
+                                    h6 Sales Representative: #{summaryObj.notstarted[0].salesRep}
+                      
+                        .row
+                          .card.col.ml-3.mr-3.pl-0.pr-0
+                              .card-header
+                                | Control numbers
+                              .card-body
+                                .row
+                                  .col.ml-3  
+                                    h6 PO#: #{summaryObj.fordelivery[0].pono}
+                                  .col.ml-3  
+                                    h6 DR#: #{summaryObj.fordelivery[0].drno}
+                                  .col.ml-3  
+                                    h6 SI#: #{summaryObj.forbillingstatement[0].sino}
+                                .row
+                                  .col.ml-3  
+                                    h6 OR#: #{summaryObj.foror[0].orno}
+                                .row
+                                  .col-md-6.mb-3  
+                                    label(for='voltage') Start Date
+                                    input.form-control(type='date' name='startdate' placeholder='' required='')
+                                  .col-md-6.mb-3  
+                                    label(for='voltage') Finish Date
+                                    input.form-control(type='date' name='finishdate' placeholder='' required='')
+                        
+                        
+    include ../components/stage_footer.pug
+    script(src='/../../js/common.js')
+    script. 
+        - $(document).ready(function() {
+            const tagID = !{JSON.stringify(tagID)};
+            var baseurl = window.location.protocol + "//" + window.location.host + "/";
+            var completed = !{JSON.stringify(completed)};
+
+            var now = new Date(completed.startdate); 
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var startdate = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+            var now2 = new Date(completed.finishdate); 
+            var day2 = ("0" + now2.getDate()).slice(-2);
+            var month2 = ("0" + (now2.getMonth() + 1)).slice(-2);
+            var finishdate = now2.getFullYear()+"-"+(month2)+"-"+(day2) ;
+
+            $('input[name="startdate"]').val(startdate);
+            $('input[name="finishdate"]').val(finishdate);
+            
+        })
+
+
+     

@@ -1,0 +1,68 @@
+nav.navbar.navbar-light.sticky-top.bg-light.flex-md-nowrap.p-0.shadow
+      a.navbar-brand.col-md-3.col-lg-2.mr-0.px-3(href=url)
+        img.logo(src='/img/logo.png')
+      button.navbar-toggler.position-absolute.d-md-none.collapsed(type='button' data-toggle='collapse' data-target='#sidebarMenu' aria-controls='sidebarMenu' aria-expanded='false' aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      ul.nav.nav-pills
+        li.nav-item
+          a.nav-link.text-dark(href='/') Dashboard
+        li.nav-item
+          a.nav-link.text-dark(href='/motor/viewAllMotors') Motor Items
+        li.nav-item.nav-item.dropdown.text 
+          a.nav-link.text-dark.dropdown-toggle(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false') 
+            span Company
+          .dropdown-menu
+            a.dropdown-item#addCompany Add Company
+            a.dropdown-item(href=url+"/motor/viewAllCompanies") View Companies
+        li.nav-item.nav-item.dropdown.text
+          a.nav-link.text-dark.dropdown-toggle(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false') 
+            span Rewinder
+          .dropdown-menu
+            a.dropdown-item#addRewinder Add a Rewinder
+            a.dropdown-item(href=url+"/motor/viewAllRewinders") View Rewinders
+        if(role == 'admin')
+          li.nav-item.nav-item.dropdown.text
+            a.nav-link.text-dark.dropdown-toggle(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false') 
+              span User
+            .dropdown-menu
+              a.dropdown-item#addUser  Register User
+              a.dropdown-item(href=url+"/motor/viewAllUsers") View Users
+        if role == 'admin' || role == 'marketing' || role == 'warehouse'
+          li.nav-item
+            a.nav-link.text-dark(href='/motor/viewItemPrices') Item Prices
+        li.nav-item.dropdown.text.account-button
+          a.nav-link.text-dark.dropdown-toggle(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false') 
+            span Hi #{username}
+            svg.bi.bi-person-circle(width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg')
+              path(d='M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z')
+              path(fill-rule='evenodd' d='M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z')
+              path(fill-rule='evenodd' d='M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z')
+          .dropdown-menu.dropdown-menu-right
+              a.dropdown-item#viewLogbook
+                  button.btn Logbook
+              a.dropdown-item#changePassword
+                  button.btn Change Password
+              a.dropdown-item.logout(href='#') 
+                form(action="/logout?_method=DELETE" method="POST")
+                  button.btn#logout(type="submit") Logout
+        li.nav-item.nav-item.dropdown.text.notifs
+          a.nav-link.text-dark.dropdown-toggle(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false') 
+            svg.bi.bi-bell(xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' viewBox='0 0 16 16')
+              path(d='M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z')
+            if notifications
+              span.badge.badge-light#notifs #{notifctr}
+            span.sr-only unread messages
+          .dropdown-menu.dropdown-menu-right
+            ul
+              if notifications
+                each val in notifications
+                  li
+                    b #{val.fullName}
+                    p #{val.message}
+                    - var date = new Date(val.timestamp)
+                    - var day = ("0" + date.getDate()).slice(-2);
+                    - var month = ("0" + (date.getMonth() + 1)).slice(-2);
+                    - var minutes = date.getMinutes();
+                    - var hour = date.getHours();
+                    - var finaldate = date.getFullYear()+"-"+(month)+"-"+(day)+" at "+hour+":"+minutes;
+                    p Date: #{finaldate}

@@ -42,24 +42,44 @@ $( "#addsubmotor" ).click(function() {
   
   $( document ).ready(function() {
       //Gate Pass
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, '0');
-      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-      var yyyy = today.getFullYear();
-      today = yyyy + '-' + mm + '-' + dd;
-      $(".currdate").val(today.toString());
-
       
       $('.pmcheck:radio[name=optradio]').change(function() {
-          var salesRep = $('select[name="salesrep"]').val().split(' ')[0];
+          var salesRep = $('input[name="salesRep"]').val().split(' ')[0];
+          var baseurl = window.location.protocol + "//" + window.location.host + "/"
           var i = (new Date().getTime()/1000);
           i = parseInt(i);
           if (this.value == 'pmnew') {
-              $('.pmcontent').append('<div class="pminner pmnew col-md-6"><div"><label>New Code</label><input type="text" name="pmcode" class="form-control " placeholder="" value="GP-'+ salesRep +'-'+i+ '" disabled></div>');
+              $('.pmcontent').append('<div class="pminner pmnew col-md-6"><div"><label>New Code</label><input type="text" name="pmcode" class="form-control " placeholder="" value="PM-'+ salesRep +'-'+i+ '" disabled></div>');
               $('.pmexist').remove();
           }
           else if (this.value == 'pmexist') {
-              $('.pmcontent').append('<div class="col-md-6 pmexist"><label > Available Gate Pass</label><select class="form-control " name="pmcode"><option>GP-'+ $('salesrep').val() +'-'+1234+ '</option></select></div></div>');
+              $('.pmcontent').append('<div class="col-md-6 loading pmexist"></div>');
+              $('.loading').append(' <div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>');
+              //GetPMList
+              $.ajax({   
+                method: 'GET',
+                url: baseurl+'motor/getPmList',                        
+                success: function (data) {    
+                  if(data.length > 0)
+                  {
+                    $('.loading').empty();
+                    $('.pmexist').append('<label > Available PM</label><select class="form-control " name="pmcode"></select></div>');
+                    for(var i=0; i<data.length; i++)
+                    {
+                        $('select[name="pmcode"]').append('<option>'+data[i]._id+'</option>');
+                    }
+                  }
+                  else 
+                  {
+                    $('.loading').empty();
+                    $('.pmexist').append('<p class="form-control">No Available PMs. Please create one.</p>');
+                  }
+                  
+                },
+                error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                }
+              });
               $('.pmnew').remove();
           }
           else{
@@ -78,6 +98,13 @@ $( "#addsubmotor" ).click(function() {
       })
       location.reload();
   });
+
+  - $('input[name="optradio"]').on('dblclick', function()
+    {
+        $(this).prop('checked', false);
+        $('.pmnew').remove()
+        $('.pmexist').remove()
+    })
   
   
   function motorform(count, maxID){

@@ -1,95 +1,198 @@
-script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js' integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj' crossorigin='anonymous')
-    script.
-      window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\\/script>')
-    script(src='https://getbootstrap.com/docs/4.5/dist/js/bootstrap.bundle.min.js' integrity='sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx' crossorigin='anonymous')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js')
-    script(src='https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js')
-    script(src='/socket.io/socket.io.js')
-    script(src='/js/dashboard.js')
+script(src='/js/jquery-3.5.1.slim.min.js')
+script.
+  window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\\/script>')
+script(src='/js/bootstrap.bundle.min.js')
+script(src='/js/feather.min.js')
+script(src='/js/moment.min.js')
+script(src='/js/Chart.min.js')
+script(src='/js/chartjs-plugin-datalabels@0.7.0')
+script(src='/js/popper.min.js')
+script(src='/socket.io/socket.io.js')
+script(src='/js/dashboard.js')
+script(src='/js/jquery.min.js')
+script(src='/js/jquery.magnific-popup.js')
+script(src='/js/custom.js')
+
+script.
+  const role = !{JSON.stringify(role)};
+  var re = new RegExp(/^.*\//);
+
+  if(window.location.href == re.exec(window.location.href)){
+    var socket = io();
     
 
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
-    script(src='js/jquery.magnific-popup.js')
-    script(src='/js/custom.js')
+    if(role == 'admin' )
+    {
+    
+      var ctx = document.getElementById('myChart').getContext('2d');
+      var salesRepObject = loadSalesRep(ctx, !{JSON.stringify(stats)});
 
-    script.
-      var re = new RegExp(/^.*\//);
-      if(window.location.href == re.exec(window.location.href)){
-        var socket = io();
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var salesRepObject = loadSalesRep(ctx, !{JSON.stringify(stats)});
+      var ctx2 = document.getElementById('motorCounts').getContext('2d');
+      var motorCountObj = getMotorCountByDate(ctx2, !{JSON.stringify(motorCounts)});
 
-        var ctx2 = document.getElementById('myPieChart1').getContext('2d');
-        var urgentCountObject = getUrgentCount(ctx2, !{JSON.stringify(urgenCount)});
+      var ctx3 = document.getElementById('myPieChart2').getContext('2d');
+      var clientCountObject = getClients(ctx3, !{JSON.stringify(clientCount)});
 
+      //- var ctx4 = document.getElementById('myPieChart2').getContext('2d');
+      //- var clientCountObject = getClients(ctx4, !{JSON.stringify(clientCount)});
+
+      var ctx5 = document.getElementById('HpandKw').getContext('2d');
+      var HPandKWObj = getHPandKW(ctx5, !{JSON.stringify(HPandKw)});
+
+      var ctx6 = document.getElementById('salesRepByDate').getContext('2d');
+      var MotorSalesRepByDate = getMotorSalesRepByDate(ctx6, !{JSON.stringify(salesRepGraph)});
+
+      //- var ctx6 = document.getElementById('motorCountPerStage').getContext('2d');
+      //- var motorCountPerStage = motorCountPerStage(ctx5, !{JSON.stringify(motorCountPerStage)});
+
+      var ctx7 = document.getElementById('motorStagesByDate').getContext('2d');
+      var motorStagesByDateObj = getMotorStagesByDate(ctx7, !{JSON.stringify(motorCountByDateByStage)});
+    }
+
+    socket.on('db', (msg) => {
+      var baseurl = window.location.protocol + "//" + window.location.host + "/";
+      //Load the initital data
+      var curr = JSON.parse(msg);
+      
+      
+      //When a user is updated because of notifs or changed password
+      if(curr.operationType == 'insert' && curr.ns.coll == 'notifications'){
+        var fullDoc = curr.fullDocument
+        var date = new Date(Date(fullDoc.timestamp))
+        var day = ("0" + date.getDate()).slice(-2);
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+        var minutes = date.getMinutes();
+        var hour = date.getHours();
+        var finaldate = date.getFullYear()+"-"+(month)+"-"+(day)+" at "+hour+":"+minutes;
+
+        $('.notifs .dropdown-menu ul').prepend('<li><b>'+fullDoc.fullName+'</b><p>'+fullDoc.message+'</p><p>Date: '+finaldate+'</p></li>')
         
-        var ctx3 = document.getElementById('myPieChart2').getContext('2d');
-        var clientCountObject = getClients(ctx3, !{JSON.stringify(clientCount)});
+        if($('.notifs .dropdown-menu ul li').length > 5)
+        {
+          $('.notifs .dropdown-menu ul li').last().remove();
+        }else 
+        {
+          $('#notifs').html(parseInt($('#notifs').html()) + 1)
+        }
 
+      }
+
+      //When a new item is added
+      if(curr.operationType == 'insert' && curr.ns.coll == 'motors'){
+        var myTable = document.getElementById('newItem');
+        var row = myTable.insertRow(0);
+        var c0 = row.insertCell(0);
+        var c1 = row.insertCell(1);
+        var c2 = row.insertCell(2);
+        var c3 = row.insertCell(3);
+        var c4 = row.insertCell(4);
+        var c5 = row.insertCell(5);
+        var c6 = row.insertCell(6);
+        var c7 = row.insertCell(7);
+        var c8 = row.insertCell(8);
+
+        //Change the next TAGID
+        $('#nexTagID').html('Next: ' + (parseInt(curr.fullDocument.tagID) + 1))
         
+        c0.innerHTML = '<a href="motor/motorItem/notstarted/'+ curr.fullDocument.tagID +'" class="'+curr.fullDocument.tagID+'">'+curr.fullDocument.tagID+'</a>';
+        c1.innerHTML = 0;
+        if(curr.fullDocument.status == 'notstarted')
+          c2.innerHTML = 'Not Started'
+        else if(curr.fullDocument.status == 'oncheckup')
+          c2.innerHTML = 'On Checkup'
+        else if(curr.fullDocument.status == 'prelimdocs')
+          c2.innerHTML = 'Prelim Docs'
+        else if(curr.fullDocument.status == 'onrewind')
+          c2.innerHTML = 'On Rewind'
+        else if(curr.fullDocument.status == 'onfabrication')
+          c2.innerHTML = 'On Fabrication'
+        else if(curr.fullDocument.status == 'assemblyandtesting')
+          c2.innerHTML = 'Assembly and Testing'
+        else if(curr.fullDocument.status == 'painting')
+          c2.innerHTML = 'Painting'
+        else if(curr.fullDocument.status == 'fordelivery')
+          c2.innerHTML = 'For Delivery'
+        else if(curr.fullDocument.status == 'forbillingstatement')
+          c2.innerHTML = 'For Billing Statement'
+        else if(curr.fullDocument.status == 'for')
+          c2.innerHTML = 'For OR'
+        else if(curr.fullDocument.status == 'completed')
+          c2.innerHTML = 'Completed'
 
-        socket.on('db', (msg) => {
-          //Load the initital data
-          var curr = JSON.parse(msg);
-          if(curr.operationType == 'insert'){
-            var myTable = document.getElementById('newItem');
-            var row = myTable.insertRow(0);
-            //console.log(curr.fullDocument);
-            var c0 = row.insertCell(0);
-            var c1 = row.insertCell(1);
-            var c2 = row.insertCell(2);
-            var c3 = row.insertCell(3);
-            var c4 = row.insertCell(4);
-            var c5 = row.insertCell(5);
-            var c6 = row.insertCell(6);
-            var c7 = row.insertCell(7);
-            var c8 = row.insertCell(8);
+      $.ajax({    
+            async: true,  
+            method: 'GET',
+            url: baseurl+'company/singleItem/'+curr.fullDocument.company_id,                        
+            success: function (data) {  
+                c3.innerHTML = data.compname;
+            },
+            error: function (xhr, text, error) {              
+                alert('Error: ' + error);
+            }
+        })
+        
+        c4.innerHTML = curr.fullDocument.motorType;
+
+        c5.innerHTML = '';
+        
+        if(curr.fullDocument.pmID == null)
+          c6.innerHTML = 'None'
+        else 
+          c6.innerHTML = 'Has PM'
+        c7.innerHTML = curr.fullDocument.remarks;
+
+        if(myTable.rows.length > 10)
+          myTable.deleteRow(10);
+
+
+        $('.recentItems tr:first-child').find('td:first-child').addClass('tagid');
+        
+        //Make changes to Urgent Chart
+        if(role == 'admin')
+        {
+            //Make changes to MotorCounts Chart
+            var motorCountObj_datalength = motorCountObj.data.datasets[0].data.length
+            var isFound = false
+            for(var i=0; i<motorCountObj_datalength; i++)
+            {
+                if(new Date(motorCountObj.data.datasets[0].data[i].x).toISOString() == curr.fullDocument.datePulledOut)
+                {
+                  motorCountObj.data.datasets[0].data[i].y++
+                  isFound = true
+                }
+            }
             
-            c0.innerHTML = '<a href="motor/motorItem/'+ curr.fullDocument.tagID +'">'+curr.fullDocument.tagID+'</a>';
-            c1.innerHTML = 0;
-            c2.innerHTML = curr.fullDocument.status
-            c3.innerHTML = curr.fullDocument.company;
-            c4.innerHTML = curr.fullDocument.motorType;
-            c5.innerHTML = curr.fullDocument.power;
-            if(curr.fullDocument.pmID == '')
-              c6.innerHTML = 'None'
-            else 
-              c6.innerHTML = curr.fullDocument.pmID
-            c7.innerHTML = curr.fullDocument.submotors.length;
-            c8.innerHTML = curr.fullDocument.remarks;
+            if(isFound == false)
+              motorCountObj.data.datasets[0].data.push({x: new Date(curr.fullDocument.datePulledOut), y: 1})
+              
+            motorCountObj.update();
 
-            if(myTable.rows.length > 10)
-              myTable.deleteRow(10);
+             //Make changes to HP and KW Chart
+            //- var powerType = curr.fullDocument.power.toString().split(' ')[1]
+            //- var powerVal = curr.fullDocument.power.toString().split(' ')[0]
 
-            console.log($('.recentItems tr:first-child'));
-            $('.recentItems tr:first-child').find('td:first-child').addClass('tagid');
-            
-            //Make changes to Urgent Chart
-              var urgentIndx = '';
-              curr.fullDocument.urgent === 'on'? 
-                urgentIndx = urgentCountObject.data.labels.indexOf('urgent'):
-                urgentIndx = urgentCountObject.data.labels.indexOf('not');
-              urgentCountObject.chart.data.datasets[0].data[urgentIndx]++;
-              urgentCountObject.update();
+            console.log(powerType )
+            if(powerType == 'HP') HPandKWObj.data.datasets[0].data[0] =  HPandKWObj.data.datasets[0].data[0]++;
+            else if(powerType == 'KW') HPandKWObj.data.datasets[1].data[0] = HPandKWObj.data.datasets[0].data[0]++;
 
-              //Make changes to Client Chart
-              var clientIndx = clientCountObject.data.labels.indexOf(curr.fullDocument.company);
-              if(clientIndx >= 0)
-              {
-                clientCountObject.chart.data.datasets[0].data[clientIndx]++;
-                clientCountObject.update();
-              }
-              else{
-                clientCountObject.data.labels.push(curr.fullDocument.company);
-                clientCountObject.data.datasets.forEach((dataset) => {
-                    dataset.data.push(1);
-                });
-                clientCountObject.update();
-              }
-            //Make changes to SalesRep Chart
-            console.log(curr.fullDocument);
+            HPandKWObj.update();
+           
+
+            //Make changes to Client Chart
+            var clientIndx = clientCountObject.data.labels.indexOf(curr.fullDocument.company);
+            if(clientIndx >= 0)
+            {
+              clientCountObject.chart.data.datasets[0].data[clientIndx]++;
+              clientCountObject.update();
+            }
+            else{
+              clientCountObject.data.labels.push(curr.fullDocument.company);
+              clientCountObject.data.datasets.forEach((dataset) => {
+                  dataset.data.push(1);
+              });
+              clientCountObject.update();
+            }
+
             var salesRepIndx = salesRepObject.data.labels.indexOf(curr.fullDocument.salesRep);
             if(salesRepIndx >= 0)
             {
@@ -103,141 +206,171 @@ script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js' integrity='sha384-
               });
               salesRepObject.update();
             }
-          }
-          if(curr.operationType == 'replace'){
-            //- console.log(curr);
-            $('.tagid a:contains('+curr.fullDocument.tagID+')').css('background', 'black');
-          }
+        }
+        var status = curr.fullDocument.status
+        document.getElementById(status).innerHTML = parseInt(document.getElementById(status).innerHTML) + 1;
+      } 
 
-          
-          //console.log(curr.fullDocument.status);
-          switch(curr.fullDocument.status)  
-          {
-            case 'notstarted': 
-              document.getElementById('notStarted').innerHTML = parseInt(document.getElementById('notStarted').innerHTML) + 1;
-              break;
-            case 'oncheckup': 
-              document.getElementById('onCheckup').innerHTML = parseInt(document.getElementById('onCheckup').innerHTML) + 1;
-              break;
-            //- case 'For Quotation': 
-            //-   document.getElementById('forQuotation').innerHTML = parseInt(document.getElementById('forQuotation').innerHTML) + 1;
-            //-   break;
-            //- case 'Awaiting Purchase Order': 
-            //-   document.getElementById('awaitingPo').innerHTML = parseInt(document.getElementById('awaitingPo').innerHTML) + 1;
-            //-   break;
-            //- case 'On Rewind': 
-            //-   document.getElementById('onRewind').innerHTML = parseInt(document.getElementById('onRewind').innerHTML) + 1;
-            //-   break;
-            //- case 'On Fabrication': 
-            //-   document.getElementById('onFabrication').innerHTML = parseInt(document.getElementById('onFabrication').innerHTML) + 1;
-            //-   break;
-            //- case 'In Baking': 
-            //-   document.getElementById('inBaking').innerHTML = parseInt(document.getElementById('inBaking').innerHTML) + 1;
-            //-   break;
-            //- case 'Waiting for Materials': 
-            //-   document.getElementById('waitingMaterials').innerHTML = parseInt(document.getElementById('waitingMaterials').innerHTML) + 1;
-            //-   break;
-            //- case 'Assembly and Testing': 
-            //-   document.getElementById('assAndTest').innerHTML = parseInt(document.getElementById('assAndTest').innerHTML) + 1;
-            //-   break;
-            //- case 'Painting': 
-            //-   document.getElementById('painting').innerHTML = parseInt(document.getElementById('painting').innerHTML) + 1;
-            //-   break;
-            //- case 'For Delivery': 
-            //-   document.getElementById('forDelivery').innerHTML = parseInt(document.getElementById('forDelivery').innerHTML) + 1;
-            //-   break;
-            //- case 'For Billing Statement': 
-            //-   document.getElementById('forBilling').innerHTML = parseInt(document.getElementById('forBilling').innerHTML) + 1;
-            //-   break;
-            //- case 'For OR': 
-            //-   document.getElementById('forOr').innerHTML = parseInt(document.getElementById('forOr').innerHTML) + 1;
-            //-   break;
-            //- case 'Completed': 
-            //-   document.getElementById('completed').innerHTML = parseInt(document.getElementById('completed').innerHTML) + 1;
-            //-   break;
-          }
+      //When an item proceeds to the next step
+      if(curr.operationType == 'update' && curr.ns.coll == 'motors' && curr.updateDescription.updatedFields.status != null){
+        var myTable = document.getElementById('newItem');
+        var tagID = curr.fullDocument.tagID
+        var ref = $('.tagid a:contains("'+tagID+'")')
+        var grandparent = ref.parent().parent()
+        var stage = ''
+        if(curr.fullDocument.status == 'oncheckup') stage = 'On Checkup'
+        if(curr.fullDocument.status == 'prelimdocs') stage = 'Prelim Docs'
+        if(curr.fullDocument.status == 'onrewind') stage = 'On Rewind'
+        if(curr.fullDocument.status == 'onfabrication') stage = 'On Fabrication'
+        if(curr.fullDocument.status == 'inbaking') stage = 'In Baking'
+        if(curr.fullDocument.status == 'assemblyandtesting') stage = 'Assembly and Testing'
+        if(curr.fullDocument.status == 'painting') stage = 'Painting'
+        if(curr.fullDocument.status == 'fordelivery') stage = 'For Delivery'
+        if(curr.fullDocument.status == 'forbillingstatement') stage = 'For Billing Statement'
+        if(curr.fullDocument.status == 'foror') stage = 'For OR'
+        if(curr.fullDocument.status == 'completed') stage = 'Completed'
+        grandparent.find('.stage').html(stage)
+        grandparent.find('.power').html(stage)
 
-        });
+
+        if(myTable.rows.length > 10)
+          myTable.deleteRow(10);
       }
-      
+      if(curr.operationType == 'replace' && curr.ns.coll == 'motors'){
+        $('.tagid a:contains('+curr.fullDocument.tagID+')').css('background', 'black');
+      }
+    });
+
+    //MotorCounts Chart Buttons
+    $('#motorCountWrapper .day').on('click', function(){
+        console.log(motorCountObj.options.scales)
+        motorCountObj.options.scales.xAxes[0].time.unit = 'day'
+        motorCountObj.update()
+    })
     
-    script.
-      $(window).resize(function() {
+    $('#motorCountWrapper .month').on('click', function(){
+        motorCountObj.options.scales.xAxes[0].time.unit = 'month'
+        motorCountObj.update()
+    })
+
+    $('#motorCountWrapper .year').on('click', function(){
+        motorCountObj.options.scales.xAxes[0].time.unit = 'year'
+        motorCountObj.update()
+    })
+
+    $('#motorCountWrapper .fromdate').on('change', function(){
+
+        motorCountObj.options.scales.xAxes[0].time.min = moment($(this).val()).format('YYYY-MM-DD')
+        motorCountObj.update()
+    })
+
+     $('#motorCountWrapper .todate').on('change', function(){
+        motorCountObj.options.scales.xAxes[0].time.max = moment($(this).val()).format('YYYY-MM-DD')
+        motorCountObj.update()
+    })
+
+    //motorStagesByDate Chart Buttons
+    $('#motorStagesByDateWrapper .day').on('click', function(){
         
-        var totalWidth=document.body.clientWidth;
+              console.log(motorStagesByDateObj.options.scales)
+        motorStagesByDateObj.options.scales.xAxes[0].time.unit = 'day'
+        motorStagesByDateObj.update()
+    })
+    
+    $('#motorStagesByDateWrapper .month').on('click', function(){
+        motorStagesByDateObj.options.scales.xAxes[0].time.unit = 'month'
+        motorStagesByDateObj.update()
+    })
 
-        if(totalWidth <= 600)
-        {
-            clientCountObject.options.legend.display = false;
-            clientCountObject.update();
-        }
-        else{
-          clientCountObject.options.legend.display = true;
-          clientCountObject.update();
-        }
-      });
+    $('#motorStagesByDateWrapper .year').on('click', function(){
+        motorStagesByDateObj.options.scales.xAxes[0].time.unit = 'year'
+        motorStagesByDateObj.update()
+    })
 
-      function submitForm(e)
+    $('#motorStagesByDateWrapper .fromdate').on('change', function(){
+
+        motorStagesByDateObj.options.scales.xAxes[0].time.min = moment($(this).val()).format('YYYY-MM-DD')
+        motorStagesByDateObj.update()
+    })
+
+     $('#motorStagesByDateWrapper .todate').on('change', function(){
+        motorStagesByDateObj.options.scales.xAxes[0].time.max = moment($(this).val()).format('YYYY-MM-DD')
+        motorStagesByDateObj.update()
+    })
+
+    //motorStagesByDate Chart Buttons
+    $('#salesRepByDateWrapper .day').on('click', function(){
+  
+        MotorSalesRepByDate.options.scales.xAxes[0].time.unit = 'day'
+        MotorSalesRepByDate.update()
+    })
+    
+    $('#salesRepByDateWrapper .month').on('click', function(){
+        MotorSalesRepByDate.options.scales.xAxes[0].time.unit = 'month'
+        MotorSalesRepByDate.update()
+    })
+
+    $('#salesRepByDateWrapper .year').on('click', function(){
+        MotorSalesRepByDate.options.scales.xAxes[0].time.unit = 'year'
+        MotorSalesRepByDate.update()
+    })
+
+    $('#salesRepByDateWrapper .fromdate').on('change', function(){
+
+        MotorSalesRepByDate.options.scales.xAxes[0].time.min = moment($(this).val()).format('YYYY-MM-DD')
+        MotorSalesRepByDate.update()
+    })
+
+     $('#salesRepByDateWrapper .todate').on('change', function(){
+        MotorSalesRepByDate.options.scales.xAxes[0].time.max = moment($(this).val()).format('YYYY-MM-DD')
+        MotorSalesRepByDate.update()
+    })
+  }
+  
+
+script.
+  //- var role = !{JSON.stringify(role)}
+  if(role == 'admin')
+  {
+    $(window).resize(function() { 
+    
+      var totalWidth=document.body.clientWidth;
+
+      if(totalWidth <= 600)
       {
-          e.preventDefault();
-          alert('Success!');
+          clientCountObject.options.legend.display = false;
+          clientCountObject.update();
       }
+      else{
+        clientCountObject.options.legend.display = true;
+        clientCountObject.update();
+      }
+    });
+  }
+  
 
-      function addContent(status, index){
-        switch(status._id)  
-        {
-          case 'notstarted': 
-            document.getElementById('notStarted').innerHTML = status.count;
-            break;
-          case 'oncheckup': 
-            document.getElementById('onCheckup').innerHTML = status.count;
-            break;
-          //- case 'For Quotation': 
-          //-   document.getElementById('forQuotation').innerHTML = status.count;
-          //-   break;
-          //- case 'Awaiting Purchase Order': 
-          //-   document.getElementById('awaitingPo').innerHTML = status.count;
-          //-   break;
-          //- case 'On Rewind': 
-          //-   document.getElementById('onRewind').innerHTML = status.count;
-          //-   break;
-          //- case 'On Fabrication': 
-          //-   document.getElementById('onFabrication').innerHTML = status.count;
-          //-   break;
-          //- case 'In Baking': 
-          //-   document.getElementById('inBaking').innerHTML = status.count;
-          //-   break;
-          //- case 'Waiting for Materials': 
-          //-   document.getElementById('waitingMaterials').innerHTML = status.count;
-          //-   break;
-          //- case 'Assembly and Testing': 
-          //-   document.getElementById('assAndTest').innerHTML = status.count;
-          //-   break;
-          //- case 'Painting': 
-          //-   document.getElementById('painting').innerHTML = status.count;
-          //-   break;
-          //- case 'For Delivery': 
-          //-   document.getElementById('forDelivery').innerHTML = status.count;
-          //-   break;
-          //- case 'For Billing Statement': 
-          //-   document.getElementById('forBilling').innerHTML = status.count;
-          //-   break;
-          //- case 'For OR': 
-          //-   document.getElementById('forOr').innerHTML = status.count;
-          //-   break;
-          //- case 'Completed': 
-          //-   document.getElementById('completed').innerHTML = status.count;
-          //-   break;
-        }
-      }
-      
-      function openNav() {
-        document.getElementById("mySidebar").style.width = "250px";
-        document.getElementById("maincontent").style.marginLeft = "250px";
-      }
+  function submitForm(e)
+  {
+      e.preventDefault();
+      alert('Success!');
+  }
 
-      function closeNav() {
-        document.getElementById("mySidebar").style.width = "0";
-        document.getElementById("maincontent").style.marginLeft= "0";
-      }
-      !{JSON.stringify(statusStats)}.forEach(addContent);
+  function addContent(status, index){
+    document.getElementById(status._id).innerHTML = status.count;
+  }
+  
+  function openNav() {
+    document.getElementById("mySidebar").style.width = "250px";
+    document.getElementById("maincontent").style.marginLeft = "250px";
+  }
+
+  function closeNav() {
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("maincontent").style.marginLeft= "0";
+  }
+  var statusStats = !{JSON.stringify(statusStats)}
+
+  if(statusStats != null)
+    statusStats.forEach(addContent);
+
+  

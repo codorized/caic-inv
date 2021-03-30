@@ -1,75 +1,36 @@
-doctype html
+doctype html 
 html(lang='en')
-  head
-    meta(charset='utf-8')
-    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
-    meta(name='description' content='')
-    meta(name='author' content='Mark Otto, Jacob Thornton, and Bootstrap contributors')
-    meta(name='generator' content='Jekyll v4.1.1')
-    title Checkout example · Bootstrap
-    link(rel='canonical' href='https://getbootstrap.com/docs/4.5/examples/checkout/')
-    // Bootstrap core CSS
-    link(href='https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2' crossorigin='anonymous')
-    style.
-      .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      }
-      @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-      font-size: 3.5rem;
-      }
-      }
-    // Custom styles for this template
-    link(href='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.css' rel='stylesheet')
-    link(href='../css/db_inner.css' rel='stylesheet')
+  include ../components/stage_header.pug
   body.bg-light
-    .container
-      nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
-        button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarTogglerDemo01' aria-controls='navbarTogglerDemo01' aria-expanded='false' aria-label='Toggle navigation')
-          span.navbar-toggler-icon
-        #navbarTogglerDemo01.collapse.navbar-collapse.prev
-          a.navbar-brand.col-sm-7(href='#') Stage: Not Started -> On Checkup
-          form.form-inline.col-sm-5
-            .btn-group
-              button.btn.btn-warning(type='button') Action
-              button.btn.btn-warning.dropdown-toggle.dropdown-toggle-split(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
-                span.sr-only Toggle Dropdown
-              .dropdown-menu.dropdown-menu-right
-                a.dropdown-item(href='#') On Checkup
-                a.dropdown-item(href='#') Another action
-                a.dropdown-item(href='#') Something else here
-                .dropdown-divider
-                a.dropdown-item(href='#') Separated link
-      form(method='post')
+    .container.oncheckup
+      include ../components/stage_navbar.pug
+      form#form(method='post', enctype="multipart/form-data")
+        include ../components/buttons.pug
         .row.motorinfo
           .col-md-4.order-md-2.mb-4
             h4.d-flex.justify-content-between.align-items-center.mb-3
               span.text-muted Motor Group Pane
-              - var smcount =  motorobj.submotors
-              span.badge.badge-secondary.badge-pill.motorcount #{smcount.length+1}
+              span.badge.badge-secondary.badge-pill.motorcount 1
             ul.list-group.mb-3.motorpane
               li.list-group-item.d-flex.justify-content-between.lh-condensed(data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne')
                 div
-                  h6.my-0 Motor 1
-                  small.text-muted ID: 1234
-
-            .input-group.card.p-2
-              input.form-control.motorcount2(type='text' name='submotorctr' placeholder='' value='1')
-              button.btn.btn-danger(type='submit') Submit
-          .col-md-8.order-md-1
+                  h6.my-0.motordetails #{motordetails.notstarted[0].motorType}
+                  small.text-muted Motor/TAG ID: #{motordetails.notstarted[0].tagID}
+            //- .input-group.card.p-2
+            //-   button.btn.btn-info#save(type="button") Save
+            //- .input-group.card.p-2
+            //-   button.btn.btn-danger#submit(type='submit' disabled) Submit
+          .col-md-8.order-md-1.motorcol
             h4.mb-3 Motor Details
-            form
+            form 
               #accordionExample.accordion
                 .card
-                  #headingOne.card-header
+                  #headingOne.card-header.heading
                     h2.mb-0
                       button.btn.btn-link(type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
                         | Main Motor
+                    .closepane
+                      input.btn.btn-primary(type='button' name='closepane' value='Close Pane' data-toggle="collapse" data-target="#closepane" aria-expanded="true" aria-controls="closepane")
                   #collapseOne.collapse.show(aria-labelledby='headingOne' data-parent='#accordionExample')
                     .card-body
                       .row
@@ -84,17 +45,50 @@ html(lang='en')
                           input.form-control(type='text' name='phase' placeholder='' required='')
                         .col-md-4.mb-3
                           label(for='phase') Frequency
-                          input.form-control(type='text' name='freq' placeholder='' required='')
+                          input.form-control(type='text' name='frequency' placeholder='' required='')
+                        .col-md-4.mb-3
+                          label(for='phase') Estimated Working Days
+                          input.form-control(type='text' name='workdays' placeholder='' required='')
+                        .mb-3.col-md-6.powerbset
+                          label.powerrbset(for="")
+                            .radio
+                              label
+                                input.pmcheck(type='radio' name='powerrb' value='hp' checked='')
+                                | HP
+                            .radio
+                              label
+                                input.pmcheck(type='radio' name='powerrb' value='kw')
+                                | KW
+                          input.form-control(type='text' name='power' placeholder='' value='' required='')
+                        .col-md-6.mb-3
+                          label(for='lastName') RPM
+                          input.form-control(type='text' name='rpm' placeholder='' value='' required='')
+                          .invalid-feedback
+                            | Valid last name is required.
+                      .row 
+                        .col-md-6.mb-3
+                          label(for='download') Select Before Image
+                          input#uploadselect(type='file' name='beforeimageselect' required='' value='Upload') 
+                      .row
+                        .col-md-6.mb-3  
+                          label(for='voltage') Start Date
+                          input.form-control(type='date' name='startdate' placeholder='' required='')
+                        .col-md-6.mb-3  
+                          label(for='voltage') Finish Date
+                          input.form-control(type='date' name='finishdate' placeholder='' required='')
                       .row
                         .col-md-4.mb-3
-                          label(for='download') Download
+                          label(for='download') Generate IAR
                           input.form-control.btn-warning(type='button' name='download' required='' value='Click me') 
+                        .col-md-4.mb-3.genIAR
+                        .col-md-4.mb-3.genIAR2
+                      .row  
                         .col-md-4.mb-3
-                          label(for='upload1') Upload Front
-                          input.form-control.btn-warning(type='button' name='upload1' required='' value='Click me') 
+                          label(for='upload1') Upload Front (JPEG File)
+                          input(type='file' name='iar1' required='' value='Click me') 
                         .col-md-4.mb-3
-                          label(for='upload2') Upload Back
-                          input.form-control.btn-warning(type='button' name='upload2' required='' value='Click me') 
+                          label(for='upload2') Upload Back (JPEG File)
+                          input(type='file' name='iar2' required='' value='Click me') 
                       .card
                         #headingOne.card-header
                           h5.mb-0
@@ -103,12 +97,12 @@ html(lang='en')
                         #statorassembly.collapse(aria-labelledby='headingOne' data-parent='#statorassembly')
                           .card-body
                             .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='stator-inspection')
-                              label.form-check-label(for='defaultCheck1')
+                              input#check1.form-check-input(type='checkbox' name='stator-inspection')
+                              label.form-check-label(for='check1')
                                 | Inspection and Checking of unit and Data Recording
                             .form-check
-                              input#defaultCheck1.form-check-input(type='radio' name='stator-complete' value='complete-rewinding' checked='checked')
-                              label.form-check-label(for='defaultCheck1')
+                              input#radio1.form-check-input(type='radio' name='stator-complete' value='complete-rewinding')
+                              label.form-check-label(for='radio1')
                                 | Complete Stator Coil Rewinding Package (Includes the following:)
                                 ul 
                                   li Stator coil Rewinding	
@@ -117,12 +111,12 @@ html(lang='en')
                                   li Varnishing and Baking		
                                   li Cleaning and Painting of Unit	
                             .form-check
-                              input#defaultCheck1.form-check-input(type='radio'  name='stator-complete' value='complete-reconditioning')
-                              label.form-check-label(for='defaultCheck1')
+                              input#radio2.form-check-input(type='radio'  name='stator-complete' value='complete-reconditioning')
+                              label.form-check-label(for='radio2')
                                 | Complete Reconditioning Package (Includes all stated above EXCEPT Stator coil Rewinding)
                             .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='conversion')
-                              label.form-check-label(for='defaultCheck1')
+                              input#check2.form-check-input(type='checkbox' name='conversion' disabled)
+                              label.form-check-label(for='check2')
                                 | Conversion of motor any parameter
                       .card
                         #headingOne.card-header
@@ -131,93 +125,159 @@ html(lang='en')
                               | Accessories
                         #rotorassembly.collapse(aria-labelledby='headingOne' data-parent='#rotorassembly')
                           .card-body
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='rotor-loadside')
-                              label.form-check-label(for='defaultCheck1')
-                                | Replacement  of bearing (Load Side)
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='rotor-fanslide')
-                              label.form-check-label(for='defaultCheck1')
-                                | Replacement  of bearing (Fan Side)
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='rotor-gearbox1')
-                              label.form-check-label(for='defaultCheck1')
-                                | Replacement  of bearing (Gear Box)
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='rotor-gearbox2')
-                              label.form-check-label(for='defaultCheck1')
-                                | Replacement  of bearing (Gear Box)
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='rotor-gearbox3')
-                              label.form-check-label(for='defaultCheck1')
-                                | Replacement  of bearing (Gear Box)
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='rotor-gearbox4')
-                              label.form-check-label(for='defaultCheck1')
-                                | Replacement  of bearing (Gear Box)
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='rotor-gearbox5')
-                              label.form-check-label(for='defaultCheck1')
-                                | Replacement  of bearing (Gear Box)
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='rotor-gearbox6')
-                              label.form-check-label(for='defaultCheck1')
-                                | Replacement  of bearing (Gear Box)
-                            .form-check.form-inline
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-options-capacitor')
-                              label.form-check-label(for='defaultCheck1')
-                                select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-capacitor1')
-                                  option(selected='Replacement') Replacement
-                                  option(value='Supply') Supply
-                                | of 
-                                select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-capacitor2')
-                                  option(selected='Running') Running
-                                  option(value='Starting') Starting
-                                  option(value='Both') Both
-                                | Capacitor
-                            .form-check.form-inline
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-options-fanblade')
-                              label.form-check-label(for='defaultCheck1')
-                                select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-fanblade1')
-                                  option(selected='Replacement') Replacement
-                                  option(value='Supply') Supply
-                                | of 
-                                select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-fanblade2')
-                                  option(selected='Running') Running
-                                  option(value='Starting') Starting
-                                  option(value='Both') Both
-                                | Fanblade
-                            .form-check.form-inline
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-options-oilseal')
-                              label.form-check-label(for='defaultCheck1')
-                                select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-oilseal1')
-                                  option(selected='Replacement') Replacement
-                                  option(value='Supply') Supply
-                                | of 
-                                select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-oilseal2')
-                                  option(selected='Running') Running
-                                  option(value='Starting') Starting
-                                  option(value='Both') Both
-                                | Oil Seal
-                            .form-check.form-inline
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-options-shaftseal')
-                              label.form-check-label(for='defaultCheck1')
-                                select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-shaftseal1')
-                                  option(selected='Replacement') Replacement
-                                  option(value='Supply') Supply
-                                | of 
-                                select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-shaftseal2')
-                                  option(selected='') Running
-                                  option(value='Starting') Starting
-                                  option(value='Both') Both
-                                | Shaft Seal
-                            .form-check.form-inline
-                              input#defaultCheck1.form-check-input(type='checkbox'  name='acce-options-oring-or-packing')
-                              label.form-check-label(for='defaultCheck1')
-                                | Replacement of 
-                                select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-oring-or-packing1')
-                                  option(selected='Packing Seal') Packing Seal
-                                  option(value='O-ring') O-ring
+                            .form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check3.form-check-input.checkscope(type='checkbox' name='rotor-loadside')
+                                label.form-check-label(for='check3')
+                                  | Replacement  of bearing (Load Side)
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Load Side' name='rotor-loadside-model' disabled)
+                            .form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check4.form-check-input.checkscope(type='checkbox' name='rotor-fanslide')
+                                label.form-check-label(for='check4')
+                                  | Replacement  of bearing (Fan Side)
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Fan Side' name='rotor-fanslide-model' disabled)
+                            .form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check5.form-check-input.checkscope(type='checkbox' name='rotor-gearbox1')
+                                label.form-check-label(for='check5')
+                                  | Replacement  of bearing (Gear Box)
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Gear Box' name='rotor-gearbox1-model' disabled)
+                            .form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check6.form-check-input.checkscope(type='checkbox' name='rotor-gearbox2') 
+                                label.form-check-label(for='check6')
+                                  | Replacement  of bearing (Gear Box)
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Gear Box' name='rotor-gearbox2-model' disabled)
+                            .form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check7.form-check-input.checkscope(type='checkbox' name='rotor-gearbox3')
+                                label.form-check-label(for='check7')
+                                  | Replacement  of bearing (Gear Box)
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Gear Box' name='rotor-gearbox3-model' disabled)
+                            .form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check8.form-check-input.checkscope(type='checkbox' name='rotor-gearbox4')
+                                label.form-check-label(for='check8')
+                                  | Replacement  of bearing (Gear Box)
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Gear Box' name='rotor-gearbox4-model' disabled)
+                            .form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check9.form-check-input.checkscope(type='checkbox' name='rotor-gearbox5')
+                                label.form-check-label(for='check9')
+                                  | Replacement  of bearing (Gear Box)
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Gear Box' name='rotor-gearbox5-model' disabled)
+                            .form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check9_1.form-check-input.checkscope(type='checkbox' name='rotor-gearbox6')
+                                label.form-check-label(for='check9_1')
+                                  | Replacement  of bearing (Gear Box)
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Gear Box' name='rotor-gearbox6-model' disabled)
+                            .form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check10.form-check-input.checkscope(type='checkbox' name='rotor-shafting')
+                                label.form-check-label(for='check10')
+                                  | Replacement  of Shafting
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Shafting' name='rotor-shafting-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check11.form-check-input.checkscope(type='checkbox' name='acce-options-capacitor')
+                                label.form-check-label(for='check11')
+                                  select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-capacitor1')
+                                    option(selected='Replacement') Replacement
+                                    option(value='Supply') Supply
+                                  | of 
+                                  select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-capacitor2')
+                                    option(selected='Running') Running
+                                    option(value='Starting') Starting
+                                    option(value='Both') Both
+                                  | Capacitor
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Capacitor' name='acce-options-capacitor-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check12.form-check-input.checkscope(type='checkbox' name='acce-options-fanblade')
+                                label.form-check-label(for='check12')
+                                  select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-fanblade1')
+                                    option(selected='Replacement') Replacement
+                                    option(value='Supply') Supply
+                                  | of 
+                                  select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-fanblade2')
+                                    option(selected='Running') Running
+                                    option(value='Starting') Starting
+                                    option(value='Both') Both
+                                  | Fanblade
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Fanblade' name='acce-options-fanblade-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check13.form-check-input.checkscope(type='checkbox' name='acce-options-oilseal')
+                                label.form-check-label(for='check13')
+                                  select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-oilseal1')
+                                    option(selected='Replacement') Replacement
+                                    option(value='Supply') Supply
+                                  | of 
+                                  select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-oilseal2')
+                                    option(selected='Running') Running
+                                    option(value='Starting') Starting
+                                    option(value='Both') Both
+                                  | Oil Seal
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Oil Seal' name='acce-options-oilseal-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check14.form-check-input.checkscope(type='checkbox' name='acce-options-shaftseal')
+                                label.form-check-label(for='check14')
+                                  select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-shaftseal1')
+                                    option(selected='Replacement') Replacement
+                                    option(value='Supply') Supply
+                                  | of 
+                                  select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-shaftseal2')
+                                    option(selected='') Running
+                                    option(value='Starting') Starting
+                                    option(value='Both') Both
+                                  | Shaft Seal
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Shaft Seal' name='acce-options-shaftseal-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check15.form-check-input.checkscope(type='checkbox'  name='acce-options-oring-or-packing')
+                                label.form-check-label(for='check15')
+                                  | Replacement of 
+                                  select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-oring-or-packing1')
+                                    option(selected='Packing Seal') Packing Seal
+                                    option(value='O-ring') O-ring
+                                    option(value='O-ring') Mechanical Seal
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Packing Seal or Oring' name='acce-options-oring-or-packing-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check16.form-check-input.checkscope(type='checkbox' name='acce-options-capilla-or-gear')
+                                label.form-check-label(for='check16')
+                                  select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-capilla-or-gear1')
+                                    option(selected='Replacement') Replacement
+                                    option(value='Supply') Supply
+                                  | of 
+                                  select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-capilla-or-gear2')
+                                    option(selected='Capilla Oil') Capilla Oil
+                                    option(value='Gear Oil') Gear Oil
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Capilla or Gear Oil' name='acce-options-capilla-or-gear-model' disabled)
+                            .form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check17.form-check-input.checkscope(type='checkbox' name='acce-other-1-check')
+                                input.form-control(type='text' name='acce-other-1' placeholder='Specify name')
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Other' name='acce-other-1-model' disabled)
                       .card
                         #headingOne.card-header
                           h5.mb-0
@@ -225,75 +285,108 @@ html(lang='en')
                               | Mechanical
                         #accessories.collapse(aria-labelledby='headingOne' data-parent='#accessories')
                           .card-body
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-fancover')
-                              label.form-check-label(for='defaultCheck1')
-                                | Fabrication of Fan Cover					
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-terminal')
-                              label.form-check-label(for='defaultCheck1')
-                                | Fabrication of Terminal Cover					
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-wielding') 
-                              label.form-check-label(for='defaultCheck1')
-                                | Welding of Endplate					
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-terminalpost')
-                              label.form-check-label(for='defaultCheck1')
-                                | Fabrication of Terminal Post					
-                            .form-check.form-inline
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-options-capilla-or-gear')
-                              label.form-check-label(for='defaultCheck1')
-                                select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-capilla-or-gear1')
-                                  option(selected='Replacement') Replacement
-                                  option(value='Supply') Supply
-                                | of 
-                                select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='acce-options-capilla-or-gear2')
-                                  option(selected='Capilla Oil') Capilla Oil
-                                  option(value='Gear Oil') Gear Oil
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-cable')
-                              label.form-check-label(for='defaultCheck1')
-                                | Fabrication of Adaptor Cable
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-alignment')
-                              label.form-check-label(for='defaultCheck1')
-                                | Fabrication of Shafting including Alignment					
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-finge-coupling')
-                              label.form-check-label(for='defaultCheck1')
-                                | Replacement of Flange Coupling including Reboring					
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-shafting')
-                              label.form-check-label(for='defaultCheck1')
-                                | Build up and Machining of Shafting					
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-welding-motor')
-                              label.form-check-label(for='defaultCheck1')
-                                | Welding of Motor Base	 
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-reboring-housing')
-                              label.form-check-label(for='defaultCheck1')
-                                | Reboring of Bearing Housing						                           
-                            .form-check
-                              input#defaultCheck1.form-check-input(type='checkbox' name='acce-sleeving')
-                              label.form-check-label(for='defaultCheck1')
-                                | Sleeving of Bearing Housing					
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check17.form-check-input.checkscope(type='checkbox' name='acce-fancover')
+                                label.form-check-label(for='check17')
+                                  | Fabrication of Fan Cover		
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Fan Cover' name='acce-fancover-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check18.form-check-input.checkscope(type='checkbox' name='acce-terminal')
+                                label.form-check-label(for='check18')
+                                  | Fabrication of Terminal Cover		
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Terminal Cover' name='acce-terminal-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check19.form-check-input.checkscope(type='checkbox' name='acce-wielding') 
+                                label.form-check-label(for='check19')
+                                  | Welding of Endplate		
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Endplate' name='acce-wielding-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check20.form-check-input.checkscope(type='checkbox' name='acce-terminalpost')
+                                label.form-check-label(for='check20')
+                                  | Fabrication of Terminal Post	
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Terminal Post' name='acce-terminalpost-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check21.form-check-input.checkscope(type='checkbox' name='acce-cable')
+                                label.form-check-label(for='check21')
+                                  | Fabrication of Adaptor Cable
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Adaptor Cable' name='acce-cable-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check22.form-check-input.checkscope(type='checkbox' name='acce-alignment')
+                                label.form-check-label(for='check22')
+                                  | Fabrication of Shafting including Alignment	
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Shafting' name='acce-alignment-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check23.form-check-input.checkscope(type='checkbox' name='acce-finge-coupling')
+                                label.form-check-label(for='check23')
+                                  | Replacement of Flange Coupling including Reboring	
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Flange Coupling' name='acce-finge-coupling-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check24.form-check-input.checkscope(type='checkbox' name='acce-shafting')
+                                label.form-check-label(for='check24')
+                                  | Build up and Machining of Shafting		
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Machining of Shafting' name='acce-shafting-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check25.form-check-input.checkscope(type='checkbox' name='acce-welding-motor')
+                                label.form-check-label(for='check25')
+                                  | Welding of Motor Base	
+                              .form-group.mb-2.col-md-5
+                                input.form-control(type='text' placeholder='Motor Base' name='acce-welding-motor-model' disabled)
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check26.form-check-input.checkscope(type='checkbox' name='acce-reboring-housing')
+                                label.form-check-label(for='check26')
+                                  | Reboring of Bearing Housing					
+                              .form-group.mb-2.col-md-5
+                                select.form-control(name='acce-reboring-housing-model' disabled)
+                                  option Fan Side
+                                  option Load Side
+                                  option Both
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check27.form-check-input.checkscope(type='checkbox' name='acce-sleeving')
+                                label.form-check-label(for='check27')
+                                  | Sleeving of Bearing Housing	
+                              .form-group.mb-2.col-md-5
+                                select.form-control(name='acce-sleeving-model' disabled)
+                                  option Fan Side
+                                  option Load Side
+                                  option Both
                       .card
+                    
                         #headingOne.card-header
                           h5.mb-0
                             button.btn.btn-link(type='button' data-toggle='collapse' data-target='#dynamicbalance' aria-expanded='false' aria-controls='dynamicbalance')
-                              | Dynamic Balanacing of
+                              | Dynamic Balancing of
                         #dynamicbalance.collapse(aria-labelledby='headingOne' data-parent='#dynamicbalance')
                           .card-body
-                            .form-check.form-inline
-                              input#defaultCheck1.form-check-input(type='checkbox' name='dynamic-options')
-                              label.form-check-label(for='defaultCheck1')
-                                select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='dynamic-options2')
-                                  option(selected='Blower') Blower
-                                  option(value='Rotor') Rotor
-                                  option(value='Roller') Roller
-                                  option(value='Impeller') Impeller
+                            .form-check.form-inline.row
+                              .form-group.mb-2.col-md-7
+                                input#check28.form-check-input.checkscope(type='checkbox' name='dynamic-options')
+                                label.form-check-label(for='check28')
+                                  select#inlineFormCustomSelectPref.custom-select.my-2.mr-sm-2(name='dynamic-options2')
+                                    option(selected='Blower') Blower
+                                    option(value='Rotor') Rotor
+                                    option(value='Roller') Roller
+                                    option(value='Impeller') Impeller
+                              .form-group.mb-2.col-md-5
+                                    input.form-control(type='text' placeholder='Blower/Rotor/Roller/Impeller' name="dynamic-options-model" disabled)
                       .card
                         #headingOne.card-header
                           h5.mb-0
@@ -305,59 +398,407 @@ html(lang='en')
                             //- input.form-control(type='text' placeholder='Input Miscelleneous here' name='misc') 
                             .form-inline
                               button.btn.btn-primary#addmisc(type='button') Add
-                              button.btn.btn-danger#delmisc(type='button') Remove
+                              button.btn.btn-danger#delmisc(type='button') Remove	
+                .row
+                  .card.ml-3.mr-3.mb-3.col.pl-0.pr-0
+                    #headingOne.card-header
+                      h5.mb-0
+                        button.btn.btn-link(type='button' data-toggle='collapse' data-target='#mechanical' aria-expanded='true' aria-controls='mechanical')
+                          | Before Recondition
+                    .collapse.show(aria-labelledby='headingOne' data-parent='#mechanical')
+                      .card-body
+                          .row 
+                              .col 
+                                  label.form-label Winding Resistance Test (OHMS)    
+                          .row.g-3
+                              .col
+                                  input.form-control(type='text' placeholder='T1-T2/Pri.' name='befwinding')
+                              .col
+                                  input.form-control(type='text' placeholder='T1-T3/Sec.' name='befwinding')
+                              .col
+                                  input.form-control(type='text' placeholder='T2-T3' name='befwinding')
+                          .row.mt-3
+                              .col 
+                                  label.form-label Insulation Resistance Test (MEGA-OHMS)   
+                          .row.g-3
+                              .col
+                                  input.form-control(type='text' placeholder='TG@500V/TG@1000V at 1 MINUTE' name='befinsulation1')
+                              .col
+                                  input.form-control(type='text' placeholder='TG@500V/TG@1000V at 10 MINUTES' name='befinsulation2')
+                              .col
+                                  input.form-control(type='text' placeholder='Polarization Index' name='befpi')
+                          .row.mt-3
+                              .col 
+                                  label.form-label High Potential Test (MICRO-AMPS)  
+                          .row.g-3
+                              .col
+                                  input.form-control(type='text' placeholder='T1' name='befhighpotential')
+                              .col
+                                  input.form-control(type='text' placeholder='T2' name='befhighpotential')
+                              .col
+                                  input.form-control(type='text' placeholder='T3' name='befhighpotential')
+                          .row.mt-3
+                              .col 
+                                  label.form-label TESTING W/O LOAD (AMPS)
+                          .row.g-3
+                              .col
+                                  input.form-control(type='text' placeholder='L1' name='beftestingwoload1')
+                              .col
+                                  input.form-control(type='text' placeholder='L2' name='beftestingwoload2')
+                              .col
+                                  input.form-control(type='text' placeholder='L3' name='beftestingwoload3')
+                          .row.mt-3
+                              .col 
+                                  label.form-label TESTING W LOAD (AMPS)
+                          .row.g-3
+                              .col
+                                  input.form-control(type='text' placeholder='L1' name='beftestingwload1')
+                              .col
+                                  input.form-control(type='text' placeholder='L2' name='beftestingwload2')
+                              .col
+                                  input.form-control(type='text' placeholder='L3' name='beftestingwload3')
+                          .row.mt-3 
+                              .col 
+                                  label.form-label Surge Test/Comparison Test
+                          .row.g-3
+                              .col
+                                  .form-check
+                                      input#gridCheck1.form-check-input(type='checkbox' name='befphase1' value='coiltocoil')
+                                      label.form-check-label(for='gridCheck1')
+                                          | Coil to Coil Short
+                              .col
+                                  .form-check
+                                      input#gridCheck2.form-check-input(type='checkbox' name='befphase1' value='opencoil')
+                                      label.form-check-label(for='gridCheck2')
+                                          | Open Coil Connection
+                              .col
+                                  .form-check
+                                      input#gridCheck3.form-check-input(type='checkbox' name='befphase1' value='arching')
+                                      label.form-check-label(for='gridCheck3')
+                                          | Arching Between the Windings or Phrases
+                              .col
+                                  .form-check
+                                      input#gridCheck4.form-check-input(type='checkbox' name='befphase2')
+                                      label.form-check-label(for='gridCheck4')
+                                          | Good Winding
+                          .row.mt-3 
+                              .col 
+                                  label.form-label For Rewind or For Recon?
+                          .row.g-3
+                              .col
+                                  .form-check
+                                      input#gridCheck5.form-check-input(type='radio' name='befrewindrecon' value="rewind")
+                                      label.form-check-label(for='gridCheck5')
+                                          | For Rewind
+                              .col
+                                  .form-check
+                                      input#gridCheck6.form-check-input(type='radio' name='befrewindrecon' value="recon")
+                                      label.form-check-label(for='gridCheck6')
+                                          | For Recon 
+                          .row.mt-3  
+                              .col 
+                                  label.form-label Notes/Remarks
+                          .row.g-3
+                              .col
+                                  .form-floating
+                                  textarea#floatingTextarea2.form-control(placeholder='Notes' style='height: 100px' name='befnotes')
                                   
-                                
-                              
-                      
-                                  
-                            		
-                  
-    footer.my-5.pt-5.text-muted.text-center.text-small
-      p.mb-1 © 2020 Calamba Allied Industrial Corp.
-      ul.list-inline
-        li.list-inline-item
-          a(href='#') Web App by Lan Cortez
-    script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js' integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj' crossorigin='anonymous')
-    script.
-      window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\\/script>')
-    script(src='https://getbootstrap.com/docs/4.5/dist/js/bootstrap.bundle.min.js' integrity='sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx' crossorigin='anonymous')
-    script(src='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.js')
+                              .col
+                                  .form-floating
+                                  textarea#floatingTextarea3.form-control(placeholder='Remarks' style='height: 100px' name='befremarks')  
+    include ../components/stage_footer.pug
     script(src='../js/stages/oncheckup.js')
+    script(src='../js/common.js')
     script. 
-    
-      - $("ul.motorpane").delegate(".delmotor", "click", function(e) {
-          var classList = $(this).attr('class').split(/\s+/);
-          $('div.'+classList[2]).remove();
-          $('li.'+classList[2]).remove();
-          var count = $("ul.motorpane li").length;
-          count--;
-          $('li.submotor-'+count).append(
-                '<span class="text-muted delmotor submotor-'+count+'">'
-                    + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
-                      + '<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>'
-                      + '<path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>'
-                    + '</svg>'
-                + '</span></li>'
-          );
-          $('.motorcount').html(count+1);
-          $('.motorcount2').attr('value',count+1);
-        });
+      
+      const tagID = !{JSON.stringify(tagID)};
+      const draft = !{JSON.stringify(draft)};
+      const motordetails = !{JSON.stringify(motordetails.notstarted)};
+ 
+
+      - $(document).ready(function() {
+
+        //-  $('input[name="motorType"]').on('change', function(){
+        //-     var power = ""
+        //-     $('.pmcheck').each(function(i){
+        //-       if ($(this).prop('checked') == true)  power = $(this).val()
+        //-     })
+        //-     $('.motordetails').html($(this).val() + "-" + $('input[name="power"]').val() + " " + power.toUpperCase())
+        //-   })
+
+          $('input[name=powerrb]').on('change', function(){
+          
+            $('.motordetails').html(motordetails[0].motorType + " - " + $('input[name="power"]').val() + " " + ($(this).val()).toUpperCase())
+          })
+
+          $('input[name="power"]').on('change', function(){
+            var power = ""
+            $('.pmcheck').each(function(i){
+              if ($(this).prop('checked') == true)  
+              { 
+                power = $(this).val()
+              }
+            })
+
+           
+
+            $('.motordetails').html(motordetails[0].motorType + " - " + $('input[name="power"]').val() + " " + power.toUpperCase())
+          })
+          
+        if(draft)
+        {
+          //Fill out ordinary text fields
+          $('input[type="text"]').each(function( index ) {
+              var name = $(this).prop('name')
+              if(name == 'power'){
+                $(this).val(draft[0][name].split(' ')[0]);
+                if(draft[0][name].split(' ')[1] == 'HP') $('input[value="hp"]').prop('checked', true)
+                else $('input[value="kw"]').prop('checked', true)
+              }
+              else
+                $(this).val(draft[0][name]);
+          })
+
+          //Fillout date
+          var now = new Date(draft[0].startdate); 
+          var day = ("0" + now.getDate()).slice(-2);
+          var month = ("0" + (now.getMonth() + 1)).slice(-2);
+          var startdate = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+          var now2 = new Date(draft[0].finishdate); 
+          var day2 = ("0" + now2.getDate()).slice(-2);
+          var month2 = ("0" + (now2.getMonth() + 1)).slice(-2);
+          var finishdate = now2.getFullYear()+"-"+(month2)+"-"+(day2) ;
+
+          $('input[name="startdate"]').val(startdate);
+          $('input[name="finishdate"]').val(finishdate);
+
+          //Fill out each scope
+          for(var i=0; i<draft[0].stator.length;i++)
+          {
+              $('input[type="checkbox"]').each(function( index ) {
+                  var name = $(this).prop('name')
+                  if(draft[0].stator[i].name == name) {
+                    $(this).prop('checked', true)
+                    $(this).prop('disabled', false)
+                  }; 
+              })
+              $('input[type="radio"]').each(function( index ) {
+                  var name = $(this).prop('name')
+                  if(name == 'stator-complete'){
+                      if($(this).val() == 'complete-rewinding' && draft[0].stator[i].name == 'stator-complete-rewinding') {$(this).prop('checked', true)}
+                      else if($(this).val() == 'complete-reconditioning' && draft[0].stator[i].name == 'stator-complete-recon') {$(this).prop('checked', true)};
+                  }
+              })
+          }
+
+          for(var i=0; i<draft[0].accessories.length;i++)
+          {
+                $('input[type="text"]').each(function( index ) {
+                  var name = $(this).prop('name')
+                  name = name.replace('-model', '')
+                  if(draft[0].accessories[i].name == name) {
+                    $(this).val(draft[0].accessories[i].model)
+                    $(this).prop('disabled', false)
+                  };
+              })
+
+              $('input[type="checkbox"]').each(function( index ) {
+                  var name = $(this).prop('name')
+                  if(draft[0].accessories[i].name == name) {
+                    $(this).prop('checked', true);
+                  }
+              })
+          }
+
+          for(var i=0; i<draft[0].mechanical.length;i++)
+          {
+                $('input[type="text"]').each(function( index ) {
+                  var name = $(this).prop('name')
+                  name = name.replace('-model', '')
+                  if(draft[0].mechanical[i].name == name) {
+                    $(this).val(draft[0].mechanical[i].model);
+                    $(this).prop('disabled', false)
+                  }
+              })
+                $('input[type="checkbox"]').each(function( index ) {
+                  var name = $(this).prop('name')
+                  if(draft[0].mechanical[i].name == name) {
+                    $(this).prop('checked', true);
+                    var grandparent = $(this).parent().parent();
+                    grandparent.children().eq(1).find('select').prop('disabled', false);     
+                  }
+              })
+          }
+
+          for(var i=0; i<draft[0].dynamic.length;i++)
+          {
+                $('input[type="text"]').each(function( index ) {
+                  var name = $(this).prop('name')
+                  name = name.replace('-model', '')
+                  if(draft[0].dynamic[i].name == name) {
+                    $(this).val(draft[0].dynamic[i].model);
+                    $(this).prop('disabled', false)
+                  }
+              })
+                $('input[type="checkbox"]').each(function( index ) {
+                  var name = $(this).prop('name')
+                  if(draft[0].dynamic[i].name == name) $(this).prop('checked', true);
+              })
+          }
+
+          for(var i=0; i<draft[0].misc.length;i++){
+              $('#misc').find('.card-body .miscinputs').append('<input class="form-control" type="text" placeholder="Input Miscelleneous here" name="misc-' + (i+1) + '" value="'+draft[0].misc[0].name+'">');
+          }
+
+          //BEFORE MTR
+
+          $('input[name="beftestingwoload1"]').val(draft[0].beftestingwoload1)
+          $('input[name="beftestingwoload2"]').val(draft[0].beftestingwoload2)
+          $('input[name="beftestingwoload3"]').val(draft[0].beftestingwoload3)
+          $('input[name="beftestingwload1"]').val(draft[0].beftestingwload1)
+          $('input[name="beftestingwload2"]').val(draft[0].beftestingwload2)
+          $('input[name="beftestingwload3"]').val(draft[0].beftestingwload3)
+
+          $('input[name="befwinding"]').each(function(index){
+              $(this).val(draft[0].before.befwinding[index])
+          })
+
+          $('input[name="befinsulation1"]').val(draft[0].before.befinsulation1)
+          $('input[name="befinsulation2"]').val(draft[0].before.befinsulation2)
+
+          $('input[name="befpi"]').val(draft[0].before.befpi)
+
+          $('input[name="befhighpotential"]').each(function(index){
+              $(this).val(draft[0].before.befhighpotential[index])
+          })
+
+          if(typeof draft[0].before.befphase1 == 'string')
+          {
+              $('input[name="befphase1"]').each(function(index){
+                  if($(this).val() == draft[0].before.befphase1)
+                      $(this).prop('checked', true)    
+              })   
+          }
+          else if(typeof draft[0].before.befphase1 == 'object')
+          {
+              $('input[name="befphase1"]').each(function(index){
+                  for(var i=0; i<draft[0].before.befphase1.length; i++)
+                      if($(this).val() == draft[0].before.befphase1[i]) 
+                          $(this).prop('checked', true)
+              })
+          }
+
+          if(typeof draft[0].before.befphase2 == 'string') $('input[name="befphase2"]').prop('checked', true)
+
+          if(typeof draft[0].before.befrewindrecon == 'string') $('input[value="'+draft[0].before.befrewindrecon+'"]').prop('checked', true)
+          $('textarea[name="befremarks"]').val(draft[0].before.befremarks)
+          $('textarea[name="befnotes"]').val(draft[0].before.befnotes)     
+
+          //MOD - ACCESSORIES All select types
+          for(var i=0; i<draft[0].accessories.length; i++)
+          {
+            if(  
+                 draft[0].accessories[i].name == 'acce-options-capacitor' 
+              || draft[0].accessories[i].name == 'acce-options-fanblade' 
+              || draft[0].accessories[i].name == 'acce-options-oilseal'
+              || draft[0].accessories[i].name == 'acce-options-shaftseal'
+              || draft[0].accessories[i].name == 'acce-options-oring-or-packing'
+              || draft[0].accessories[i].name == 'acce-options-capilla-or-gear'
+            )
+            {
+              
+              var selectobjname = draft[0].accessories[i].name
+              var children1 = $('select[name="'+selectobjname+'1"]').children()
+              for(var j=0; j<children1.length; j++)
+              {
+                if($(children1[j]).val() == draft[0].accessories[i][selectobjname+'1'])
+                  $(children1[j]).prop('selected', true)
+              }
+
+              if($('select[name="'+selectobjname+'2"]').children())
+              {
+                var children2 = $('select[name="'+selectobjname+'2"]').children()
+                for(var j=0; j<children2.length; j++)
+                {
+                  if($(children2[j]).val() == draft[0].accessories[i][selectobjname+'2'])
+                    $(children2[j]).prop('selected', true)
+                }
+              }
+              
+            }
+          }
+
+          //MOD - MECHANICAL All select types
+          for(var i=0; i<draft[0].mechanical.length; i++)
+          {
+            if(draft[0].mechanical[i].name == 'acce-reboring-housing' || draft[0].mechanical[i].name == 'acce-sleeving')
+            {
+              var selectobjname = draft[0].mechanical[i].name
+              var children = $('select[name="'+selectobjname+'-model"]').children()
+              for(var j=0; j<children.length; j++)
+              {
+                if($(children[j]).val() == draft[0].mechanical[i].model)
+                {
+                    
+                    $(children[j]).prop('selected', true)
+                }
+                  
+              }
+            }
+          }
+ 
+          //MOD - DYNAMIC All select types
+          for(var i=0; i<draft[0].dynamic.length; i++)
+          {
+            if(draft[0].dynamic[i].name == 'dynamic-options')
+            {
+              var selectobjname = draft[0].dynamic[i].name
+              var children = $('select[name="'+selectobjname+'2"]').children()
+              for(var j=0; j<children.length; j++)
+              {
+                if($(children[j]).val() == draft[0].dynamic[i][selectobjname+'2'])
+                {
+                    
+                    $(children[j]).prop('selected', true)
+                }
+                  
+              }
+            }
+          }
+          
+          
+        }
+      })
     
       
-      var pdfURL = !{JSON.stringify(pdfURL)};
+        var pdfURL = !{JSON.stringify(pdfURL)};
+        var pdfURL2 = !{JSON.stringify(pdfURL2)};
+        var baseurl = window.location.protocol + "//" + window.location.host + "/";
+        //Download
+        - $('input[name="download"]').on('click', function(){  
 
-      //Download
-      - $('input[name=download]').on('click', function(){
-            var win = window.open(pdfURL, '_blank');
-            if (win) {
-                //Browser has allowed it to be opened
-                win.focus();
-            } else {
-                //Browser has blocked it
-                alert('Please allow popups for this website');
-            }
-      })
+            $("#submit").prop('disabled', false);
+            var grandparent = $(this).parent().parent();
+            grandparent.find('.genIAR').remove();
+            grandparent.find('.genIAR2').remove();
+
+            $.ajax({   
+                async: true, 
+                method: 'POST',
+                data:  $('form').serialize(),   
+                url: baseurl+'io/asset/oncheckup/iar/notexists/'+tagID,                          
+                success: function (data) {  
+                  
+                  grandparent.append('<div class="col-md-4 mb-3 genIAR"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="'+baseurl+'io/asset/oncheckup/iar/front/notexists/'+tagID+'">Click here</a></div></div></div>');
+                  grandparent.append('<div class="col-md-4 mb-3 genIAR2"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="'+baseurl+'io/asset/oncheckup/iar/back/notexists/'+tagID+'">Click here</a></div></div></div>');
+              },
+              error: function (xhr, text, error) {              
+                alert('Oncheckup ajx: io/asset/iar/'+tagID + 'Error: ' + error);
+              }
+            })
+            
+          })
       
       //Add misc
       - $('#addmisc').on('click', function(){
@@ -368,35 +809,74 @@ html(lang='en')
           $('#misc').find('.card-body .miscinputs input').last().remove();
       })
 
-      //Submotor misc
-      - $('#accordionExample').on('click', '.addmisc', function() {
-          var subno = $(this)[0].classList[3].replace(/\D/g,'');
-          var miscCount =  $(this).parent().prev().find('input').length;
-          $(this).parent().prev().append('<input class="form-control" type="text" placeholder="Input Miscelleneous here" name="misc-' + subno + '-'+ (miscCount+1) + '">');
-      });
-      - $('#accordionExample').on('click', '.delmisc', function() {
-          var subno = $(this)[0].classList[3].replace(/\D/g,'');
-          var miscCount =  $(this).parent().prev().find('input').length;
-          $(this).parent().prev().find('input').last().remove();
-      });
-
-      //Submotors 
-      if(!{JSON.stringify(motorobj.submotors)}.length > 0)
+      //Double Click
+      - $('input[name="stator-complete"]').on('dblclick', function()
       {
-        //alert('HEYZZ');
-        ctr=1;
-        const motorSubmotors = !{JSON.stringify(motorobj.submotors)};
-        - $.each(motorSubmotors, function(index, value){
-            //- - var submotor = !{JSON.stringify(motorobj.submotors)};
-            - $('.accordion').append(oncheckup(ctr, value));
+          $(this).prop('checked', false);
+          $('input[name="conversion"]').prop('disabled', true)
+          $('input[name="stator-inspection"]').prop('checked', false)
+      })
 
-            //Submotor pane 
-            $('.delmotor').remove();
-            $('.motorpane').append('<li class="list-group-item d-flex justify-content-between lh-condensed smp-'+ctr+' submotor-'+ctr+'  data-toggle="collapse" data-target="#collapseOne-'+ctr+'" aria-expanded="false" aria-controls="collapseOne-'+ctr+'"><div><h6 class="my-0">Sub Motor '+ctr+'</h6><small class="text-muted">ID: 1234</small></div>'
-                                    +'</li>')
-            ctr++;
-        }); 
-      }
+      //Double Click
+      - $('input[name="stator-complete"]').on('change', function()
+      {
+          if($(this).prop('checked')) {
+            $('input[name="conversion"]').prop('disabled', false)
+            $('input[name="stator-inspection"]').prop('checked', true)
+          }
+          else {
+            $('input[name="conversion"]').prop('disabled', true )
+            $('input[name="stator-inspection"]').prop('checked', false)
+          }
+
+      })
+
+      //Check to enable motor text fields
+      - $('.checkscope').on('change', function()
+      {
+        if($(this).prop('name') != 'stator-inspection' || $(this).prop('name') != 'conversion')
+        {
+          var grandparent = $(this).parent().parent();
+          var model_field = grandparent.children().eq(1);
+          if($(this).prop('checked')){
+              model_field.find('input').prop('disabled', false)
+              model_field.find('select').prop('disabled', false)
+          }
+          else {
+              model_field.find('input').prop('disabled', true)
+              model_field.find('select').prop('disabled', true)
+          }
+        }   
+      })
+      
+      
+      -$('#save').click(function(e) {
+        
+        $.magnificPopup.open({
+          items: {
+            src: '<div class="white-popup">Saving...</div>',
+            type: 'inline'
+          }
+        });
+        $.ajax({   
+            async: true, 
+            method: 'POST',
+            data:  $('form').serialize(),   
+            url: baseurl+'motor/save/oncheckup/'+tagID,                          
+            success: function (data) {  
+              $.magnificPopup.close();
+              //Close the popup
+               e.preventDefault();
+               if (window.parent == window.top) {
+                   window.parent.$.magnificPopup.close();
+              }
+            },
+            error: function (xhr, text, error) {              
+              alert('Oncheckup ajx: motor/save/oncheckup/'+tagID + 'Error: ' + error);
+            }
+        })
+        
+      });
 
 
       

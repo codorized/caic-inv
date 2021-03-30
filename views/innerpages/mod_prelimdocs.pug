@@ -1,0 +1,1298 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description' content='')
+    meta(name='author' content='Mark Otto, Jacob Thornton, and Bootstrap contributors')
+    meta(name='generator' content='Jekyll v4.1.1')
+    title Checkout example · Bootstrap
+    link(rel='canonical' href='https://getbootstrap.com/docs/4.5/examples/checkout/')
+    // Bootstrap core CSS
+    link(href='https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2' crossorigin='anonymous')
+    style.
+      .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      }
+      @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+      }
+      }
+    // Custom styles for this template
+    link(href='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.css' rel='stylesheet')
+    link(href='/../../css/db_inner.css' rel='stylesheet')
+    link(href='/../../css/magnific-popup.css' rel='stylesheet')
+  body.bg-light
+    .container.prelimdocs
+      include ../components/mod_navbar.pug
+      include ../components/mod_navstages.pug
+      if isAllowed
+        if prelimdocs.isComplete == true
+          form(method='post', enctype="multipart/form-data")
+            include ../components/buttons.pug
+            .row.motorinfo
+              .col-md-4.order-md-2.mb-4#closepane.show
+                h4.d-flex.justify-content-between.align-items-center.mb-3
+                  span.text-muted Motor Group Pane
+                  //- - var smcount =  motorObjOncheckup.submotors
+                  //- span.badge.badge-secondary.badge-pill.motorcount #{smcount.length+1}
+                ul.list-group.mb-3.motorpane
+                    li.list-group-item.d-flex.justify-content-between.lh-condensed(data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne')
+                      div
+                        h6.my-0 #{motordetails.notstarted[0].motorType} - #{motorObjOncheckup.power}
+                        small.text-muted Motor/TAG ID: #{motordetails.notstarted[0].tagID}
+                .card.mb-3
+                    .card-header
+                        h6 Downloads
+                    ul.list-group.list-group-flush 
+                        if typeof prelimdocs.qNo == 'object'
+                          - var scopes = ['stator', 'accessories', 'mechanical', 'dynamic', 'misc']
+                          - var i = 0
+                          each val in prelimdocs.qNo
+                            li.list-group-item 
+                              a(href=url+"/io/downloadPDF/prelimdocs/subqform/"+tagID+"/"+tagID+"-"+scopes[i]+".pdf") Quotation: #{val}
+                              - i++
+                        else if typeof prelimdocs.qNo == 'string'
+                          li.list-group-item 
+                              a(href=url+"/io/downloadPDF/prelimdocs/qform/"+tagID+"/"+tagID+".pdf") Quotation: #{prelimdocs.qNo}
+              .col-md-8.order-md-1.motorcol
+                h4.mb-3 Motor Details
+                form
+                  #accordionExample.accordion
+                    .card
+                      #headingOne.card-header.mainmotor
+                        h2.mb-0
+                          button.btn.btn-link(type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
+                            | Main Motor
+                        .closepane
+                          input.btn.btn-primary(type='button' name='closepane' value='Close Pane' data-toggle="collapse" data-target="#closepane" aria-expanded="true" aria-controls="closepane")
+                      #collapseOne.collapse.show(aria-labelledby='headingOne' data-parent='#accordionExample')
+                        .card-body
+                          .row
+                            .col-md-6.mb-3  
+                              label(for='voltage') Name of Rewinder
+                              select.form-control.rewinders(name='rewindername' placeholder='' required='')
+                          .row
+                            .col-md-6.mb-3.discountfield 
+                              label(for='voltage') Discount
+                              .row  
+                                .col-md-6.mb-3 
+                                  input.form-control.discountpass(type='password' name='discountpass' placeholder='passcode first' autocomplete="off")
+                                .col-md-6.mb-3 
+                                  label(for='voltage')  
+                                  input.form-control.discountpassenter.btn.btn-warning(type='button' value='Verify' name="discountverify")
+                          .row
+                            .col-md-6.mb-3  
+                              label(for='voltage') Start Date
+                              input.form-control(type='date' name='startdate' placeholder='' required='')
+                            .col-md-6.mb-3  
+                              label(for='voltage') Finish Date
+                              input.form-control(type='date' name='finishdate' placeholder='' required='')
+                          .row
+                            .col-md-6.mb-3#qformcont
+                              label(for='download') Quotation Form
+                              input.form-control.btn-primary.qformprompt(type='button' name='qform' required='' value='Generate Quotation Form?') 
+                              input.form-control.btn-warning#qform.submit(type='button' name='beforeimage' required='' value='Generate') 
+                          .card
+                            #headingOne.card-header
+                              h5.mb-0
+                                button.btn.btn-link(type='button' data-toggle='collapse' data-target='#genreq' aria-expanded='false' aria-controls='genreq')
+                                  | General Requirements
+                            #genreq.collapse(aria-labelledby='headingOne' data-parent='#genreq')
+                              .card-body
+                                table.table
+                                  thead
+                                      tr
+                                          th(scope='col') Name
+                                          th(scope='col') Qty
+                                          th(scope='col') Unit Cost
+                                          th(scope='col') Total Cost
+                                      tbody
+                                        tr 
+                                          th Pickup and Delivery
+                                          td 
+                                              input.form-control.qty(type='text' name='genreq-pickup-qty' placeholder='' required='' value='1')
+                                          td 
+                                              input.form-control.unitcost(type='text' name='genreq-pickup-unitcost' placeholder='' required='' value='0')
+                                          td 
+                                              input.form-control.totalcost(type='text' name='genreq-pickup-totalcost' placeholder='' required='' value='0' readonly)
+                                        tr 
+                                          th Dismantling and Installation
+                                          td 
+                                              input.form-control.qty(type='text' name='genreq-dismantling-qty' placeholder='' required='' value='1')
+                                          td 
+                                              input.form-control.unitcost(type='text' name='genreq-dismantling-unitcost' placeholder='' required='' value='0')
+                                          td 
+                                              input.form-control.totalcost(type='text' name='genreq-dismantling-totalcost' placeholder='' required='' value='0' readonly)
+                          .card
+                            #headingOne.card-header
+                              h5.mb-0
+                                button.btn.btn-link(type='button' data-toggle='collapse' data-target='#statorassembly' aria-expanded='false' aria-controls='statorassembly')
+                                  | Stator Assembly
+                            #statorassembly.collapse(aria-labelledby='headingOne' data-parent='#statorassembly')
+                              .card-body
+                                .row
+                                  .col-md-6.mb-3#qformcont
+                                    label(for='download') Quotation Form for Stator
+                                    input.form-control.btn-warning.subqform-stator.submit(type='button' required='' value='Generate') 
+                                table.table
+                                  thead
+                                      tr
+                                          th(scope='col') Name
+                                          th(scope='col') Qty
+                                          th(scope='col') Unit Cost
+                                          th(scope='col') Total Cost
+                                      tbody
+                                      - counter = 1
+                                      each scope in motorObjOncheckup.stator
+                                          tr 
+                                              th #{scope.formal}
+                                              td 
+                                                  input.form-control.qty(type='text' name='stator-qty-'+counter placeholder='' required='' value='1')
+                                              td 
+                                                  input.form-control.unitcost(type='text' name='stator-unitcost-'+counter placeholder='' required='' value='0' readonly)
+                                              td 
+                                                  input.form-control(type='text' name='stator-totalcost-'+counter placeholder='' required='' value='0' readonly)
+                                              - counter++;
+                          .card
+                            #headingOne.card-header
+                              h5.mb-0
+                                button.btn.btn-link(type='button' data-toggle='collapse' data-target='#rotorassembly' aria-expanded='false' aria-controls='rotorassembly')
+                                  | Accessories
+                            #rotorassembly.collapse(aria-labelledby='headingOne' data-parent='#rotorassembly')
+                              .card-body
+                                .row
+                                  .col-md-6.mb-3
+                                    label(for='download') Quotation Form for Accessories
+                                    input.form-control.btn-warning.subqform-accessories.submit(type='button' required='' value='Generate') 
+                                table.table
+                                  thead
+                                      tr
+                                          th(scope='col') Check
+                                          th(scope='col') Name
+                                          th(scope='col') Item
+                                          th(scope='col') Qty
+                                          th(scope='col') Unit Cost
+                                          th(scope='col') Total Cost
+                                          th(scope='col') Remarks
+                                      tbody
+                                      - counter = 1
+                                      each scope in motorObjOncheckup.accessories
+                                          tr 
+                                              td.filterqform 
+                                                input#defaultCheck1.form-check-input(type='checkbox' value='')
+                                              td #{scope.formal}
+                                              //- - if(scope.name != 'acce-options-capacitor' && scope.name != 'acce-options-fanblade' && scope.name != 'acce-options-oilseal' && scope.name != 'acce-options-shaftseal'  && scope.name != 'acce-options-oring-or-packing')
+                                                
+                                              if(scope.name == 'acce-options-capilla-or-gear' && scope['acce-options-capilla-or-gear2'] == 'Capilla Oil')
+                                                td.loading 
+                                                  select.form-control.model-oil-capilla(name = 'acce-item-'+counter)
+                                              else if(scope.name == 'acce-options-capilla-or-gear' && scope['acce-options-capilla-or-gear2'] == 'Gear Oil')
+                                                td.loading 
+                                                  select.form-control.model-oil-gear(name = 'acce-item-'+counter)
+                                              else if(scope.name == 'acce-options-fanblade')
+                                                td.loading 
+                                                  select.form-control.model-fanblade(name = 'acce-item-'+counter)
+                                              else if(scope.name == 'acce-options-capacitor')
+                                                td.loading 
+                                                  select.form-control.model-capacitor(name = 'acce-item-'+counter)
+                                              else if(scope.name == 'acce-options-oilseal')
+                                                td.loading 
+                                                  select.form-control.model-oilseal(name = 'acce-item-'+counter)
+                                              else if(scope.name == 'acce-options-shaftseal')
+                                                td.loading 
+                                                  select.form-control.model-shaftseal(name = 'acce-item-'+counter)
+                                              else if(scope.name == 'acce-options-oring-or-packing')
+                                                td.loading 
+                                                  select.form-control.model-oringorpacking(name = 'acce-item-'+counter)
+                                              else if(scope.name == 'rotor-loadside' || scope.name == 'rotor-fanslide' || scope.name == 'rotor-gearbox1' || scope.name == 'rotor-gearbox2' || scope.name == 'rotor-gearbox3' || scope.name == 'rotor-gearbox4' || scope.name == 'rotor-gearbox5' || scope.name == 'rotor-gearbox6')
+                                                td.acce-parent
+                                                  select.form-control.acce(name = 'acce-item-'+counter )
+                                              else if scope.name == 'acce-other-1'
+                                                td.acce-parent
+                                                  select.form-control.price(name = 'item-models')
+                                                  select.form-control(name = 'item-model-items' required)
+                                              else 
+                                                td.acce-parent
+                                                  input.form-control.acce(name = 'acce-item-'+counter )
+                                              td
+                                                  input.form-control.qty(type='text' name='acce-qty-'+counter placeholder='' required='' value='1')
+                                              if scope.name != 'rotor-shafting'
+                                                td
+                                                  input.form-control.unitcost(type='text' name='acce-unitcost-'+counter placeholder='' required='' value='0' readonly)
+                                              else 
+                                                td
+                                                  input.form-control.unitcost(type='text' name='acce-unitcost-'+counter placeholder='' required='' value='0')
+                                              td
+                                                  input.form-control.totalcost(type='text' name='acce-totalcost-'+counter placeholder='' required='' value='0' readonly)
+                                              td
+                                                  input.form-control(type='text' name='acce-remarks-'+counter placeholder='' value='' disabled)
+                                              - counter++;
+                          .card
+                            #headingOne.card-header
+                              h5.mb-0
+                                button.btn.btn-link(type='button' data-toggle='collapse' data-target='#accessories' aria-expanded='false' aria-controls='accessories')
+                                  | Mechanical
+                            #accessories.collapse(aria-labelledby='headingOne' data-parent='#accessories')
+                              .card-body
+                                .row
+                                    .col-md-6.mb-3
+                                      label(for='download') Quotation Form for Mechanical
+                                      input.form-control.btn-warning.subqform-mechanical.submit(type='button' required='' value='Generate') 
+                                table.table
+                                  thead
+                                      tr
+                                          th(scope='col') Check
+                                          th(scope='col') Name
+                                          th(scope='col') Item
+                                          th(scope='col') Qty
+                                          th(scope='col') Unit Cost
+                                          th(scope='col') Total Cost
+                                          th(scope='col') Remarks
+                                      tbody
+                                      - counter = 1
+                                      each scope in motorObjOncheckup.mechanical
+                                          tr(class = scope.name) 
+                                              td.filterqform 
+                                                input#defaultCheck1.form-check-input(type='checkbox' value='')
+                                              td #{scope.formal}
+                                              if(scope.name != 'acce-fancover' && scope.name != 'acce-terminal' && scope.name != 'acce-wielding' && scope.name != 'acce-terminalpost' && scope.name != 'acce-cable' && scope.name != 'acce-alignment' && scope.name != 'acce-finge-coupling' && scope.name != 'acce-welding-motor' && scope.name != 'acce-shafting')
+                                                td.acce-parent
+                                                    select.form-control(name = 'mech-item-'+counter )
+                                                      option Loan Side
+                                                      option Fan Side
+                                                      option Both Sides
+                                              else if(scope.name == 'acce-options-fanblade')
+                                                td 
+                                                  select.form-control.model-fanblade(name = 'mech-item-'+counter)
+                                              else if(scope.name == 'acce-fancover')
+                                                td.loading 
+                                                  select.form-control.model-fancover(name = 'mech-item-'+counter)
+                                              else if(scope.name == 'acce-terminal')
+                                                td.loading 
+                                                  select.form-control.model-terminalcover(name = 'mech-item-'+counter)
+                                              else if(scope.name == 'acce-wielding')
+                                                td.loading 
+                                                  select.form-control.model-endplate(name = 'mech-item-'+counter)
+                                              else if(scope.name == 'acce-terminalpost')
+                                                td.loading 
+                                                  select.form-control.model-terminalpost(name = 'mech-item-'+counter)
+                                              else if(scope.name == 'acce-cable')
+                                                td.loading 
+                                                  select.form-control.model-adaptorcable(name = 'mech-item-'+counter)
+                                              else if(scope.name == 'acce-alignment')
+                                                td.loading 
+                                                  select.form-control.model-shafting-fabrication(name = 'mech-item-'+counter)
+                                              else if(scope.name == 'acce-finge-coupling')
+                                                td.loading 
+                                                  select.form-control.model-flangecoupling(name = 'mech-item-'+counter)
+                                              else if(scope.name == 'acce-shafting')
+                                                td.loading 
+                                                  select.form-control.model-shafting-buildupandmachining(name = 'mech-item-'+counter)
+                                              else if(scope.name == 'acce-welding-motor')
+                                                td.loading 
+                                                  select.form-control.model-motorbase(name = 'mech-item-'+counter)
+                                              else 
+                                                td
+                                                  input.form-control(type='text' name='mech-item-'+counter placeholder='' required='' )
+                                              td 
+                                                  input.form-control.qty(type='text' name='mech-qty-'+counter placeholder='' required='' value='1')
+                                              td 
+                                                  input.form-control.unitcost(type='text' name='mech-unitcost-'+counter placeholder='' required='' value='0' readonly)
+                                              td 
+                                                  input.form-control.totalcost(type='text' name='mech-totalcost-'+counter placeholder='' required='' disabled value='0' readonly)
+                                              td
+                                                  input.form-control(type='text' name='mech-remarks-'+counter placeholder='' value='' disabled)
+                                              - counter++
+                          .card 
+                            #headingOne.card-header
+                              h5.mb-0
+                                button.btn.btn-link(type='button' data-toggle='collapse' data-target='#dynamicbalance' aria-expanded='false' aria-controls='dynamicbalance')
+                                  | Dynamic Balancing of
+                            #dynamicbalance.collapse(aria-labelledby='headingOne' data-parent='#dynamicbalance')
+                              .card-body
+                                .row
+                                    .col-md-6.mb-3
+                                      label(for='download') Quotation Form for Dynamic
+                                      input.form-control.btn-warning.subqform-dynamic.submit(type='button' required='' value='Generate') 
+                                table.table
+                                  thead
+                                      tr
+                                          th(scope='col') Check
+                                          th(scope='col') Name
+                                          th(scope='col') Qty
+                                          th(scope='col') Unit Cost
+                                          th(scope='col') Total Cost
+                                      tbody
+                                      - counter = 1
+                                      each scope in motorObjOncheckup.dynamic
+                                          tr(class = scope.name) 
+                                              td.filterqform 
+                                                input#defaultCheck1.form-check-input(type='checkbox' value='')
+                                              th #{scope.formal}
+                                              td 
+                                                  input.form-control.qty(type='text' name='dynamic-qty-'+counter placeholder='' required='' value='1')
+                                              td 
+                                                  input.form-control.unitcost(type='text' name='dynamic-unitcost-'+counter placeholder='' required='' disabled value='0' readonly)
+                                              td 
+                                                  input.form-control.totalcost(type='text' name='dynamic-totalcost-'+counter placeholder='' required='' disabled value='0' readonly)
+                                              - counter++
+                          .card
+                            #headingOne.card-header
+                              h5.mb-0
+                                button.btn.btn-link(type='button' data-toggle='collapse' data-target='#misc' aria-expanded='false' aria-controls='misc')
+                                  | Miscelleneous
+                            #misc.collapse(aria-labelledby='headingOne' data-parent='#misc')
+                              .card-body
+                                .row
+                                    .col-md-6.mb-3
+                                      label(for='download') Quotation Form for Miscelleneous
+                                      input.form-control.btn-warning.subqform-misc.submit(type='button' required='' value='Generate') 
+                                table.table
+                                  thead
+                                      tr
+                                          th(scope='col') Name
+                                          th(scope='col') Qty
+                                          th(scope='col') Unit Cost
+                                          th(scope='col') Total Cost
+                                      tbody
+                                      - counter = 1
+                                      each scope in motorObjOncheckup.misc
+                                          tr 
+                                              th #{scope.name}
+                                              td 
+                                                  input.form-control.qty(type='text' name='misc-qty-'+counter placeholder='' required='' value='1')
+                                              td 
+                                                  input.form-control.unitcost(type='text' name='misc-unitcost-'+counter placeholder='' required='' value='0')
+                                              td 
+                                                  input.form-control.totalcost(type='text' name='misc-totalcost-'+counter placeholder='' required='' disabled value='0')
+                                              - counter++;    		
+        else 
+          main.form-signin
+          .alert(role='alert' class="alert-"+errorType)
+              h5 #{title}
+              p #{message}  
+      else 
+        body.text-center
+          main.form-signin
+              .alert(role='alert' class="alert-danger")
+                  h5 Restricted
+                  p You are not allowed to access this.
+
+    include ../components/stage_footer.pug
+    script(src='/../../js/common.js')
+    script(src='/../../js/stages/prelimdocs.js')
+    script. 
+
+        $( document ).ready(function() {
+            const tagID = !{JSON.stringify(tagID)};
+            var prelimdocs = !{JSON.stringify(prelimdocs)}
+            var role = !{JSON.stringify(role)}
+           
+            var motorobject = !{JSON.stringify(motorObjOncheckup)}
+            var motorrpm = motorobject.rpm
+            var motorpower = motorobject.power
+            var motorpowerval = motorpower.split(' ')[0]
+            var motorpowertype = motorpower.split(' ')[1]
+            var tableurl = null
+            var baseurl = window.location.protocol + "//" + window.location.host + "/"
+            var hzspeed = Math.floor((120*motorobject.frequency)/motorrpm);
+            if(hzspeed >= 8) hzspeed = 5
+            else if(hzspeed >= 6 && hzspeed < 8) hzspeed = 4
+            else if(hzspeed < 4) hzspeed = 3
+            else hzspeed = 2
+
+            //Fillout date
+            var now = new Date(prelimdocs.startdate); 
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var startdate = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+            var now2 = new Date(prelimdocs.finishdate); 
+            var day2 = ("0" + now2.getDate()).slice(-2);
+            var month2 = ("0" + (now2.getMonth() + 1)).slice(-2);
+            var finishdate = now2.getFullYear()+"-"+(month2)+"-"+(day2) ;
+
+            $('input[name="startdate"]').val(startdate);
+            $('input[name="finishdate"]').val(finishdate);
+
+            if(motorpowertype == 'HP') tableurl = baseurl+'motor/hpTable/'+motorpowerval;
+            else if (motorpowertype == 'KW') tableurl = baseurl+'motor/kwTable/'+motorpowerval;
+            
+            if(tableurl)
+            {
+              var hptable = function () {
+                  var tmp = null;
+                  $.ajax({   
+                      async: false, 
+                      method: 'GET',
+                      url: tableurl,                        
+                      success: function (data) {                        
+                          tmp = data;
+                          
+                      },
+                      error: function (xhr, text, error) {              
+                          alert('Error: ' + error);
+                      }
+                  })
+                  return tmp;
+              }();
+            }
+          
+
+          //-GENERAL STUFF
+          //-MOD - Fill Out General Requirements
+          -$('input[name="genreq-pickup-qty"]').val(prelimdocs.gen[0].qty)
+          -$('input[name="genreq-pickup-unitcost"]').val(prelimdocs.gen[0].unitcost)
+          -$('input[name="genreq-pickup-totalcost"]').val(prelimdocs.gen[0].totalcost)
+
+          -$('input[name="genreq-dismantling-qty"]').val(prelimdocs.gen[1].qty)
+          -$('input[name="genreq-dismantling-unitcost"]').val(prelimdocs.gen[1].unitcost)
+          -$('input[name="genreq-dismantling-totalcost"]').val(prelimdocs.gen[1].totalcost)
+
+
+          for(var i=0; i < motorobject.accessories.length; i++)
+          {
+            
+            -$('input[name="acce-remarks-'+(i+1)+'"]').val(motorobject.accessories[i].model)
+          }
+
+          for(var i=0; i < motorobject.mechanical.length; i++)
+          {
+            
+            -$('input[name="mech-remarks-'+(i+1)+'"]').val(motorobject.mechanical[i].model)
+          }
+          
+          -$('#upload').on('click', function(){
+              var formdata = $('form').serialize();
+              
+          })
+
+
+          -$('.filterqform').find('input').on('change', function(){
+            if(this.checked)
+            {
+              $(this).parent().parent().find('.acce').attr('disabled', 'disabled');
+              $(this).parent().parent().find('.qty').attr('disabled', 'disabled');
+              $(this).parent().parent().find('.unitcost').attr('disabled', 'disabled');
+              $(this).parent().parent().find('.totalcost').attr('disabled', 'disabled');
+            }
+            else 
+            {
+              $(this).parent().parent().find('.acce').removeAttr('disabled');
+              $(this).parent().parent().find('.qty').removeAttr('disabled');
+              $(this).parent().parent().find('.unitcost').removeAttr('disabled');
+              $(this).parent().parent().find('.totalcost').removeAttr('disabled');
+            }
+          })
+          
+          -$('.qformprompt').hide();
+          -$('#qform').hide();
+          -$("input[class*='subqform']").parent().hide();
+
+          //-Get the preference
+          -$.ajax({   
+              async: false, 
+              method: 'GET',
+              url: baseurl+'motor/prelimdocs/'+tagID+'/qformpref/',                        
+              success: function (data) {    
+                  if(!data) 
+                  {
+                    $('.qformprompt').show();
+                    $('#qform').hide();
+                    $("input[class*='subqform']").parent().hide();
+                  } else
+                  {
+                    if(data[0].qformPref == 'whole')
+                    {
+
+                      $('.qformprompt').hide();
+                      $('#qform').show();
+                      $("input[class*='subqform']").parent().hide();
+                    }
+                    else {
+                      $('.qformprompt').hide();
+                      $('#qform').hide();
+                      $("input[class*='subqform']").parent().show();
+                    }
+                  }
+              },
+              error: function (xhr, text, error) {              
+                  alert('Error: ' + error);
+              }
+          })
+          //-Qty
+          var numberOnly ='';
+          $('.qty').on('change', function(){
+            
+            if($(this).attr('name').includes('stator'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($(this).val());
+              var unit = parseFloat($('input[name=stator-unitcost-' + numberOnly + ']').val());
+              - $('input[name="stator-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('acce-qty'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($(this).val());
+              var unit = parseFloat($('input[name=acce-unitcost-' + numberOnly + ']').val());
+              - $('input[name="acce-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('mech-qty'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($(this).val());
+              var unit = parseFloat($('input[name=mech-unitcost-' + numberOnly + ']').val());
+              - $('input[name="mech-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('dynamic-qty'))
+            {
+              
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              
+              var qty = parseFloat($(this).val());
+              var unit = parseFloat($('input[name=dynamic-unitcost-' + numberOnly + ']').val());
+              - $('input[name="dynamic-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('misc-qty'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($(this).val());
+              var unit = parseFloat($('input[name=misc-unitcost-' + numberOnly + ']').val());
+              - $('input[name="misc-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('genreq-pickup-qty'))
+            {
+              
+              var qty = parseFloat($(this).val());
+              var unit = parseFloat($('input[name="genreq-pickup-unitcost"]').val());
+              - $('input[name="genreq-pickup-totalcost"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('genreq-dismantling-qty'))
+            {
+              
+              var qty = parseFloat($(this).val());
+              var unit = parseFloat($('input[name="genreq-dismantling-unitcost"]').val());
+              - $('input[name="genreq-dismantling-totalcost"]').val(qty*unit)
+            } 
+          })
+          
+          - $("input[class*='subqform']").on("click", function() {
+
+              var scope = $(this).attr('class').split(' ')[2].split('-')[1];
+              $('.'+scope+'-generatedlink').remove();
+              $.ajax({   
+                async: true, 
+                method: 'POST',
+                url: baseurl+'io/asset/prelimdocs/quotation/exists/'+tagID+'/'+scope,  
+                data:  $('form').serialize(),                             
+                success: function (data) {  
+                   $('.subqform-'+scope).parent().parent().append('<div class="col-md-6 mb-3 '+scope+'-generatedlink"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="' +baseurl+ 'io/asset/prelimdocs/quotation/exists/' + tagID + '/'+scope+'">Click here</a></div></div></div>');
+                },
+                error: function (xhr, text, error) {              
+                  alert('Error: ' + error);
+                  }
+                })
+            })
+          
+
+
+          rewinderurl = baseurl+'rewinder/single/all'
+          $.ajax({   
+              async: false, 
+              method: 'GET',
+              url: rewinderurl,                        
+              success: function (data) {    
+
+                  for(var i=0; i<data.length; i++)
+                  {
+                    //MOD: Rewinder - added an if statement to select the chosen rewinder
+                    if(data[i].rewindername == prelimdocs.rewindername)
+                      -$('.rewinders').append('<option selected>' + data[i].rewindername + '</option>');
+                    else 
+                      -$('.rewinders').append('<option>' + data[i].rewindername + '</option>');
+                  }                
+              },
+              error: function (xhr, text, error) {              
+                  alert('Error: ' + error);
+              }
+          })
+
+          -$('.unitcost').on('change', function(){
+            
+            if($(this).attr('name').includes('stator'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($('input[name=stator-qty-' + numberOnly + ']').val());
+              var unit = parseFloat($('input[name=stator-unitcost-' + numberOnly + ']').val());
+              - $('input[name="stator-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('acce'))
+            {
+              
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+             var qty = parseFloat($('input[name=acce-qty-' + numberOnly + ']').val());
+              var unit = parseFloat($('input[name=acce-unitcost-' + numberOnly + ']').val());
+              - $('input[name="acce-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('mech-unitcost'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($('input[name=mech-qty-' + numberOnly + ']').val());
+              var unit = parseFloat($('input[name=mech-unitcost-' + numberOnly + ']').val());
+              - $('input[name="mech-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('dynamic-unitcost'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($('input[name=dynamic-qty-' + numberOnly + ']').val());
+              var unit = parseFloat($('input[name=dynamic-unitcost-' + numberOnly + ']').val());
+              - $('input[name="dynamic-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('misc-unitcost'))
+            {
+              numberOnly = $(this).attr('name').replace(/\D/g,'');
+              var qty = parseFloat($('input[name=misc-qty-' + numberOnly + ']').val());
+              var unit = parseFloat($('input[name=misc-unitcost-' + numberOnly + ']').val());
+              - $('input[name="misc-totalcost-' + numberOnly+'"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('genreq-pickup-unitcost'))
+            {
+              var qty = parseFloat($('input[name="genreq-pickup-qty"]').val());
+              var unit = parseFloat($('input[name="genreq-pickup-unitcost"]').val());
+              - $('input[name="genreq-pickup-totalcost"]').val(qty*unit)
+            }
+            else if($(this).attr('name').includes('genreq-dismantling-unitcost'))
+            {
+              var qty = parseFloat($('input[name="genreq-dismantling-qty"]').val());
+              var unit = parseFloat($('input[name="genreq-dismantling-unitcost"]').val());
+              - $('input[name="genreq-dismantling-totalcost"]').val(qty*unit)
+            }
+          })
+
+          - $('.acce').on('change', function(){
+            const selectdd = $(this);
+            - $.ajax({   
+                method: 'GET',
+                url: baseurl + 'motor/priceList/'+$(this).val().replace(' ', '_'),                        
+                success: function (data) {    
+
+                  numberOnly = $(selectdd).attr('name').replace(/\D/g,'');   
+                  var qty = parseFloat($('input[name=acce-qty-' + numberOnly + ']').val());
+                  $('input[name=acce-unitcost-' + numberOnly + ']').val(data[0].price);   
+                  var unit = parseFloat($('input[name=acce-unitcost-' + numberOnly + ']').val());         
+                  - $('input[name="acce-totalcost-' + numberOnly+'"]').val(qty*unit)
+                },
+                error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                }
+            })          
+          })
+
+          - $('.loading').delegate('.acce', 'change', function(){
+            const selectdd = $(this);
+            var model = $(this).attr('class').split(' ')[1].split('-')[1];
+            var scope = $(this).attr('name').split('-')[0];
+            - $.ajax({   
+                method: 'GET',
+                url: baseurl+'motor/priceList/model/'+model+'/'+$('.model-'+model).val(),                        
+                success: function (data) {    
+                  
+                  numberOnly = $(selectdd).attr('name').replace(/\D/g,'');  
+                   
+                  var qty = parseFloat($('input[name='+scope+'-qty-' + numberOnly + ']').val());
+                  $('input[name='+scope+'-unitcost-' + numberOnly + ']').val(data[0].price);   
+                  var unit = parseFloat($('input[name='+scope+'-unitcost-' + numberOnly + ']').val());         
+                  - $('input[name="'+scope+'-totalcost-' + numberOnly+'"]').val(qty*unit)
+                },
+                error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                }
+            })          
+          })
+
+
+          - $('.discountfield').delegate('input[name="discount"]', 'change', function() {
+            $('.discount_item').prop("disabled", true)
+            $('.discount_item').val('')
+            var chosen = $(this).val();
+            if($(this).prop("checked"))
+            {
+               $('input[name="'+chosen+'"]').prop("disabled", false)
+            }
+          })
+
+          //-STATOR ASSEMBLE
+          if(motorobject.stator.length > 0)
+          { 
+            for(var i=0; i<motorobject.stator.length; i++)
+            {
+                if(motorobject.stator.length > 1 && motorobject.stator[i].name == 'stator-inspection'){
+                  
+                  - $('input[name="stator-unitcost-'+(i+1)+'"]').attr('value', 0);
+                  - $('input[name="stator-totalcost-'+(i+1)+'"]').attr('value', 0);
+                }
+                else{
+                  
+                  - $('input[name="stator-unitcost-'+(i+1)+'"]').attr('value', 650);
+                  - $('input[name="stator-totalcost-'+(i+1)+'"]').attr('value', 650);
+                }
+
+                //-Complete Package Option
+                if(motorobject.stator[i].name == 'stator-complete-recon'){
+                    
+                  - $('input[name="stator-unitcost-'+(i+1)+'"]').val((hptable[0]['rpm-'+(hzspeed-1)])/2);
+                  - $('input[name="stator-totalcost-'+(i+1)+'"]').val((hptable[0]['rpm-'+(hzspeed-1)])/2);
+                } 
+                else if(motorobject.stator[i].name == 'stator-complete-rewinding')
+                {
+                  
+                  - $('input[name="stator-unitcost-'+(i+1)+'"]').val((hptable[0]['rpm-'+(hzspeed-1)]));
+                  - $('input[name="stator-totalcost-'+(i+1)+'"]').val((hptable[0]['rpm-'+(hzspeed-1)]));
+                  
+                }
+                else if(motorobject.stator[i].name == 'conversion')
+                {
+                  //-Conversion of motor any parameter
+                  - $('input[name="stator-unitcost-'+(i+1)+'"]').attr('value', 0.15*(hptable[0]['rpm-'+(hzspeed-1)]));
+                  - $('input[name="stator-totalcost-'+(i+1)+'"]').attr('value', 0.15*(hptable[0]['rpm-'+(hzspeed-1)]));
+                } 
+            }
+          }
+          
+          //-Conversion of motor any parameter
+          - $('input[name="stator-unitcost-3"]').attr('value', 0.15*(hptable[0]['rpm-'+(hzspeed-1)]));
+          - $('input[name="stator-totalcost-3"]').attr('value', 0.15*(hptable[0]['rpm-'+(hzspeed-1)]));
+
+          //MOD: STATOR - Fillout Stator details
+         
+          -$('input[name*="stator-qty"]').each(function(i) {
+            var grandparent = $(this).parent().parent()
+            $(this).val(prelimdocs.stator[i].qty)
+            grandparent.find('.unitcost').val(prelimdocs.stator[i].unitcost)
+            grandparent.find('.totalcost').val(prelimdocs.stator[i].totalcost)
+          })
+         
+
+          //Reboring of Bearing Housing
+          tableurl = null;
+          
+          if(motorpowertype == 'HP') tableurl = baseurl+'motor/hpTable2/'+motorpowerval;
+          else if (motorpowertype == 'KW') tableurl = baseurl+'motor/kwTable2/'+motorpowerval;
+          
+          if(tableurl)
+            {
+              var hptable2 = function () {
+                  var tmp = null;
+                  $.ajax({   
+                      async: false, 
+                      method: 'GET',
+                      url: tableurl,                        
+                      success: function (data) {   
+                          
+                          tmp = data;
+                      },
+                      error: function (xhr, text, error) {              
+                          alert('Error: ' + error);
+                      }
+                  })
+                  return tmp;
+              }();
+            }
+          
+
+          if(hptable2)
+          {
+            -$('.acce-shafting').find('.unitcost').attr('value', (hptable2[0]['shafting']));
+            -$('.acce-shafting').find('.totalcost').attr('value', (hptable2[0]['shafting']));
+            //- -$('.acce-shafting').find('.unitcost').attr('disabled', 'disabled');
+            -$('.acce-reboring-housing').find('.unitcost').attr('value', (hptable2[0]['bearinghousing']));
+            -$('.acce-reboring-housing').find('.totalcost').attr('value', (hptable2[0]['bearinghousing']));
+            //- -$('.acce-reboring-housing').find('.unitcost').attr('disabled', 'disabled');
+            -$('.acce-sleeving').find('.unitcost').attr('value', (hptable2[0]['bearinghousing']));
+            -$('.acce-sleeving').find('.totalcost').attr('value', (hptable2[0]['bearinghousing']));
+            //- -$('.acce-sleeving').find('.unitcost').attr('disabled', 'disabled');
+            -$('.dynamic-options').find('.unitcost').attr('value', (hptable2[0]['dynamicbalancing']));
+            -$('.dynamic-options').find('.totalcost').attr('value', (hptable2[0]['dynamicbalancing'])); 
+            //- -$('.dynamic-options').find('.unitcost').attr('disabled', 'disabled');
+          }
+         
+
+          -$('select[name=item-models]').on('change', function(){
+              getItemandPrice($(this).val(), true)
+          })
+          -$('select[name=item-model-items]').on('change', function(){
+              getItemandPrice($('select[name=item-models]').val(), false)
+          })
+
+          function getItemandPrice(motherModel, isMother)
+          {
+            
+            -$.ajax({   
+                  async: true, 
+                  method: 'GET',
+                  url: baseurl+'motor/priceList/model/'+motherModel,                        
+                  success: function (data) {  
+                      if(isMother)
+                      {
+                        $('select[name=item-model-items]').find('option').remove()
+                      
+                        for(var i=0; i<data.length; i++)
+                        {
+                          -$('select[name=item-model-items]').append('<option>' + data[i].model + '</option>');
+                        }   
+                      }
+                                
+                      var model = $('select[name=item-models]').val()
+                      var item = $('select[name=item-model-items]').val()
+                      
+                      $.ajax({   
+                        async: true, 
+                        method: 'GET',
+                        url: baseurl+'motor/priceList/model/'+model+'/'+item,                        
+                        success: function (data2) { 
+                            //- console.log(data2)
+                            $('select[name=item-models]').parent().parent().find('.unitcost').val(data2[0].price);
+                            var qty = parseInt($('select[name=item-models]').parent().parent().find('.qty').val());
+                            $('select[name=item-models]').parent().parent().find('.totalcost').val(data2[0].price * qty);
+                            
+                        },
+                        error: function (xhr, text, error) {              
+                            alert(error);
+                        }
+                      })
+                      
+                  },
+                  error: function (xhr, text, error) {              
+                      alert(error)
+                  }
+              })
+          }
+
+
+          //- Accessories Bearing Models 
+          pricelisturl = baseurl + 'motor/priceList/';
+          -$.ajax({   
+              async: false,
+              method: 'GET',
+              url: pricelisturl,                        
+              success: function (data) {                        
+                  for(var i=0; i<data.length; i++){
+                    - $('.acce').append('<option>' + data[i].model + '</option>')
+                  }
+              },
+              error: function (xhr, text, error) {              
+                  alert('Error: ' + error);
+              }
+          }).done(function(data)
+          {
+              var  test = $('.acce option:selected').val();
+              
+              for(var i=0; i<motorobject.accessories.length; i++)
+              {
+                if(motorobject.accessories)
+                {
+                  if(motorobject.accessories[i].name == 'rotor-loadside' || motorobject.accessories[i].name == 'rotor-fanslide' || motorobject.accessories[i].name == 'rotor-gearbox1' || motorobject.accessories[i].name == 'rotor-gearbox2' || motorobject.accessories[i].name == 'rotor-gearbox3' || motorobject.accessories[i].name == 'rotor-gearbox4' || motorobject.accessories[i].name == 'rotor-gearbox5' || motorobject.accessories[i].name == 'rotor-gearbox6')  
+                  {
+                    $('input[name="acce-unitcost-' + (i+1) + '"]').val(data[0].price);
+                    $('input[name="acce-totalcost-' + (i+1) + '"]').val(data[0].price);
+                  }
+                 
+                }  
+              }
+          })
+
+          //MOD: List Down All Items - MECH and ACCE
+          - $("select[class*='model']").each(function(i) {
+              var model = $(this).attr('class').split(' ')[1].split('-')[1];
+              var modelname = $(this).attr('name');
+              var parent = $(this).parent();
+              var itemname = $(this);
+              parent.empty();
+              parent.append('<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>');
+              
+              $.ajax({   
+                  async: false, 
+                  method: 'GET',
+                  url: baseurl+'motor/priceList/model/'+model,                        
+                  success: function (data) {  
+                      
+                      parent.empty();
+                      parent.append('<select class="form-control model-' + model + ' acce" name="'+modelname+'"></select>');
+                      -$('.model-'+model).append();
+                  
+                      for(var i=0; i<data.length; i++)
+                      {
+                        -$('.model-'+model).append('<option>' + data[i].model + '</option>');
+                      }            
+                      //  alert($('.model-'+model).val());
+                      $.ajax({   
+                        async: false, 
+                        method: 'GET',
+                        url: baseurl+'motor/priceList/model/'+model+'/'+$('.model-'+model).val(),                        
+                        success: function (data) { 
+                            //console.log(data);
+                            $('.model-'+model).parent().parent().find('.unitcost').val(data[0].price);
+                            $('.model-'+model).parent().parent().find('.totalcost').val(data[0].price);
+                        },
+                        error: function (xhr, text, error) {              
+                            alert('Error: ' + error);
+                        }
+                      })
+                  },
+                  error: function (xhr, text, error) {              
+                      alert('Error: ' + error);
+                  }
+              })
+          }); 
+
+          //MOD: MECHANICAL Select chosen mechanical item
+          -$('select[name*="mech-item"]').each(function(i) {
+            var grandparent = $(this).parent().parent()
+            grandparent.find('.qty').val(prelimdocs.mechanical[i].qty)
+            grandparent.find('.unitcost').val(prelimdocs.mechanical[i].unitcost)
+            grandparent.find('.totalcost').val(prelimdocs.mechanical[i].totalcost)
+          
+            $(this).find('option').each(function(j){
+                if($(this).val() == prelimdocs.mechanical[i].item){
+                    
+                    $(this).prop('selected', true)
+                }  
+            })
+          })  
+
+          //MOD ACCE - Fill out all price details and select the chosen item
+          var itemctr = 0;
+  
+          -$('.acce').each(function(i) {
+              console.log(0)
+              var obj = null
+              if(itemctr < prelimdocs.accessories.length) {
+                obj = prelimdocs.accessories
+                var grandparent = $(this).parent().parent()
+                //To fill out those items that do not have item list in db.
+                grandparent.find('input[name="acce-item-'+(i+1)+'"]').val(obj[i].item)
+                grandparent.find('.qty').val(obj[i].qty)
+                grandparent.find('.unitcost').val(obj[i].unitcost)
+                grandparent.find('.totalcost').val(obj[i].totalcost)
+                
+                $(this).find('option').each(function(j){
+                    if($(this).val() == obj[i].item){
+                      
+                        $(this).prop('selected', true)
+                  }  
+                })
+                itemctr++
+              }
+          })         
+
+
+          //MOD DYNAMIC - Fill out all price details
+          -$('input[name*="dynamic-qty"]').each(function(i) {
+            console.log(prelimdocs.dynamic[i].qty)
+            var grandparent = $(this).parent().parent()
+            grandparent.find('.qty').val(prelimdocs.dynamic[i].qty)
+            grandparent.find('.unitcost').val(prelimdocs.dynamic[i].unitcost)
+            grandparent.find('.totalcost').val(prelimdocs.dynamic[i].totalcost)
+          })
+
+          //MOD MISC - Fill out all price details
+          -$('input[name*="misc-qty"]').each(function(i) {
+            var grandparent = $(this).parent().parent()
+            grandparent.find('.qty').val(prelimdocs.misc[i].qty)
+            grandparent.find('.unitcost').val(prelimdocs.misc[i].unitcost)
+            grandparent.find('.totalcost').val(prelimdocs.misc[i].totalcost)
+          })
+
+          //MOD ACCESSORIES - Fill out the 'OTHER' field 
+          for(var i=0; i<prelimdocs.accessories.length; i++)
+          {
+            if(prelimdocs.accessories[i].name == 'acce-other-1')
+            {
+              
+              //AJAX - TODO
+              -$.ajax({   
+                  async: false, 
+                  method: 'GET',
+                  url: baseurl+'motor/models',                      
+                  success: function (data) {               
+                      for(var j=0; j<data.length; j++)
+                      {
+                        if((data[j].name).replace('pricelist_', '') == prelimdocs.accessories[i].model)
+                          -$('select[name=item-models]').append('<option selected>'+(data[j].name).replace('pricelist_', '')+'</option>')
+                        else 
+                          -$('select[name=item-models]').append('<option>'+(data[j].name).replace('pricelist_', '')+'</option>')
+                      }
+                  },
+                  error: function (xhr, text, error) {              
+                      alert(error)
+                  }
+              })
+
+              -$.ajax({   
+                  async: true, 
+                  method: 'GET',
+                  url: baseurl+'motor/priceList/model/'+prelimdocs.accessories[i].model,                        
+                  success: function (data) {  
+                    console.log(data)
+
+                    for(var j=0; j<data.length; j++)
+                    {
+                      if(data[j].model == prelimdocs.accessories[i].item)
+                        $('select[name=item-model-items]').append('<option selected>'+data[j].model+'</option>')
+                      else
+                        $('select[name=item-model-items]').append('<option>'+data[j].model+'</option>')
+                    }
+                  },
+                  error: function (xhr, text, error) {              
+                      alert(error)
+                  }
+              })
+
+              
+              -$('select[name=item-model-items]').val(prelimdocs.accessories[i].item)
+
+              -$('select[name=item-models]').parent().parent().find('.qty').val(prelimdocs.accessories[i].qty) 
+              -$('select[name=item-models]').parent().parent().find('.unitcost').val(prelimdocs.accessories[i].unitcost)
+              -$('select[name=item-models]').parent().parent().find('.totalcost').val(prelimdocs.accessories[i].totalcost)
+
+
+
+              break;
+            }
+              
+          }
+         
+
+        - $( ".qformprompt" ).click(function() {
+          
+           $.magnificPopup.open({
+            items: {
+              src: '<div class="white-popup qconfim"><h3>What quotation form do you want?</h3><button class="btn btn-primary mr-1 whole">Whole</button><button class="btn btn-primary mr-1 scopes">Scope of Works</button><button class="cancel btn btn-danger">Cancel</button></div>', // can be a HTML string, jQuery object, or CSS selector
+              type: 'inline'
+            }
+          });
+
+          $('.whole').on('click', function () {
+              $.magnificPopup.open({
+                items: {
+                  src: '<div class="white-popup qconfim"><h3>Are you sure? You cannot change this once done. </h3><button class="btn btn-primary mr-1 whole-confirm">Yes</button><button class="cancel btn btn-danger">Cancel</button></div>', // can be a HTML string, jQuery object, or CSS selector
+                  type: 'inline'
+                }
+              })
+
+              $('.whole-confirm').on('click', function () {
+                $(".submit").prop('disabled', false);
+                -$.ajax({   
+                    async: true,
+                    method: 'POST',
+                    url: baseurl+'motor/prelimdocs/'+tagID+'/whole',                        
+                    success: function (data) {         
+                        $('.qformprompt').attr('disabled', 'disabled');
+                        $('.qformprompt').addClass('disabled').removeClass('btn-primary');   
+                        $('#qform').toggle();      
+                                   
+                        $.magnificPopup.close();
+                    },
+                    error: function (xhr, text, error) {              
+                        alert('Error: ' + error);
+                    }
+                });
+              });
+
+              $('.cancel').on('click', function () {
+                $.magnificPopup.close();
+              });
+          })
+
+         $('.scopes').on('click', function () {
+              $.magnificPopup.open({
+                items: {
+                  src: '<div class="white-popup qconfim"><h3>Are you sure? You cannot change this once done. </h3><button class="btn btn-primary mr-1 whole-confirm">Yes</button><button class="cancel btn btn-danger">Cancel</button></div>', // can be a HTML string, jQuery object, or CSS selector
+                  type: 'inline'
+                }
+              })
+
+              $('.whole-confirm').on('click', function () {
+                  
+                -$.ajax({   
+                    async: true,
+                    method: 'POST',
+                    url: baseurl+'motor/prelimdocs/'+tagID+'/scopes',                        
+                    success: function (data) {         
+                        $('.qformprompt').attr('disabled', 'disabled');
+                        $('.qformprompt').addClass('disabled').removeClass('btn-primary');   
+                        $("input[class*='subqform']").parent().toggle();
+                        $.magnificPopup.close();
+                    },
+                    error: function (xhr, text, error) {              
+                        alert('Error: ' + error);
+                    }
+                });
+              });
+
+              $('.cancel').on('click', function () {
+                $.magnificPopup.close();
+              });
+          })
+
+          $('.cancel').on('click', function () {
+            $.magnificPopup.close();
+          });
+        });
+
+
+        -$('.discountfield').delegate('input[name="discountverify"]', 'click', function()
+        {
+          
+          var grandparent = $(this).parent().parent();
+          $.ajax({   
+                async: true,
+                method: 'GET',
+                url: baseurl+'motor/passcode/discount',                        
+                success: function (data) {                        
+                    var passcode = data[0].password;
+                    var inputpasscode = $('input[name="discountpass"]').val();
+                    
+                    if(passcode == inputpasscode)
+                    {
+                      grandparent.empty().append('<div class="col"><div class="form-check"><input type="radio" name="discount" class="form-check-input" value="discount_fixed" checked><label class="form-check-label"><input class="form-control discount_item" type="text" name="discount_fixed" placeholder="Fixed Discount"><input type="button" class="form-control btn btn-danger" name="discount-cancel" value="Cancel"></label></div></div>');
+                      grandparent.append('<div class="col"><div class="form-check"><input type="radio" name="discount" class="form-check-input" value="discount_percent"><label class="form-check-label"><input class="form-control discount_item" type="text" name="discount_percent" placeholder="% Discount" disabled></label></div></div>');
+                    }
+                    else 
+                    {
+                      alert('Incorrect credential. Please try again');
+                    }
+                },
+                error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                }
+          })   
+          
+        })
+        
+
+        -$('.discountfield').delegate('input[name="discount-cancel"]', 'click', function(){
+            $('.discountfield').find('.row').remove()
+            $('.discountfield').append('<div class="row"> <div class="col-md-6 mb-3"> <input class="form-control discountpass" type="password" name="discountpass" placeholder="passcode first" autocomplete="off"></div><div class="col-md-6 mb-3"> <label for="voltage"> </label><input class="form-control discountpassenter btn btn-warning" type="button" value="Verify" name="discountverify"></div></div>')
+        })
+
+
+        //MOD: Check if there's discount
+        if(prelimdocs.discount != null) {
+            var discount_fixed = '';
+            var discount_percent = '';
+            var checked = ['', '']
+            var disabled = ['', '']
+            if(prelimdocs.discount[1] == 'fixed')   {
+              discount_fixed = prelimdocs.discount[0]
+              checked[0] = 'checked'
+              checked[1] = ''
+              disabled[0] = ''
+              disabled[1] = 'disabled'
+              discount_percent = ''
+            }
+            else if(prelimdocs.discount[1] == 'percent')   
+            {
+              discount_fixed = ''
+              checked[0] = ''
+              checked[1] = 'checked'
+              disabled[0] = 'disabled'
+              disabled[1] = ''
+              discount_percent = prelimdocs.discount[0]
+            }
+
+            if(role == 'admin')
+            {
+              -$('.discountfield').find('.row').empty().append('<div class="col"><div class="form-check"><input type="radio" name="discount" class="form-check-input" value="discount_fixed" '+checked[0]+'><label class="form-check-label"><input class="form-control discount_item" type="text" name="discount_fixed" placeholder="Fixed Discount" '+disabled[0]+' value="'+discount_fixed+'"><input type="button" class="form-control btn btn-danger" name="discount-cancel" value="Cancel"></label></div></div>');
+              -$('.discountfield').find('.row').append('<div class="col"><div class="form-check"><input type="radio" name="discount" class="form-check-input" value="discount_percent" '+checked[1]+'><label class="form-check-label"><input class="form-control discount_item" type="text" name="discount_percent" placeholder="% Discount" '+disabled[1]+' value="'+discount_percent+'"></label></div></div>');   
+            }
+            else
+            {
+              if(checked[0] == 'checked')
+                -$('.discountfield').find('.row').empty().append('<div class="col"><div class="form-check"><input type="radio" name="discount" class="form-check-input" value="discount_fixed" '+checked[0]+' readonly><label class="form-check-label"><input class="form-control discount_item" type="text" name="discount_fixed" placeholder="Fixed Discount" '+disabled[0]+' value="'+discount_fixed+'" readonly>Fixed</label></div></div>');
+              else 
+                -$('.discountfield').find('.row').append('<div class="col"><div class="form-check"><input type="radio" name="discount" class="form-check-input" value="discount_percent" '+checked[1]+'><label class="form-check-label"><input class="form-control discount_item" type="text" name="discount_percent" placeholder="% Discount" '+disabled[1]+' value="'+discount_percent+'" readonly>Percentage</label></div></div>');   
+              
+            } 
+        }
+        else if(prelimdocs.discount == null)
+        {
+          -$('.discountfield').find('.row').remove()
+          -$('.discountfield').append('<div class="row"> <div class="col-md-6 mb-3"> <input class="form-control discountpass" type="password" name="discountpass" placeholder="passcode first" autocomplete="off"></div><div class="col-md-6 mb-3"> <label for="voltage"> </label><input class="form-control discountpassenter btn btn-warning" type="button" value="Verify" name="discountverify"></div></div>')
+        }
+        
+        - $("form input").prop("disabled", false);
+
+        - $('#qform').on('click', function(){
+            $('.wholeaformlink').remove();
+            
+            var baseurl = window.location.protocol + "//" + window.location.host + "/"
+            $.ajax({
+                method: 'POST',
+                url: baseurl+'io/asset/prelimdocs/quotation/exists/'+tagID,    
+                data:  $('form').serialize(),                    
+                success: function (data) {                        
+                    $('#qformcont').parent().append('<div class="col-md-6 mb-3 wholeaformlink generatedlink"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="' +baseurl+ 'io/asset/prelimdocs/quotation/exists/' + tagID + '">Click here</a></div></div></div>');
+                    //- alert('SUCCES!');
+                },
+                error: function (xhr, text, error) {               
+                    alert('Error: ' + text);
+                }
+            })
+            
+        })
+        
+        })
+
+  
+          //DELETE
+          -$('#delete').on('click', function(){
+            const tagID = !{JSON.stringify(tagID)};
+            var baseurl = window.location.protocol + "//" + window.location.host + "/"
+            var answer = window.confirm("Are you sure you want to delete this data? Note: It will delete all its succeeding stages but the preceeding will be retained");
+            if (answer) {
+                $.ajax({   
+                    async: false,  
+                    method: 'POST',
+                    url: baseurl+'motor/delete/prelimdocs/'+tagID,                        
+                    success: function (data) {   
+                        alert('Successfully deleted: '+ data.stage + ' and all succeeding stages (if there are any)')
+                        var stages = ['notstarted','oncheckup','prelimdocs','onrewind', 'onfabrication', 'inbaking', 'assemblyandtesting', 'painting', 'fordelivery', 'forbillingstatement', 'foror', 'completed'];
+                        if(data.stage != 'notstarted')
+                          window.location.replace(baseurl+'motor/motorItem/'+(stages[stages.indexOf(data.stage)-1])+'/'+data.tagID);
+                        else 
+                          window.location.replace(baseurl);
+                    },
+                    error: function (xhr, text, error) {              
+                        alert('Error: ' + error);
+                    }
+                })
+            }
+            else {
+                //some code
+            }
+          })
+
+        
+      
+        
+        
+      
+
+
+
+      
+
+     
+
+
+
+     

@@ -18,7 +18,8 @@ nav .prev form{
 }
 
 .pmcontent{
-	display: flex;
+    display: flex;
+    padding: 0;
 }
 
 .pmcontent .radio{
@@ -94,3 +95,38 @@ nav .prev form{
 .table td, .table th {
     padding: 6.5px;
 }
+.white-popup {
+    position: relative;
+    background: #FFF;
+    padding: 20px;
+    width:auto;
+    max-width: 75%;
+    margin: 20px auto;
+  }
+
+.oncheckup.container, .newMotor.container, .prelimdocs.container
+{
+    max-width: 100%;
+}
+
+.filterqform input
+{
+    margin: 0;
+}
+
+.newMotor
+{
+    padding: 0;
+}
+
+.heading
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo 
+{
+    width: 150px;
+}
+

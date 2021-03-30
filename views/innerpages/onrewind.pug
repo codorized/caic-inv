@@ -1,0 +1,243 @@
+html(lang='en')
+  include ../components/stage_header.pug
+  body.bg-light
+    .container.prelimdocs
+      include ../components/stage_navbar.pug
+      form(method='post', enctype="multipart/form-data")
+        include ../components/buttons.pug
+        .row.motorinfo
+          .col-md-4.order-md-2.mb-4#closepane.show
+            h4.d-flex.justify-content-between.align-items-center.mb-3
+              span.text-muted Motor Group Pane
+            ul.list-group.mb-3.motorpane
+                li.list-group-item.d-flex.justify-content-between.lh-condensed(data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne')
+                  div
+                    h6.my-0 #{motordetails.notstarted[0].motorType} - #{oncheckup.power}
+                    small.text-muted Motor/TAG ID: #{motordetails.notstarted[0].tagID}
+          .col-md-8.order-md-1.motorcol
+            h4.mb-3 Motor Details
+            form
+              #accordionExample.accordion
+                .card
+                  #headingOne.card-header.mainmotor
+                    h2.mb-0
+                      button.btn.btn-link(type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
+                        | Main Motor
+                    .closepane
+                      input.btn.btn-primary(type='button' name='closepane' value='Close Pane' data-toggle="collapse" data-target="#closepane" aria-expanded="true" aria-controls="closepane")
+                  #collapseOne.collapse.show(aria-labelledby='headingOne' data-parent='#accordionExample')
+                    .card-body
+                      .row
+                        .col-md-6.mb-3  
+                          label(for='voltage') Name of Rewinder
+                          input.form-control.rewinders(type='text' name='rewindername' placeholder='' required='' readonly)
+                      .row
+                        .col-md-6.mb-3  
+                          label(for='voltage') Start Date
+                          input.form-control(type='date' name='startdate' placeholder='' required='')
+                        .col-md-6.mb-3  
+                          label(for='voltage') Finished Date
+                          input.form-control(type='date' name='finishdate' placeholder='' required='')
+                      .row
+                        .col-md-6.mb-3  
+                          label(for='voltage') Generate Requisition and Issuance Slip
+                          input.form-control.btn-primary(type='button' name='genRAI' placeholder='' required='' value='Generate')
+                        .col-md-6.mb-3.genRAI  
+                      .card
+                        #headingOne.card-header
+                          h5.mb-0
+                            button.btn.btn-link(type='button' data-toggle='collapse' data-target='#statorassembly' aria-expanded='false' aria-controls='statorassembly')
+                              | Items
+                        #statorassembly.collapse.show(aria-labelledby='headingOne' data-parent='#statorassembly')
+                          .card-body
+                            table.table
+                             - var items = [{name: "M.W.#", formal: 'mw1', tf: 0}, {name: "M.W.#", formal: 'mw2', tf: 1}, {name: "BEARING#", formal: 'bearing1', tf: 1},{name: "BEARING#", formal: 'bearing2', tf: 1}, {name: "TUBING#", formal: 'tubing', tf: 1}, {name: "CAPILLA OIL CAPACITOR", formal: 'capilla',  tf: 0}, {name: "mid", formal: 'mid',tf: 2}, {name: "BOLTS & NUTS", formal: 'boltsandnuts', tf: 0},{name: "SHAFT SEAL OVERLOAD", formal: 'shaftsealoverload', tf: 0}, {name: "RELAY", formal: 'relay', tf: 0}, {name: "FAN BLADE", formal: 'fanblade', tf: 0}, {name: "TERM LUGS", formal: 'termlungs', tf: 0},{name: "AUTO WIRE", formal: 'autowire', tf: 0}, {name: "OIL SEAL", formal: 'oilseal', tf: 0}, {name: "S.RELAY", formal: 'srelay', tf: 0}]
+                             thead
+                                tr
+                                    th(scope='col') Item
+                                    th(scope='col') Qty Recd.
+                                    th(scope='col') Qty Ret.
+                                    th(scope='col') Qty Used.
+                                    //- th(scope='col') Amt
+                                tbody
+                                 each item in items
+                                  tr 
+                                    td 
+                                      input#defaultCheck1.form-check-input(type='checkbox' name='checkitem' value=item.formal)
+                                      input#defaultCheck1.form-control.desc(type='text' value=item.name name=item.formal placeholder=item.name width='10%' disabled required)
+                                    td 
+                                      input#defaultCheck1.form-control.qtyreqd(type='text' value='' name=item.formal disabled required)
+                                    td 
+                                      input#defaultCheck1.form-control.qtyret(type='text' value='' name=item.formal disabled required)
+                                    td 
+                                      input#defaultCheck1.form-control.qtyused(type='text' value='' name=item.formal disabled required)
+                                    //- td 
+                                    //-   input#defaultCheck1.form-control(type='text' value='' name=item.formal disabled required)
+                    
+                               
+                  
+    include ../components/stage_footer.pug
+    script(src='../js/stages/onrewind.js')
+    script(src='../js/common.js')
+    script. 
+        - $(document).ready(function() {
+            const tagID = !{JSON.stringify(tagID)};
+            var baseurl = window.location.protocol + "//" + window.location.host + "/";
+            const draft = !{JSON.stringify(draft)};
+
+            $.ajax({   
+                async: true,  
+                method: 'GET',
+                url: baseurl+'motor/rewinder/'+tagID,                        
+                success: function (data) {                        
+                    tmp = data;
+                    $('.rewinders').val(data[0].rewindername)
+                },
+                error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                }
+            })
+
+            $('input[name="checkitem"]').on('change', function(){
+              if($(this).prop('checked')){
+                $(this).parent().parent().find('td input').prop('disabled', false)
+                $(this).parent().parent().find('.qtyused').prop('readonly', true)
+              }
+              else 
+              {
+                $(this).parent().parent().find('td input').prop('disabled', true)
+                $(this).parent().parent().find('.qtyused').prop('readonly', false)
+              }
+                
+
+              $(this).prop('disabled', false)
+            })
+
+            $('input[name="genRAI"]').on('click', function(){   
+                $("#submit").prop('disabled', false);
+                var grandparent = $(this).parent().parent();
+                grandparent.find('.genRAI').remove();
+                $('.genRAI').remove()
+                $.ajax({   
+                  async: true, 
+                  method: 'POST',
+                  data:  $('form').serialize(),   
+                  url: baseurl+'io/asset/onrewind/ris/notexists/'+tagID,                          
+                  success: function (data) {  
+                    
+                    grandparent.append('<div class="col-md-6 mb-3 genRAI"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="'+baseurl+'io/asset/onrewind/ris/notexists/'+tagID+'">Click here</a></div></div></div>');
+                  },
+                  error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                  }
+                })
+              
+            })
+
+            $('.qtyreqd').on('change', function(){
+               var grandparent = $(this).parent().parent()
+               
+               var qtyreqd = $(this).val()
+               if(qtyreqd == '') qtyreqd = 0
+               var qtyret = grandparent.find('.qtyret').val()
+               if(qtyret == '') qtyret = 0
+               var qtyused = grandparent.find('.qtyused').val()
+               if(qtyused == '') qtyused = 0
+
+               if(parseFloat(qtyret) > parseFloat(qtyreqd))
+               {
+                  alert('Qty Recd must be greater than Qty Ret.')
+                  grandparent.find('.qtyret').val('0')
+               }
+               else {
+                   grandparent.find('.qtyused').val(qtyreqd - qtyret)
+               }
+          
+            })
+
+            $('.qtyret').on('change', function(){
+               var grandparent = $(this).parent().parent()
+               
+               var qtyret = $(this).val()
+               if(qtyret == '') qtyret = 0
+               var qtyreqd = grandparent.find('.qtyreqd').val()
+               if(qtyreqd == '') qtyreqd = 0
+
+               if(parseFloat(qtyret) > parseFloat(qtyreqd))
+               {
+                  alert('Qty Recd must be greater than Qty Ret.')
+                  grandparent.find('.qtyret').val('0')
+               }
+               else {
+                  grandparent.find('.qtyused').val((qtyreqd - qtyret).toFixed(2))
+               }
+          
+            })
+
+
+            -$('#save').click(function(e) {
+              $.magnificPopup.open({
+                items: {
+                  src: '<div class="white-popup">Saving...</div>',
+                  type: 'inline'
+                }
+              });
+              $.ajax({   
+                  async: true, 
+                  method: 'POST',
+                  data:  $('form').serialize(),   
+                  url: baseurl+'motor/save/onrewind/'+tagID,                          
+                  success: function (data) {  
+                    $.magnificPopup.close();
+                    //Close the popup
+                    e.preventDefault();
+                    if (window.parent == window.top) {
+                        window.parent.$.magnificPopup.close();
+                    }
+                  },
+                  error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                  }
+              })
+            });
+
+          
+
+            //MODS
+
+            if(draft)
+            {
+              //Fillout date
+              var now = new Date(draft[0].startdate); 
+              var day = ("0" + now.getDate()).slice(-2);
+              var month = ("0" + (now.getMonth() + 1)).slice(-2);
+              var startdate = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+              var now2 = new Date(draft[0].finishdate); 
+              var day2 = ("0" + now2.getDate()).slice(-2);
+              var month2 = ("0" + (now2.getMonth() + 1)).slice(-2);
+              var finishdate = now2.getFullYear()+"-"+(month2)+"-"+(day2) ;
+
+              $('input[name="startdate"]').val(startdate);
+              $('input[name="finishdate"]').val(finishdate);
+              
+              //Mod - Filling Out the items
+              for(var i=0; i<draft[0].checkitem.length; i++)
+              {
+                  var current = $('input[name="'+draft[0].checkitem[i]+'"]')
+                  var grandparent = current.parent().parent()
+                  grandparent.find('input[name="checkitem"]').prop('checked', true)
+                  grandparent.find('input[type="text"]').prop('disabled', false)
+                  grandparent.find('.qtyused').prop('readonly', true)
+
+                  grandparent.find('.desc').val(draft[0][draft[0].checkitem[i]][0])
+                  grandparent.find('.qtyreqd').val(draft[0][draft[0].checkitem[i]][1])
+                  grandparent.find('.qtyret').val(draft[0][draft[0].checkitem[i]][2])
+                  grandparent.find('.qtyused').val(draft[0][draft[0].checkitem[i]][3])
+
+              }
+            }
+        })
+
+
+     

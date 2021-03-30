@@ -1,0 +1,149 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description' content='')
+    meta(name='author' content='Mark Otto, Jacob Thornton, and Bootstrap contributors')
+    meta(name='generator' content='Jekyll v4.1.1')
+    title Checkout example · Bootstrap
+    link(rel='canonical' href='https://getbootstrap.com/docs/4.5/examples/checkout/')
+    // Bootstrap core CSS
+    link(href='https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2' crossorigin='anonymous')
+    style.
+      .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      }
+      @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+      }
+      } 
+    // Custom styles for this template
+    link(href='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.css' rel='stylesheet')
+    link(href='/../../css/db_inner.css' rel='stylesheet')
+    link(href='/../../css/magnific-popup.css' rel='stylesheet')
+  body.bg-light
+    .container.prelimdocs
+      include ../components/mod_navbar.pug
+      include ../components/mod_navstages.pug
+      if isAllowed
+        form(method='post', enctype="multipart/form-data")
+          include ../components/buttons.pug
+          .row.motorinfo
+            .col-md-4.order-md-2.mb-4#closepane.show
+              h4.d-flex.justify-content-between.align-items-center.mb-3
+                span.text-muted Motor Group Pane
+                //- var smcount =  motorObjOncheckup.submotors
+                //span.badge.badge-secondary.badge-pill.motorcount #{smcount.length+1}
+              ul.list-group.mb-3.motorpane
+                  li.list-group-item.d-flex.justify-content-between.lh-condensed(data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne')
+                    div
+                      h6.my-0 #{motordetails.notstarted[0].motorType} - #{oncheckup.power}
+                      small.text-muted Motor/TAG ID: #{motordetails.notstarted[0].tagID}
+              .card.mb-3
+                  .card-header
+                      h6 Downloads
+                  ul.list-group.list-group-flush
+                      li.list-group-item 
+                        a(href=url+"/io/downloadUploaded/inbaking/"+tagID+"/afterimage-"+tagID+".jpg") After Image
+            .col-md-8.order-md-1.motorcol
+              h4.mb-3 Motor Details
+              form
+                #accordionExample.accordion
+                  .card
+                    #headingOne.card-header.mainmotor
+                      h2.mb-0
+                        button.btn.btn-link(type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
+                          | Main Motor
+                      .closepane
+                        input.btn.btn-primary(type='button' name='closepane' value='Close Pane' data-toggle="collapse" data-target="#closepane" aria-expanded="true" aria-controls="closepane")
+                    #collapseOne.collapse.show(aria-labelledby='headingOne' data-parent='#accordionExample')
+                      .card-body
+                        .row
+                          .col-md-6.mb-3
+                            label(for='download') Upload After Image
+                            input#uploadselect(type='file' name='afterimageselect' value='Upload') 
+                        .row
+                          .col-md-6.mb-3  
+                            label(for='voltage') Start Date
+                            input.form-control(type='date' name='startdate' placeholder='' required='')
+                          
+                          .col-md-6.mb-3  
+                            label(for='voltage') Finish Date
+                            input.form-control(type='date' name='finishdate' placeholder='' required='')
+      else 
+        body.text-center 
+          main.form-signin
+              .alert(role='alert' class="alert-danger")
+                  h5 Restricted
+                  p You are not allowed to access this.    
+
+    include ../components/stage_footer.pug
+    script(src='/../../js/common.js')
+    script. 
+        - $(document).ready(function() {
+            const tagID = !{JSON.stringify(tagID)};
+            const inbaking = !{JSON.stringify(inbaking)};
+            console.log(inbaking)
+            var baseurl = window.location.protocol + "//" + window.location.host + "/";
+            $.ajax({   
+                async: true,  
+                method: 'GET',
+                url: baseurl+'motor/rewinder/'+tagID,                        
+                success: function (data) {                        
+                    tmp = data;
+                    $('.rewinders').val(data[0].rewindername)
+                },
+                error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                }
+            })
+
+            var now = new Date(inbaking.startdate);
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var startdate = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+            var now = new Date(inbaking.finishdate);
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var finishdate = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+            $('input[name="startdate"]').val(startdate);
+            $('input[name="finishdate"]').val(finishdate);
+
+            //DELETE
+          -$('#delete').on('click', function(){
+            var answer = window.confirm("Are you sure you want to delete this data? Note: It will delete all its succeeding stages but the preceeding will be retained");
+            if (answer) {
+                $.ajax({   
+                    async: false,  
+                    method: 'POST',
+                    url: baseurl+'motor/delete/inbaking/'+tagID,                        
+                    success: function (data) {   
+                        alert('Successfully deleted: '+ data.stage + ' and all succeeding stages (if there are any)')
+                        var stages = ['notstarted','oncheckup','prelimdocs','onrewind', 'onfabrication', 'inbaking', 'assemblyandtesting', 'painting', 'fordelivery', 'forbillingstatement', 'foror', 'completed'];
+                        if(data.stage != 'notstarted')
+                          window.location.replace(baseurl+'motor/motorItem/'+(stages[stages.indexOf(data.stage)-1])+'/'+data.tagID);
+                        else 
+                          window.location.replace(baseurl);
+                    },
+                    error: function (xhr, text, error) {              
+                        alert('Error: ' + error);
+                    }
+                })
+            }
+            else {
+                //some code
+            }
+          })
+        })
+
+
+     

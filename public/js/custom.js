@@ -1,9 +1,9 @@
-$( "tr" ).click(function() {
-    const tagID = $(this).find('.tagid a')[0].innerHTML;
-    console.log(tagID);
+$( ".motorRows" ).click(function() {
+    var baseurl = window.location.protocol + "//" + window.location.host + "/";
+    const tagID = $(this).find('.tagid a, .tagid p')[0].innerHTML;
     $.magnificPopup.open({
         items: {
-          src: getBaseUrl()+'motor/motorItemStage/'+tagID
+          src: baseurl+'motor/motorItemStage/'+tagID
         },
         closeOnBgClick: true,
         type: 'iframe',
@@ -11,19 +11,33 @@ $( "tr" ).click(function() {
 });
 
 $( "#addmotorItem" ).click(function() {
+  var baseurl = window.location.protocol + "//" + window.location.host + "/";
   $.magnificPopup.open({
       items: {
-        src: getBaseUrl()+'motor/newMotor'
+        src: baseurl+'motor/newMotor'
       },
       closeOnBgClick: true,
       type: 'iframe',
     });
 });
 
-$( "#addCompany" ).click(function() {
+$( "#addSubMotorItem" ).click(function() {
+  var baseurl = window.location.protocol + "//" + window.location.host + "/";
   $.magnificPopup.open({
       items: {
-        src: getBaseUrl()+'company/newCompany'
+        src: baseurl+'motor/newSubmotor'
+      },
+      closeOnBgClick: true,
+      type: 'iframe',
+    });
+});
+
+
+$( "#addCompany" ).click(function() {
+  var baseurl = window.location.protocol + "//" + window.location.host + "/";
+  $.magnificPopup.open({
+      items: {
+        src: baseurl+'company/single/new'
       },
       closeOnBgClick: true,
       type: 'iframe',
@@ -31,30 +45,120 @@ $( "#addCompany" ).click(function() {
 });
 
 $( "#addRewinder" ).click(function() {
+  var baseurl = window.location.protocol + "//" + window.location.host + "/";
   $.magnificPopup.open({
       items: {
-        src: getBaseUrl()+'company/newRewinder'
+        src: baseurl+'rewinder/single/new'
       },
       closeOnBgClick: true,
       type: 'iframe',
-    });
+    }); 
 });
 
 $("tbody.recentItems").delegate("tr", "click", function(e) {
+  var baseurl = window.location.protocol + "//" + window.location.host + "/";
   const tagID = $(this).find('.tagid a')[0].innerHTML;
-  console.log(tagID);
   $.magnificPopup.open({
       items: {
-        src: getBaseUrl()+'motor/motorItemStage/'+tagID
+        src: baseurl+'motor/motorItemStage/'+tagID
       },
       closeOnBgClick: true,
       type: 'iframe',
     });
 });
 
-function getBaseUrl() {
-  var re = new RegExp(/^.*\//);
-  return re.exec(window.location.href);
+//Add user
+$( "#addUser" ).click(function() {
+  var baseurl = window.location.protocol + "//" + window.location.host + "/";
+  $.magnificPopup.open({
+      items: {
+        src: baseurl+'register'
+      },
+      closeOnBgClick: true,
+      type: 'iframe',
+    });
+});
+
+
+//Rewinder
+$(".rewinderRows .id").click(function() {
+  var baseurl = window.location.protocol + "//" + window.location.host + "/";
+  var id =  $(this).html();
+  $.magnificPopup.open({
+      items: {
+        src: baseurl+'rewinder/single/'+id
+      },
+      closeOnBgClick: true,
+      type: 'iframe',
+    });
+});
+
+//Company
+$(".companyRows .id").click(function() {
+  var baseurl = window.location.protocol + "//" + window.location.host + "/";
+  var id =  $(this).html();
+  $.magnificPopup.open({
+      items: {
+        src: baseurl+'company/single/'+id
+      },
+      closeOnBgClick: true,
+      type: 'iframe',
+    });
+});
+
+//Company
+$(".viewMotorItem").click(function() {
+
+  var baseurl = window.location.protocol + "//" + window.location.host + "/";
+  var id = $(this).parent().parent().parent().parent().find('.id').html()
+ 
+  $.magnificPopup.open({
+      items: {
+        src: baseurl+'company/single/search/motor/'+id
+      },
+      closeOnBgClick: true,
+      type: 'iframe',
+    });
+});
+
+//User
+$(".userRows .id").click(function() {
+  var baseurl = window.location.protocol + "//" + window.location.host + "/";
+  var id =  $(this).html();
+  $.magnificPopup.open({
+      items: {
+        src: baseurl+'user/single/'+id
+      },
+      closeOnBgClick: true,
+      type: 'iframe',
+    });
+});
+
+$("#changePassword").click(function() {
+  var baseurl = window.location.protocol + "//" + window.location.host + "/";
+  var id =  $(this).html();
+  $.magnificPopup.open({
+      items: {
+        src: baseurl+'user/changepassword'
+      },
+      closeOnBgClick: true,
+      type: 'iframe',
+    });
+});
+
+$( "#viewLogbook" ).click(function() {
+  var baseurl = window.location.protocol + "//" + window.location.host + "/";
+  
+  $.magnificPopup.open({
+      items: {
+        src: baseurl+'logbook'
+      },
+      closeOnBgClick: true,
+      type: 'iframe',
+    });
+});
+
+function test()
+{
+  $('#logout').click()
 }
-
-

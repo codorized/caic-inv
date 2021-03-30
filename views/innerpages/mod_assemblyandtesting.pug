@@ -1,0 +1,326 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description' content='')
+    meta(name='author' content='Mark Otto, Jacob Thornton, and Bootstrap contributors')
+    meta(name='generator' content='Jekyll v4.1.1')
+    title Checkout example · Bootstrap
+    link(rel='canonical' href='https://getbootstrap.com/docs/4.5/examples/checkout/')
+    // Bootstrap core CSS
+    link(href='https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2' crossorigin='anonymous')
+    style.
+      .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      }
+      @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+      }
+      }
+    // Custom styles for this template
+    link(href='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.css' rel='stylesheet')
+    link(href='../../css/db_inner.css' rel='stylesheet')
+    link(href='../../css/magnific-popup.css' rel='stylesheet')
+  body.bg-light
+    .container.prelimdocs 
+      include ../components/mod_navbar.pug
+      include ../components/mod_navstages.pug
+      if isAllowed
+        form(method='post', enctype="multipart/form-data")
+          include ../components/buttons.pug
+          .row.motorinfo
+            .col-md-4.order-md-2.mb-4#closepane.show
+              h4.d-flex.justify-content-between.align-items-center.mb-3
+                span.text-muted Motor Group Pane
+                //- var smcount =  motorObjOncheckup.submotors
+                //span.badge.badge-secondary.badge-pill.motorcount #{smcount.length+1}
+              ul.list-group.mb-3.motorpane
+                  li.list-group-item.d-flex.justify-content-between.lh-condensed(data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne')
+                    div
+                      h6.my-0 #{motordetails.notstarted[0].motorType} - #{oncheckup.power}
+                      small.text-muted Motor/TAG ID: #{motordetails.notstarted[0].tagID}
+              .card.mb-3
+                  .card-header
+                      h6 Downloads
+                  ul.list-group.list-group-flush
+                      li.list-group-item 
+                        a(href=url+"/io/downloadUploaded/assemblyandtesting/"+tagID+"/uploaded-mtr-"+tagID+".jpg") Scanned MTR
+                      li.list-group-item 
+                        a(href=url+"/io/downloadPDF/assemblyandtesting/mtr/"+tagID+"/mtr-"+tagID+".pdf") MTR PDF
+            .col-md-8.order-md-1.motorcol
+              h4.mb-3 Motor Details
+              form
+                #accordionExample.accordion
+                  .card
+                    #headingOne.card-header.mainmotor
+                      h2.mb-0
+                        button.btn.btn-link(type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
+                          | Main Motor
+                      .closepane
+                        input.btn.btn-primary(type='button' name='closepane' value='Close Pane' data-toggle="collapse" data-target="#closepane" aria-expanded="true" aria-controls="closepane")
+                    #collapseOne.collapse.show(aria-labelledby='headingOne' data-parent='#accordionExample')
+                      .card-body
+                        .row
+                          .col-md-6.mb-3  
+                            label(for='voltage') Generate Motor Test Report
+                            input.form-control.btn-primary(type='button' name='genMTR' placeholder='' required='' value='Generate')
+                          .col-md-6.mb-3.genMTR 
+                        .row
+                          .col-md-6.mb-3
+                            label(for='download') Upload Scanned MTR here
+                            input#uploadselect(type='file' name='uploadedMtr' value='Upload') 
+                          .col-md-6.mb-3
+                            label Supervisor
+                            select.form-control(name='supervisor' required='') 
+                              each supervisor in supervisors 
+                                option #{supervisor.name}
+                        .row
+                          .col-md-6.mb-3  
+                            label(for='voltage') Finished Date
+                            input.form-control(type='date' name='startdate' placeholder='' required='')
+                          .col-md-6.mb-3  
+                            label(for='voltage') Finished Time
+                            input.form-control(type='date' name='finishdate' placeholder='' required='')
+                        .row
+                          .card.ml-3.mr-3.mb-3.col.pl-0.pr-0
+                            #headingOne.card-header
+                              h5.mb-0
+                                button.btn.btn-link(type='button' data-toggle='collapse' data-target='#mechanical' aria-expanded='true' aria-controls='mechanical')
+                                  | After Recondition
+                            .collapse.show(aria-labelledby='headingOne' data-parent='#mechanical')
+                              .card-body
+                                  .row 
+                                      .col 
+                                          label.form-label Winding Resistance Test (OHMS)    
+                                  .row.g-3
+                                      .col
+                                          input.form-control(type='text' placeholder='T1-T2/Pri.' name='aftwinding')
+                                      .col
+                                          input.form-control(type='text' placeholder='T1-T3/Sec.' name='aftwinding')
+                                      .col
+                                          input.form-control(type='text' placeholder='T2-T3' name='aftwinding')
+                                  .row.mt-3
+                                      .col 
+                                          label.form-label Insulation Resistance Test (MEGA-OHMS)   
+                                  .row.g-3
+                                      .col
+                                          input.form-control(type='text' placeholder='TG@500V/TG@1000V at 1 MINUTE' name='aftinsulation1')
+                                      .col
+                                          input.form-control(type='text' placeholder='TG@500V/TG@1000V at 10 MINUTES' name='aftinsulation2')
+                                      .col
+                                          input.form-control(type='text' placeholder='Polarization Index' name='aftpi')
+                                  .row.mt-3
+                                      .col 
+                                          label.form-label High Potential Test (MICRO-AMPS)  
+                                  .row.g-3
+                                      .col
+                                          input.form-control(type='text' placeholder='T1' name='afthighpotential')
+                                      .col
+                                          input.form-control(type='text' placeholder='T2' name='afthighpotential')
+                                      .col
+                                          input.form-control(type='text' placeholder='T3' name='afthighpotential')
+                                  .row.mt-3
+                                      .col 
+                                          label.form-label TESTING W/O LOAD (AMPS)
+                                  .row.g-3
+                                      .col
+                                          input.form-control(type='text' placeholder='L1' name='afttestingwoload1')
+                                      .col
+                                          input.form-control(type='text' placeholder='L2' name='afttestingwoload2')
+                                      .col
+                                          input.form-control(type='text' placeholder='L3' name='afttestingwoload3')
+                                  .row.mt-3
+                                      .col 
+                                          label.form-label TESTING W LOAD (AMPS)
+                                  .row.g-3
+                                      .col
+                                          input.form-control(type='text' placeholder='L1' name='afttestingwload1')
+                                      .col
+                                          input.form-control(type='text' placeholder='L2' name='afttestingwload2')
+                                      .col
+                                          input.form-control(type='text' placeholder='L3' name='afttestingwload3')
+                                  .row.mt-3 
+                                      .col 
+                                          label.form-label Surge Test/Comparison Test
+                                  .row.g-3
+                                      .col
+                                          .form-check
+                                              input#gridCheck.form-check-input(type='checkbox' name='aftphase1' value='coiltocoil')
+                                              label.form-check-label(for='gridCheck')
+                                                  | Coil to Coil Short
+                                      .col
+                                          .form-check
+                                              input#gridCheck.form-check-input(type='checkbox' name='aftphase1' value='opencoil')
+                                              label.form-check-label(for='gridCheck')
+                                                  | Open Coil Connection
+                                      .col
+                                          .form-check
+                                              input#gridCheck.form-check-input(type='checkbox' name='aftphase1' value='arching')
+                                              label.form-check-label(for='gridCheck')
+                                                  | Arching Between the Windings or Phrases
+                                      .col
+                                          .form-check
+                                              input#gridCheck.form-check-input(type='checkbox' name='aftphase2')
+                                              label.form-check-label(for='gridCheck')
+                                                  | Good Winding
+                                  .row.mt-3 
+                                      .col 
+                                          label.form-label Notes/Remarks
+                                  .row.g-3
+                                      .col
+                                          .form-floating
+                                          textarea#floatingTextarea2.form-control(placeholder='Notes' style='height: 100px' name='aftnotes')
+                                          
+                                      .col 
+                                          .form-floating
+                                          textarea#floatingTextarea3.form-control(placeholder='Remarks' style='height: 100px' name='aftremarks')
+      else 
+        body.text-center 
+          main.form-signin
+              .alert(role='alert' class="alert-danger")
+                  h5 Restricted
+                  p You are not allowed to access this.   
+
+    include ../components/stage_footer.pug
+    script(src='/../../js/common.js')
+    script. 
+        - $(document).ready(function() {
+            
+            const tagID = !{JSON.stringify(tagID)};
+            const assemblyandtesting = !{JSON.stringify(assemblyandtesting)};
+            var baseurl = window.location.protocol + "//" + window.location.host + "/";
+            $.ajax({   
+                async: true,  
+                method: 'GET',
+                url: baseurl+'motor/rewinder/'+tagID,                        
+                success: function (data) {                        
+                    tmp = data;
+                    $('.rewinders').val(data[0].rewindername)
+                },
+                error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                }
+            })
+            
+            $('input[name="genMTR"]').on('click', function(){   
+                $("#submit").prop('disabled', false);
+                var grandparent = $(this).parent().parent();
+                grandparent.find('.genMTR').remove();
+                $('.genMTR').remove()
+                $.ajax({   
+                  async: true, 
+                  method: 'POST',
+                  data:  $('form').serialize(),   
+                  url: baseurl+'io/asset/assemblyandtesting/mtr/exists/'+tagID,                          
+                  success: function (data) {  
+                    grandparent.append('<div class="col-md-6 mb-3 genMTR"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="'+baseurl+'io/asset/assemblyandtesting/mtr/exists/'+tagID+'">Click here</a></div></div></div>');
+                  },
+                  error: function (xhr, text, error) {              
+                    alert('Error: ' + error);
+                  }
+                })
+            })
+
+            //Filling out the page of data
+            //Basic
+            //Fillout date
+            var now = new Date(assemblyandtesting.startdate); 
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var startdate = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+            var now2 = new Date(assemblyandtesting.finishdate); 
+            var day2 = ("0" + now2.getDate()).slice(-2);
+            var month2 = ("0" + (now2.getMonth() + 1)).slice(-2);
+            var finishdate = now2.getFullYear()+"-"+(month2)+"-"+(day2) ;
+
+
+            $('input[name="startdate"]').val(startdate);
+            $('input[name="finishdate"]').val(finishdate);
+
+            $('select[name="supervisor"] option').each(function(i){
+                if($(this).html() == assemblyandtesting.supervisor) $(this).prop('selected', true)
+              })
+            //MTR
+
+
+            //AFTER
+            $('input[name="aftwinding"]').each(function(index){
+                $(this).val(assemblyandtesting.aftwinding[index])
+            })
+            $('input[name="aftinsulation1"]').val(assemblyandtesting.aftinsulation1)
+            $('input[name="aftinsulation2"]').val(assemblyandtesting.aftinsulation2)
+
+            
+            $('input[name="aftpi"]').val(assemblyandtesting.aftpi)
+
+           
+            $('input[name="afthighpotential"]').each(function(index){
+                $(this).val(assemblyandtesting.afthighpotential[index])
+            })
+
+            if(typeof assemblyandtesting.aftphase1 == 'string')
+            {
+                $('input[name="aftphase1"]').each(function(index){
+                    if($(this).val() == assemblyandtesting.aftphase1)
+                        $(this).prop('checked', true)    
+                })   
+            }
+            else if(typeof assemblyandtesting.aftphase1 == 'object')
+            {
+                $('input[name="aftphase1"]').each(function(index){
+                    for(var i=0; i<assemblyandtesting.aftphase1.length; i++)
+                        if($(this).val() == assemblyandtesting.aftphase1[i]) 
+                            $(this).prop('checked', true)
+                })
+            }
+            
+            if(typeof assemblyandtesting.aftphase2 == 'string') $('input[name="aftphase2"]').prop('checked', true)
+            
+            $('textarea[name="aftremarks"]').val(assemblyandtesting.aftremarks)
+            $('textarea[name="aftnotes"]').val(assemblyandtesting.aftnotes)
+
+            $('input[name="afttestingwoload1"]').val(assemblyandtesting.afttestingwoload1)
+            $('input[name="afttestingwoload2"]').val(assemblyandtesting.afttestingwoload2)
+            $('input[name="afttestingwoload3"]').val(assemblyandtesting.afttestingwoload3)
+            $('input[name="afttestingwload1"]').val(assemblyandtesting.afttestingwload1)
+            $('input[name="afttestingwload2"]').val(assemblyandtesting.afttestingwload2)
+            $('input[name="afttestingwload3"]').val(assemblyandtesting.afttestingwload3)
+
+            //DELETE
+          -$('#delete').on('click', function(){
+            var answer = window.confirm("Are you sure you want to delete this data? Note: It will delete all its succeeding stages but the preceeding will be retained");
+            if (answer) {
+                $.ajax({   
+                    async: false,  
+                    method: 'POST',
+                    url: baseurl+'motor/delete/assemblyandtesting/'+tagID,                        
+                    success: function (data) {   
+                        alert('Successfully deleted: '+ data.stage + ' and all succeeding stages (if there are any)')
+                        var stages = ['notstarted','oncheckup','prelimdocs','onrewind', 'onfabrication', 'inbaking', 'assemblyandtesting', 'painting', 'fordelivery', 'forbillingstatement', 'foror', 'completed'];
+                        if(data.stage != 'notstarted')
+                          window.location.replace(baseurl+'motor/motorItem/'+(stages[stages.indexOf(data.stage)-1])+'/'+data.tagID);
+                        else 
+                          window.location.replace(baseurl);
+                    },
+                    error: function (xhr, text, error) {              
+                        alert('Error: ' + error);
+                    }
+                })
+            }
+            else {
+                //some code
+            }
+          })
+
+        })
+
+
+     

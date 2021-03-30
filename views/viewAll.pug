@@ -10,68 +10,134 @@ html(lang='en')
         
           .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
             h1.h2 All Items
-            .btn-toolbar.mb-2.mb-md-0
-         
+            
+          .card.mb-3
+            .card-body
+              form#searchForm(method="POST")
+                .row.mb-3
+                  .col
+                    .form-check.form-check-inline
+                      input#inlineRadio1.form-check-input(type='radio' name='searchmode' value='keyword' checked)
+                      label.form-check-label(for='inlineRadio1') Keyword Search
+                    .form-check.form-check-inline
+                      input#inlineRadio2.form-check-input(type='radio' name='searchmode' value='tagid')
+                      label.form-check-label(for='inlineRadio2') TAG ID Search
+                  .col
+                    .form-inline
+                      label.form-check-label.mr-3(for='inlineText') Stage
+                      -var stages = [{name: 'all', nicename: 'All'}, {name:'notstarted', nicename: 'Not Started'}, {name:'oncheckup', nicename: 'Checked up'}, {name:'prelimdocs', nicename: 'Documented'}, {name:'onrewind', nicename: 'Rewinded'}, {name:'onfabrication', nicename: 'Fabricated'}, {name:'inbaking', nicename: 'Baked'}, {name:'assemblyandtesting', nicename:'Assemled and Tested'}, {name:'painting', nicename: 'Painted'}, {name:'fordelivery', nicename: 'Delivered'}, {name:'forbillingstatement', nicename: 'Billed'}, {name:'foror', nicename: 'OR Ready'}, {name:'completed', nicename: 'Completed}'}]
+                      select.form-control(name='stage')
+                        each val in stages
+                          if val.name == stage
+                            option(value=val.name selected) #{val.nicename}
+                          else 
+                            option(value=val.name) #{val.nicename}
+                  .col
+                    .form-inline
+                      label.form-check-label.mr-3(for='inlineText') Number of Items
+                      input#inlineRadio2.form-control(type='text' name='limit' placeholder="10 by default" value=10)
+                  
+                      
+                  //- .col
+                  //-   input.form-control(type='text' placeholder='Last name' aria-label='Last name')
+                .input-group.mb-3
+                  input.form-control(type='text' placeholder="Enter Keyword" aria-label="Recipient's username" name="searchfield")
+                  .input-group-append
+                    button#search.input-group-text(type="submit") Search
+
+          
           .table-responsive
             table.table.table-striped.table-sm
               thead.thead-dark
                 tr
-                  th Tag ID
-                  th Urgent? 
-                  th Sales Representative
-                  th Date Pulled Out
+                  th Motor ID
+                  th Pulled out days 
+                  th Status
                   th Company
                   th Motor Type
-                  th HP
-                  th KW
-                  th RPM
-                  //- th Others
-                  //- th Parts
+                  th Power
+                  th PM
                   th Remarks
-              tbody#newItem
-                each item in items
-                  tr
-                    td #{item.tagID}
-                    if item.urgent === 'on'
-                        td yes
-                    else 
-                        td no 
-
-                    td #{item.salesRep}
-                    td #{item.datePulledOut}
-                    td #{item.company}
-                    td #{item.motorType}
-                    td #{item.hp}
-                    td #{item.kw}
-                    td #{item.rpm}
-                    td #{item.remarks}
+                  th Submotor
+              tbody#newItem.recentItems
+                
+                each item in items[0].docs
+                  tr.motorRows
+                      td.tagid 
+                        - var motorID = item.tagID
+                        
+                        a(href=fullUrl+"/motor/motorItem/notstarted/"+motorID, class=motorID) #{motorID}
+                      - var today = new Date();
+                      - var dd = String(today.getDate()).padStart(2, '0');
+                      - var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                      - var yyyy = today.getFullYear();
+                      - today = yyyy + '-' + mm + '-' + dd;
+                      - const diffTime = Math.abs(new Date(today) - new Date(item.datePulledOut));
+                      - const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                      td #{diffDays}
+                      - var convertedstatus = '' 
+                      if (item.status == 'notstarted')
+                        td.stage Not Started
+                      else if (item.status == 'oncheckup')
+                        td.stage On Checkup
+                      else if (item.status == 'prelimdocs')
+                        td.stage Prelimdocs
+                      else if (item.status == 'onrewind')
+                        td.stage On Rewind
+                      else if (item.status == 'onfabrication')
+                        td.stage On Fabrication
+                      else if (item.status == 'inbaking')
+                        td.stage In Baking
+                      else if (item.status == 'assemblyandtesting')
+                        td.stage Assembly and Testing
+                      else if (item.status == 'painting')
+                        td.stage Painting
+                      else if (item.status == 'fordelivery')
+                        td.stage For Delivery
+                      else if (item.status == 'forbillingstatement')
+                        td.stage For Billing Statement
+                      else if (item.status == 'foror')
+                        td.stage For OR
+                      else if (item.status == 'completed')
+                        td.stage Completed
+                      if(item.company_.length > 0)
+                        td #{item.company_[0].compname}
+                      td #{item.motorType}  
+                      if item.power_rpm.length > 0
+                        td.power #{item.power_rpm[0].power}
+                      else 
+                        td.power 
+                      if item.pmID == null
+                        td None
+                      else 
+                        td HAS PM
+                      //- td #{item.submotors.length}
+                      td #{item.remarks}
+                      if item.submotor.parent != null
+                        td Submotor of #{item.submotor.parent}
+                      else
+                        td No Submotor
+          if items[0].docs.length > 0 && items[0].count[0].count > 10
+            nav.paginationnav(aria-label='Page navigation example')
+              ul.pagination.justify-content-center
+                -var no = (items[0].count[0].count)/10
+                -var no2 = Math.ceil(no)
+                -var n = 1
+                //- li.page-item
+                //-   a.page-link(href='#' tabindex='-1' aria-disabled='true') Previous
+                while n <= no2
+                  li.page-item
+                    button.page-link #{n++}
+                //- li.page-item
+                //-   a.page-link(href='#') Next      
+              p 
+                if items[0].count.length > 0
+                  i#totalcount #{items[0].count[0].count} items total
+                else 
+                  i#totalcount 0 item total
               
-        form#test-form.white-popup-block.mfp-hide
-          h1 Stage: On Checkup
-
-          fieldset(style='border:0;')
-            p
-              | Lightbox has an option to automatically focus on the first input. It's strongly recommended to use 
-              code inline
-              |  popup type for lightboxes with form instead of 
-              code ajax
-              |  (to keep entered data if the user accidentally refreshed the page).
-            ol
-              li
-                label(for='name') Name
-                input#name(name='name' type='text' placeholder='Name' required='')
-              li
-                label(for='email') Email
-                input#email(name='email' type='email' placeholder='example@domain.com' required='')
-              li
-                label(for='phone') Phone
-                input#phone(name='phone' type='tel' placeholder='Eg. +447500000000' required='')
-              li
-                label(for='textarea') Textarea
-                br
-                textarea#textarea Try to resize me to see how popup CSS-based resizing works.
-
   include components/footer.pug
+  script(src='/js/viewing.js')
 
     
 

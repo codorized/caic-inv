@@ -1,0 +1,199 @@
+doctype html
+html(lang='en')
+  include ../components/stage_header.pug
+  body.bg-light
+    .container.page.prelimdocs
+      include ../components/stage_navbar.pug
+      form#officialform(method='post')
+        .row.motorinfo
+          .col-md-4.order-md-2.mb-4
+            h4.d-flex.justify-content-between.align-items-center.mb-3
+              span.text-muted Motor Group Pane
+              span.badge.badge-secondary.badge-pill.motorcount 1
+            ul.list-group.mb-3.motorpane
+              li.list-group-item.d-flex.justify-content-between.lh-condensed(data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne')
+                div
+                  h6.my-0.motordetails
+                  - var maxNo = maxTagID[0]['maxNumber']+1;
+            .input-group.card.p-2
+              input.form-control.motorcount2(type='text' name='submotorctr' placeholder='' value='1')
+              button.btn.btn-danger(type='submit') Submit
+          .col-md-8.order-md-1
+            h4.mb-3 Motor Details
+            form  
+              .card.card-body
+                .row
+                  .col-md-6.mb-3
+                      label Gatepass
+                      input.form-control(type='text' name='gatepass' placeholder='' value='' )
+                .form-check.pmcontent.row
+                  .radio.col-md-6.mb-3
+                    label
+                      input.pmcheck(type='radio' name='optradio' value='pmnew')
+                      |  New PM
+                  .radio.col-md-6.mb-3
+                    label
+                      input.pmcheck(type='radio' name='optradio' value='pmexist')
+                      |  Existing PM
+              #accordionExample.accordion
+                .card
+                  #headingOne.card-header
+                    h2.mb-0
+                      button.btn.btn-link(type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
+                        | Main Motor
+                  #collapseOne.collapse.show(aria-labelledby='headingOne' data-parent='#accordionExample')
+                    .card-body
+                      .row
+                        .col-md-6.mb-3
+                          label(for='firstName') Data Pulled Out
+                          input.form-control.currdate(type='text' name='datePulledOut' placeholder='' value='' required readonly)
+                        .col-md-6.mb-3
+                          label(for='firstName') TagID
+                          select.form-control(name='tagID') 
+                            each val in tagID_list
+                              option #{val._id}
+                      .row
+                        .col-md-6.mb-3
+                          label(for='firstName') Sales Representative
+                          input.form-control(type='text' name='salesRep' placeholder='' value=user.name required readonly)
+                        .mb-3.col-md-6
+                          label(for='username') Company
+                          select.form-control(name='company' required='')
+                            each company in companies
+                              option #{company._id}
+                        .mb-3.col-md-6
+                          label(for='username') Motor Name
+                          input.form-control(type='text' name='motorType')
+
+                        .mb-3.col-md-6.powerbset
+                          label.powerrbset
+                            .radio
+                              label
+                                input.pmcheck(type='radio' name='powerrb' value='hp' checked='')
+                                | HP
+                            .radio
+                              label
+                                input.pmcheck(type='radio' name='powerrb' value='kw')
+                                | KW
+                          input.form-control(type='text' name='power' placeholder='' value='' required='')
+                        .col-md-6.mb-3
+                          label(for='lastName') RPM
+                          input.form-control(type='text' name='rpm' placeholder='' value='' required='')
+                          .invalid-feedback
+                            | Valid last name is required.
+                      label(for='firstName') Others:
+                      .row.col.mb-3
+                        .col.custom-control.custom-checkbox
+                          input#motor-assy.custom-control-input(type='checkbox' name='motor-assy')
+                          label.custom-control-label(for='motor-assy') Motor Assy
+                        .col.custom-control.custom-checkbox
+                          input#ac-assy.custom-control-input(type='checkbox' name='ac-assy')
+                          label.custom-control-label(for='ac-assy') A/C ASSY
+                        .col.custom-control.custom-checkbox
+                          input#fabrication.custom-control-input(type='checkbox' name='fabrication')
+                          label.custom-control-label(for='fabrication') Fabrication
+                        .col.custom-control.custom-checkbox
+                          input#machining.custom-control-input(type='checkbox' name='machining')
+                          label.custom-control-label(for='machining') Machining
+                      label(for='firstName') Parts Checklist/Inspection Remarks: 
+                      .row.col.mb-3
+                        .col.custom-control.custom-checkbox
+                          input#fan-cover.custom-control-input(type='checkbox' name='fan-cover')
+                          label.custom-control-label(for='fan-cover') Fan Cover
+                        .col.custom-control.custom-checkbox
+                          input#stator.custom-control-input(type='checkbox' name='stator')
+                          label.custom-control-label(for='stator') Stator
+                        .col.custom-control.custom-checkbox
+                          input#keystock.custom-control-input(type='checkbox' name='keystock')
+                          label.custom-control-label(for='keystock') Keystock (CUÑA)
+                      .row.col.mb-3
+                        .col.custom-control.custom-checkbox
+                          input#fan-blade.custom-control-input(type='checkbox' name='fan-blade')
+                          label.custom-control-label(for='fan-blade') Fan Blade
+                        .col.custom-control.custom-checkbox
+                          input#rotor.custom-control-input(type='checkbox' name='rotor')
+                          label.custom-control-label(for='rotor') Rotor
+                        .col.custom-control.custom-checkbox
+                          input#centrifugal.custom-control-input(type='checkbox' name='centrifugal')
+                          label.custom-control-label(for='centrifugal') Centrifugal Switch
+                      .row.col.mb-3
+                        .col.custom-control.custom-checkbox
+                          input#terminal-box.custom-control-input(type='checkbox' name='terminal-box')
+                          label.custom-control-label(for='terminal-box') Terminal Box
+                        .col.custom-control.custom-checkbox
+                          input#pulley.custom-control-input(type='checkbox' name='pulley')
+                          label.custom-control-label(for='pulley') Pulley
+                        .col.custom-control.custom-checkbox
+                          input#governor-switch.custom-control-input(type='checkbox' name='governor-switch')
+                          label.custom-control-label(for='governor-switch') Governor Switch
+                      .row.col.mb-3
+                        .col.custom-control.custom-checkbox
+                          input#terminal.custom-control-input(type='checkbox' name='terminal')
+                          label.custom-control-label(for='terminal') Terminal Cover
+                        .col.custom-control.custom-checkbox
+                          input#carbon.custom-control-input(type='checkbox' name='carbon')
+                          label.custom-control-label(for='carbon') Carbon Brush
+                        .col.custom-control.custom-checkbox
+                          input#capacitor.custom-control-input(type='checkbox' name='capacitor')
+                          label.custom-control-label(for='capacitor') Capacitor
+                      .row.col.mb-3
+                        .col.custom-control.custom-checkbox
+                          input#terminal-block.custom-control-input(type='checkbox' name='terminal-block')
+                          label.custom-control-label(for='terminal-block') Terminal Block
+                        .col.custom-control.custom-checkbox
+                          input#carbon-holder.custom-control-input(type='checkbox' name='carbon-holder')
+                          label.custom-control-label(for='carbon-holder') Carbon Holder
+                        .col.custom-control.custom-checkbox
+                          input#impeller.custom-control-input(type='checkbox' name='impeller')
+                          label.custom-control-label(for='impeller') Impeller
+                      .row.col.mb-3
+                        .col-md-4.custom-control.custom-checkbox
+                          input#bolts-and-nuts.custom-control-input(type='checkbox' name='bolts-and-nuts')
+                          label.custom-control-label(for='bolts-and-nuts') Bolts & Nuts
+                        .col-md-4.custom-control.custom-checkbox
+                          input#coupling.custom-control-input(type='checkbox' name='coupling')
+                          label.custom-control-label(for='coupling') Coupling
+                      .form-group
+                        label(for='exampleFormControlTextarea1') Remarks
+                        textarea#remarks.form-control(rows='3' name='remarks')
+    footer.my-5.pt-5.text-muted.text-center.text-small
+      p.mb-1 © 2020 Calamba Allied Industrial Corp.
+      ul.list-inline
+        li.list-inline-item
+          a(href='#') Web App by Lan Cortez
+    script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js' integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj' crossorigin='anonymous')
+    script.
+      window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\\/script>')
+    script(src='https://getbootstrap.com/docs/4.5/dist/js/bootstrap.bundle.min.js' integrity='sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx' crossorigin='anonymous')
+    script(src='https://code.jquery.com/jquery-3.5.1.min.js')
+    script(src='https://getbootstrap.com/docs/4.5/examples/checkout/form-validation.js')
+    script(src='../js/newMotor.js')
+    script.
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+      today = yyyy + '-' + mm + '-' + dd;
+      -$(".currdate").val(today.toString());
+        - $(document).ready(function() {
+            var baseurl = window.location.protocol + "//" + window.location.host + "/";
+
+            $('input[name="motorType"]').on('change', function(){
+              var power = ""
+              $('.pmcheck').each(function(i){
+                if ($(this).prop('checked') == true)  power = $(this).val()
+              })
+              $('.motordetails').html($(this).val() + "-" + $('input[name="power"]').val() + " " + power.toUpperCase())
+            })
+
+            $('input[name="power"]').on('change', function(){
+              var power = ""
+              $('.pmcheck').each(function(i){
+                if ($(this).prop('checked') == true)  power = $(this).val()
+              })
+              $('.motordetails').html($('input[name="motorType"]').val() + " - " + $('input[name="power"]').val() + " " + power.toUpperCase())
+            })
+          
+        })
+
+    
