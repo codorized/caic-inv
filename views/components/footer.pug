@@ -36,11 +36,12 @@ script.
       //- var ctx4 = document.getElementById('myPieChart2').getContext('2d');
       //- var clientCountObject = getClients(ctx4, !{JSON.stringify(clientCount)});
 
-      var ctx5 = document.getElementById('HpandKw').getContext('2d');
-      var HPandKWObj = getHPandKW(ctx5, !{JSON.stringify(HPandKw)});
+      //- var ctx5 = document.getElementById('HpandKw').getContext('2d');
+      //- var HPandKWObj = getHPandKW(ctx5, !{JSON.stringify(HPandKw)});
 
       var ctx6 = document.getElementById('salesRepByDate').getContext('2d');
       var MotorSalesRepByDate = getMotorSalesRepByDate(ctx6, !{JSON.stringify(salesRepGraph)});
+      ctx6.height = 200;
 
       //- var ctx6 = document.getElementById('motorCountPerStage').getContext('2d');
       //- var motorCountPerStage = motorCountPerStage(ctx5, !{JSON.stringify(motorCountPerStage)});

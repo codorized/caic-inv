@@ -946,21 +946,86 @@ const monitorListingsUsingHasNext = async (client, pipeline = [], socket, coll, 
     return await result;
   }
   
-  const getStats = async (client) => {
-    const result = await client.db("caic-sample").collection("motors").aggregate([
-      {
-        $group: {
-          _id: '$salesRep',
-            count: {$sum: 1}
+  // const getStats = async (client) => {
+  //   const result = await client.db("caic-sample").collection("motors").aggregate([
+  //     {
+  //       $group: {
+  //         _id: '$salesRep',
+  //           count: {$sum: 1}
+  //       }
+  //     },
+  //     {
+  //       $sort: {  
+  //         _id: 1
+  //       }
+  //     }
+  //   ]);
+  //   return await result.toArray();
+  // }
+
+  const getStats = async(client) => {
+    const result = await client.db("caic-sample").collection("motors").aggregate(
+      [
+        {
+          '$project': {
+            'tagID': 1, 
+            'salesRep': 1
+          }
+        }, {
+          '$lookup': {
+            'from': 'prelimdocs', 
+            'let': {
+              'id': '$tagID'
+            }, 
+            'pipeline': [
+              {
+                '$match': {
+                  '$expr': {
+                    '$eq': [
+                      '$tagID', '$$id'
+                    ]
+                  }
+                }
+              }, {
+                '$project': {
+                  'grandTotal': 1, 
+                  '_id': 0
+                }
+              }
+            ], 
+            'as': 'grandTotal'
+          }
+        }, {
+          '$group': {
+            '_id': '$salesRep', 
+            'tagIDList': {
+              '$push': {
+                '$arrayElemAt': [
+                  '$grandTotal.grandTotal', 0
+                ]
+              }
+            },
+            'count': {'$sum': 1}
+          }
+        }, {
+          '$project': {
+            '_id': 1, 
+            'grandTotal': {
+              '$sum': '$tagIDList'
+            },
+            'count': 1
+          }
+        },
+        {
+          '$sort': {
+            '_id': 1, 
+          }
         }
-      },
-      {
-        $sort: {  
-          _id: 1
-        }
-      }
-    ]);
-    return await result.toArray();
+      ]
+    )
+    
+    console.log(await result.toArray())
+    return await result.toArray()
   }
 
   const getMotorCounts = async (client) => 
@@ -1252,48 +1317,131 @@ const monitorListingsUsingHasNext = async (client, pipeline = [], socket, coll, 
     return await result.toArray();
   }
 
+  // const getMotorSalesRepByTime = async function(client)
+  // {
+  //   result = await client.db("caic-sample").collection("motors").aggregate(
+  //     [
+  //       {
+  //         '$project': {
+  //           'date': {
+  //             '$dateFromString': {
+  //               'dateString': '$datePulledOut'
+  //             }
+  //           }, 
+  //           'salesRep': 1
+  //         }
+  //       }, {
+  //         '$group': {
+  //           '_id': {
+  //             'ids': '$date', 
+  //             'salesRep': '$salesRep'
+  //           }, 
+  //           'count': {
+  //             '$sum': 1
+  //           }
+  //         }
+  //       }, {
+  //         '$group': {
+  //           '_id': '$_id.ids', 
+  //           'STATUS_GROUP': {
+  //             '$push': {
+  //               'STATUS': '$_id.salesRep', 
+  //               'count': '$count'
+  //             }
+  //           }
+  //         }
+  //       },
+  //       {
+  //         '$sort':{
+  //           '_id': 1
+  //         }
+  //       }
+  //     ]
+  //   )
+
+  //   return await result.toArray();
+  // }
+
   const getMotorSalesRepByTime = async function(client)
   {
     result = await client.db("caic-sample").collection("motors").aggregate(
       [
         {
           '$project': {
+            'tagID': 1, 
+            'salesRep': 1, 
             'date': {
-              '$dateFromString': {
-                'dateString': '$datePulledOut'
+              '$month': {
+                '$dateFromString': {
+                  'dateString': '$datePulledOut'
+                }
               }
             }, 
-            'salesRep': 1
+            'year': {
+              '$year': {
+                '$dateFromString': {
+                  'dateString': '$datePulledOut'
+                }
+              }
+            }
+          }
+        }, {
+          '$lookup': {
+            'from': 'prelimdocs', 
+            'let': {
+              'id': '$tagID'
+            }, 
+            'pipeline': [
+              {
+                '$match': {
+                  '$expr': {
+                    '$eq': [
+                      '$tagID', '$$id'
+                    ]
+                  }
+                }
+              }, {
+                '$project': {
+                  'grandTotal': 1, 
+                  '_id': 0
+                }
+              }
+            ], 
+            'as': 'grandTotal'
           }
         }, {
           '$group': {
             '_id': {
-              'ids': '$date', 
-              'salesRep': '$salesRep'
+              'year': '$year', 
+              'month': '$date', 
+              'sr': '$salesRep'
             }, 
-            'count': {
-              '$sum': 1
-            }
-          }
-        }, {
-          '$group': {
-            '_id': '$_id.ids', 
-            'STATUS_GROUP': {
+            'total': {
               '$push': {
-                'STATUS': '$_id.salesRep', 
-                'count': '$count'
+                '$arrayElemAt': [
+                  '$grandTotal.grandTotal', 0
+                ]
               }
             }
           }
-        },
-        {
-          '$sort':{
-            '_id': 1
+        }, {
+          '$project': {
+            '_id': 1, 
+            'grandTotal': {
+              '$sum': '$total'
+            }, 
+            'count': 1
+          }
+        }, {
+          '$sort': {
+            '_id.month': 1, 
+            '_id.year': 1
           }
         }
       ]
     )
-
+    
+    console.log(await result.toArray())
     return await result.toArray();
   }
 
@@ -2434,7 +2582,7 @@ const updateItem = async (client, stage, inputObj) => {
   {
      result2 = await client.db("caic-sample").collection(stage)
     .updateOne({ tagID: parseInt(inputObj.tagID) },
-                { $set: {startdate: inputObj.startdate, finishdate: inputObj.finishdate, isComplete: true, rewindername: inputObj['rewindername'], discount: inputObj.discount, stator: inputObj.stator, accessories: inputObj.accessories, mechanical: inputObj.mechanical, dynamic: inputObj.dynamic, misc: inputObj.misc, gen: inputObj.gen }}
+                { $set: {grandTotal: inputObj.grandTotal, startdate: inputObj.startdate, finishdate: inputObj.finishdate, isComplete: true, rewindername: inputObj['rewindername'], discount: inputObj.discount, stator: inputObj.stator, accessories: inputObj.accessories, mechanical: inputObj.mechanical, dynamic: inputObj.dynamic, misc: inputObj.misc, gen: inputObj.gen }}
                 );
     console.log(`${result2.matchedCount} document(s) matched the query criteria.`);
   } else if (stage == 'onfabrication')
@@ -2447,9 +2595,6 @@ const updateItem = async (client, stage, inputObj) => {
   }
 }
 
-const checkID = async (client, stage, inputObj) => {
-//TODO
-}
 
 const replaceDocument = async (client, dbname, tagID, replacement) =>
 {
@@ -2653,8 +2798,7 @@ exports.getPassCode = getPassCode;
 exports.updateItem = updateItem;
 exports.getRewinder = getRewinder;
 exports.getSingleRewinder = getSingleRewinder;
-exports.getList = getList;
-exports.checkID = checkID;
+exports.getList = getList;  
 exports.replaceDocument = replaceDocument;
 exports.getSingleUser = getSingleUser;
 exports.getSingleUserById = getSingleUserById

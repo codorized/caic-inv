@@ -322,6 +322,20 @@ function loadSalesRep(ctx, data)
                         },
                         value: {
                             color: 'green'
+                        },
+                        index: {
+                            align: 'end',
+                            anchor: 'end',
+                            color: 'black',
+                            font: {size: 12},
+                            formatter: function(val, context) {
+                            
+                                return "Php " + (parseFloat(data[context.dataIndex].grandTotal)).toFixed(2);
+                            },
+                            offset: 8,
+                            opacity: function(ctx) {
+                                return ctx.active ? 1 : 0.5;
+                            }
                         }
                     }
                 },
@@ -343,6 +357,8 @@ function loadSalesRep(ctx, data)
             dataset.data.push(data[i].count);
         });
     }
+
+
 
     myChart.update();
 
@@ -479,81 +495,166 @@ function getMotorCountByDate(ctx, data)
         return myChart;
 }
 
+// function getMotorSalesRepByDate(ctx, data)
+// {          
+//     var myChart = new Chart(ctx, {
+//         type: 'line',
+//         data: {
+//             datasets: []
+//         },
+//         options: {
+    
+//             responsive: true,
+//             plugins: {
+//                 title: {
+//                     display: true,
+//                     text: 'Chart.js Line Chart'
+//                 },
+//                 tooltip: {
+//                     mode: 'index',
+//                     intersect: false,
+//                 },
+//                 datalabels: {
+//                     display: false
+//                 }
+//             },
+//             hover: {
+//                 mode: 'nearest',
+//                 intersect: true
+//             },
+//             scales: {
+//                 xAxes:  [{
+//                     type: 'time',
+//                     time: {
+//                         unit: 'year',
+//                         min: moment().format('YYYY'),
+//                         max: moment('2021').add(1, 'year')
+//                     }
+//                 }]
+//             }
+//         }
+//     });
+    
+    
+//     for(var i=0; i<data.currSalesReps.length; i++)
+//     {
+//         var randomColor = Math.floor((Math.random() * 225) + 1)
+//         myChart.data.datasets.push({  
+//             label: data.currSalesReps[i]._id,
+//             backgroundColor:  'rgba('+randomColor+', 99, 132, 0.2)',
+//             borderColor: 'rgba('+randomColor+', 99, 132, 0.2)',
+//             data: [
+               
+//             ],
+//             fill: false
+//         })
+//     }
+
+
+//     for(var i=0; i<data.salesrepByDate.length; i++)
+//     {
+        
+//         for(k=0; k<myChart.data.datasets.length; k++)
+//         {
+//             for(var j=0; j<data.salesrepByDate[i].STATUS_GROUP.length; j++)
+//             {
+//                 if(myChart.data.datasets[k].label == data.salesrepByDate[i].STATUS_GROUP[j].STATUS)
+//                 {
+//                     myChart.data.datasets[k].data.push({
+//                         x: new Date(data.salesrepByDate[i]._id),
+//                         y: data.salesrepByDate[i].STATUS_GROUP[j].count
+//                     })
+//                 }
+//             }
+//         }
+       
+//     }
+
+//     myChart.update();
+    
+//     return myChart;
+// }
+
 function getMotorSalesRepByDate(ctx, data)
-{          
-    console.log(data)
+{   
+
     var myChart = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: {
-            datasets: []
+            datasets: [
+                {
+                    label: 'Dataset 1',
+                    data: [{x:'2021-3-1', y:10}, {x:'2021-4-1', y:20} ],
+                    backgroundColor: 'rgba('+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', 0.8)',
+                  },
+                  {
+                    label: 'Dataset 2',
+                    data: [{x:'2021-3-1', y:20},{x:'2021-4-1', y:20}, {x:'2021-6-1', y:20}, {x:'2021-8-1', y:20}],
+                    backgroundColor: 'rgba('+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', 0.8)',
+                  },
+                  {
+                    label: 'Dataset 3',
+                    data: [{x:'2021-3-1', y:20}, {x:'2021-4-1', y:20}, {x:'2021-8-1', y:20}],
+                    backgroundColor: 'rgba('+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', 0.8)',
+                  }
+        ]
+
         },
         options: {
-    
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Chart.js Line Chart'
-                },
-                tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                },
-                datalabels: {
-                    display: false
-                }
-            },
-            hover: {
-                mode: 'nearest',
-                intersect: true
-            },
+            maintainAspectRatio: false,
             scales: {
-                xAxes:  [{
+                xAxes: [{
                     type: 'time',
+                    stacked: true,
                     time: {
-                        unit: 'year',
+                        unit: 'month',
                         min: moment().format('YYYY'),
-                        max: moment('2021').add(1, 'year')
+                        max: moment().add(5, 'month')
+                    }
+                }],
+                yAxes: [{
+                    stacked: true,
+                    ticks: {
+                        display: true
                     }
                 }]
             }
-        }
+        },
+        plugins: {
+            datalabels: {
+                display: false,
+            },
+        },
+        responsive: true
     });
     
+    // for(var i=0; i<data.salesrepByDate.length; i++)
+    // {
+    //     myChart.data.datasets.push({
+    //         label: data.salesrepByDate[i]._id.sr,
+    //         backgroundColor:  'rgba('+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', 0.8)',
+    //         data: [{
+    //             stack: 'hey',
+    //             x: data.salesrepByDate[i]._id.year+"-"+data.salesrepByDate[i]._id.month+"-1",
+    //             y: parseFloat(data.salesrepByDate[i].grandTotal)
+    //         }]
+    //     })
+    //     // console.log(parseFloat(data.salesrepByDate[i].grandTotal))
+
+    // }
+
     
-    for(var i=0; i<data.currSalesReps.length; i++)
-    {
-        var randomColor = Math.floor((Math.random() * 225) + 1)
-        myChart.data.datasets.push({  
-            label: data.currSalesReps[i]._id,
-            backgroundColor:  'rgba('+randomColor+', 99, 132, 0.2)',
-            borderColor: 'rgba('+randomColor+', 99, 132, 0.2)',
-            data: [
-               
-            ],
-            fill: false
-        })
-    }
-
-
-    for(var i=0; i<data.salesrepByDate.length; i++)
-    {
-        
-        for(k=0; k<myChart.data.datasets.length; k++)
-        {
-            for(var j=0; j<data.salesrepByDate[i].STATUS_GROUP.length; j++)
-            {
-                if(myChart.data.datasets[k].label == data.salesrepByDate[i].STATUS_GROUP[j].STATUS)
-                {
-                    myChart.data.datasets[k].data.push({
-                        x: new Date(data.salesrepByDate[i]._id),
-                        y: data.salesrepByDate[i].STATUS_GROUP[j].count
-                    })
-                }
-            }
-        }
-       
-    }
+    // for(var i=0; i<data.salesrepByDate.length; i++)
+    // {
+    //     var salesrep = data.salesrepByDate[i]._id.sr
+    //     for(var j=0; j<data.salesrepByDate.length; j++)
+    //     {
+    //         if(salesrep == myChart.data.datasets[j].label)
+    //         {
+    //             myChart.data.datasets[j].data = 
+    //         }
+    //     }
+    // }
 
     myChart.update();
     
@@ -800,7 +901,7 @@ function getHPandKW(ctx, data)
 function getClients(ctx, data){
     
     var myChart = new Chart(ctx, {
-        type: 'polarArea',
+        type: 'doughnut',
         data: {
             datasets: [{
                 backgroundColor: [
@@ -833,32 +934,32 @@ function getClients(ctx, data){
                 display: true,
                 text: 'Client Chart'
             },
-            scale: {
-                ticks: {
-                    beginAtZero: true
-                },
-                reverse: false
-            },
-            animation: {
-                animateRotate: false,
-                animateScale: true
-            },
-            plugins: {
-                datalabels: {
-                    anchor: 'center',
-                    color: 'black',
-                    labels: {
-                        title: {
-                            font: {
-                                weight: 'bold'
-                            }
-                        },
-                        value: {
-                            color: 'green'
-                        }
-                    }
-                }
-            }
+            // scale: {
+            //     ticks: {
+            //         beginAtZero: true
+            //     },
+            //     reverse: false
+            // },
+            // animation: {
+            //     animateRotate: false,
+            //     animateScale: true
+            // },
+            // plugins: {
+            //     datalabels: {
+            //         anchor: 'center',
+            //         color: 'black',
+            //         labels: {
+            //             title: {
+            //                 font: {
+            //                     weight: 'bold'
+            //                 }
+            //             },
+            //             value: {
+            //                 color: 'green'
+            //             }
+            //         }
+            //     }
+            // }
         }
     });
 

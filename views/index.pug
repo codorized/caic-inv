@@ -59,10 +59,10 @@ html(lang='en')
             .row
               .col-6
                 canvas#myPieChart2.my-4.w-100
-              .col-6
-                canvas#HpandKw.my-4.w-100
+              div.col-6
+                canvas#myChart
             .row 
-              div.col-6#salesRepByDateWrapper
+              div.col#salesRepByDateWrapper(style="height: 400px" )
                 canvas#salesRepByDate.my-4.w-100
                 .row 
                   .col-5
@@ -83,11 +83,10 @@ html(lang='en')
                       span.input-group-text -
                       input.form-control.todate(type='date' placeholder='To' aria-label='Server' value=yearafter)
 
-              div.col-6
-                canvas#myChart
+             
          
           
-          div.container.table-titles 
+          div.container.table-titles(style="margin-top: 100px" )
             .row 
               h2.col-sm.page-title Motor Items
               form#searchForm(method="POST")

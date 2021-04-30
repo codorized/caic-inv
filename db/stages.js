@@ -557,16 +557,7 @@ const createPrelimDocsObj = async (body, oncheckup, tagID) => {
   inputObj.rewindername = body.rewindername;
   inputObj.tagID = parseInt(tagID);
   inputObj.discount = null
-  if(body.discount_percent)
-  {
-    inputObj.discount = [body.discount_percent, 'percent'];
-  }
-
-  if(body.discount_fixed)
-  {
-    inputObj.discount = [body.discount_fixed, 'fixed'];
-  }
-
+  inputObj.grandTotal = 0;
 
   //General Reqs
   inputObj.gen = [] 
@@ -583,6 +574,9 @@ const createPrelimDocsObj = async (body, oncheckup, tagID) => {
     totalcost: body['genreq-dismantling-totalcost']
   })
 
+  inputObj.grandTotal += parseFloat(body['genreq-pickup-totalcost'])
+  inputObj.grandTotal += parseFloat(body['genreq-dismantling-totalcost'])
+
   if(oncheckup.stator){
     for(var i=1; i <= oncheckup.stator.length; i++)
     {
@@ -594,6 +588,7 @@ const createPrelimDocsObj = async (body, oncheckup, tagID) => {
           totalcost: body['stator-totalcost-'+i]
         }
       )
+      inputObj.grandTotal += parseFloat(body['stator-totalcost-'+i])
     }
   }
 
@@ -625,7 +620,7 @@ const createPrelimDocsObj = async (body, oncheckup, tagID) => {
           }
         )
       }
-      
+      inputObj.grandTotal += parseFloat(body['acce-totalcost-'+i])
     }
   }
 
@@ -641,6 +636,8 @@ const createPrelimDocsObj = async (body, oncheckup, tagID) => {
           totalcost: body['mech-totalcost-'+i]
         }
       )
+
+      inputObj.grandTotal += parseFloat(body['mech-totalcost-'+i])
     }
   }
 
@@ -656,6 +653,8 @@ const createPrelimDocsObj = async (body, oncheckup, tagID) => {
           totalcost: body['dynamic-totalcost-'+i]
         }
       )
+
+      inputObj.grandTotal += parseFloat(body['dynamic-totalcost-'+i])
     }
   }
 
@@ -670,8 +669,30 @@ const createPrelimDocsObj = async (body, oncheckup, tagID) => {
           totalcost: body['misc-totalcost-'+i]
         }
       )
+
+      inputObj.grandTotal += parseFloat(body['misc-totalcost-'+i])
     }
   }
+
+  var subtotal = discount = vat = 0;
+  subtotal = inputObj.grandTotal
+  
+
+  if(body.discount_percent)
+  {
+    inputObj.discount = [body.discount_percent, 'percent'];
+    discount= (parseFloat(inputObj.discount[0])/100)*subtotal
+  }
+
+  if(body.discount_fixed)
+  {
+    inputObj.discount = [body.discount_fixed, 'fixed'];
+    discount = parseFloat(inputObj.discount)
+  }
+  vat = (subtotal-discount)*0.12
+
+  inputObj.grandTotal = (subtotal-discount) + vat
+
   return inputObj
 }
 
