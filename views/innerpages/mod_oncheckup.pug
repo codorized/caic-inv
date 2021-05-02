@@ -47,18 +47,60 @@ html(lang='en')
                       small.text-muted Motor/TAG ID: #{motordetails.notstarted[0].tagID}
               .card.mb-3
                   .card-header
-                      h6 Downloads
+                      h6 Downloads/Uploads
+                        span.ml-3#file-spinner
+                          .spinner-border.text-primary.spinner-border-sm(role='status')
+                            span.sr-only Loading...
                   ul.list-group.list-group-flush
                       li.list-group-item 
-                          a(href=url+"/io/downloadUploaded/oncheckup/"+motorobj.tagID+"/iarback-"+motorobj.tagID+".jpg") IAR Back (Image)
+                        .col
+                          .row
+                            p IAR Back (Image)
+                            a.ml-3(href=url+"/io/downloadUploaded/oncheckup/"+motorobj.tagID+"/iarback-"+motorobj.tagID+".jpg") 
+                              svg.bi.bi-cloud-arrow-down-fill(xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='currentColor' viewBox='0 0 16 16')
+                                path(d='M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z')
+                          .row
+                            input#file-beforeimage(type='file' name='beforeimage'  value='Upload') 
+                            button.btn.btn-primary#bef-img.file-btns(type="button") Upload
                       li.list-group-item 
-                          a(href=url+"/io/downloadUploaded/oncheckup/"+motorobj.tagID+"/iarfront-"+motorobj.tagID+".jpg") IAR Front (Image)
+                        .col
+                          .row
+                            p IAR Front (Image)
+                            a.ml-3(href=url+"/io/downloadUploaded/oncheckup/"+motorobj.tagID+"/iarfront-"+motorobj.tagID+".jpg")
+                              svg.bi.bi-cloud-arrow-down-fill(xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='currentColor' viewBox='0 0 16 16')
+                                path(d='M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z')
+                          .row
+                            input#file-iar1(type='file' name='iar1'  value='Click me') 
+                            button.btn.btn-primary.mt-3#front-iar.file-btns(type="button") Upload
+                          
                       li.list-group-item 
-                          a(href=url+"/io/downloadPDF/oncheckup/iar/"+motorobj.tagID+"/iar-back-"+motorobj.tagID+".pdf") IAR Back (PDF)
+                        .col
+                          .row
+                            p IAR Back (Image)
+                            a.ml-3(href=url+"/io/downloadUploaded/oncheckup/"+motorobj.tagID+"/iarback-"+motorobj.tagID+".jpg")
+                              svg.bi.bi-cloud-arrow-down-fill(xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='currentColor' viewBox='0 0 16 16')
+                                path(d='M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z')
+                          .row
+                            input#file-iar2(type='file' name='iar2'  value='Click me') 
+                            button.btn.btn-primary.mt-3#back-iar.file-btns(type="button") Upload
+                          
                       li.list-group-item 
-                          a(href=url+"/io/downloadPDF/oncheckup/iar/"+motorobj.tagID+"/iar-front-"+motorobj.tagID+".pdf") IAR Front (PDF)
+                        .col
+                          .row
+                            p IAR Back (PDF)
+                            a.ml-3(href=url+"/io/downloadPDF/oncheckup/iar/"+motorobj.tagID+"/iar-front-"+motorobj.tagID+".pdf")
+                              svg.bi.bi-cloud-arrow-down-fill(xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='currentColor' viewBox='0 0 16 16')
+                                path(d='M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z')
+                          
                       li.list-group-item 
-                          a(href=url+"/io/downloadUploaded/oncheckup/"+tagID+"/beforeimage-"+tagID+".jpg") Before Image
+                        .col
+                          .row
+                            p Before Image (Image)
+                            a.ml-3(href=url+"/io/downloadUploaded/oncheckup/"+tagID+"/beforeimage-"+tagID+".jpg")
+                              svg.bi.bi-cloud-arrow-down-fill(xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='currentColor' viewBox='0 0 16 16')
+                                path(d='M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z')
+                        
+                          
               
             .col-md-8.order-md-1.motorcol
               h4.mb-3 Motor Details
@@ -112,23 +154,14 @@ html(lang='en')
                           .col-md-6.mb-3  
                             label(for='voltage') Finish Date
                             input.form-control(type='date' name='finishdate' placeholder='' required='')
-                        .row 
-                          .col-md-6.mb-3
-                            label(for='download') Select Before Image
-                            input#uploadselect(type='file' name='beforeimageselect'  value='Upload') 
+        
                         .row
                           .col-md-4.mb-3
                             label(for='download') Generate IAR
                             input.form-control.btn-warning(type='button' name='download' required='' value='Click me') 
                           .col-md-4.mb-3.genIAR
                           .col-md-4.mb-3.genIAR2
-                        .row  
-                          .col-md-4.mb-3
-                            label(for='upload1') Upload Front (JPEG File)
-                            input(type='file' name='iar1' value='Click me') 
-                          .col-md-4.mb-3
-                            label(for='upload2') Upload Back (JPEG File)
-                            input(type='file' name='iar2' value='Click me') 
+                       
                         .card
                           #headingOne.card-header
                             h5.mb-0
@@ -534,16 +567,67 @@ html(lang='en')
     include ../components/stage_footer.pug
     script(src='../../js/stages/oncheckup.js')
     script(src='../../js/common.js')
+    script(src='../../js/image-conversion.js')
     script. 
         const motorobj = !{JSON.stringify(motorobj)};
         const tagID = motorobj.tagID;
         const oncheckup = !{JSON.stringify(oncheckup)};
 
-        console.log(oncheckup)
-
         var baseurl = window.location.protocol + "//" + window.location.host + "/";
         - $(document).ready(function() {
             
+            //Upload
+            $('#file-spinner').hide()
+            $('.file-btns').on('click', function(){
+              var file_input = $(this).parent().find('input');
+              var filename = file_input.attr('name');
+
+              if(document.getElementById('file-'+filename).files.length > 0)
+              {
+                var formData = new FormData();
+                var fileObj = document.getElementById('file-'+filename).files[0];
+                var fileType = fileObj['type'];
+                var validImageTypes = ["image/jpeg", "image/png"];
+                var fileSize = fileObj.size/1000;
+                
+                
+                if($.inArray(fileType, validImageTypes) >= 0 && fileSize < 15000){
+                  $('.file-btns').prop('disabled', true);
+                  $('#file-spinner').show()
+                  imageConversion.compressAccurately(fileObj,900).then(res=>{
+                    formData.append(filename, res);
+
+                    $.ajax({   
+                      async: true, 
+                      method: 'POST',
+                      data: formData,
+                      url: baseurl+'io/uploadFile/'+tagID+'/oncheckup/'+filename+'/old',    
+                      processData: false,
+                      contentType: false,            
+                      success: function (data) {  
+                        $('.file-btns').prop('disabled', false);
+                        $('#file-spinner').hide()
+                        
+                        checkIfReady()
+                      },
+                      error: function (xhr, text, error) {              
+                        alert(error);
+                      }
+                    })
+                  })
+                }
+                else 
+                {
+                  alert('Invalid file type! Must be a JPG or PNG and the file size must not exceed 15 MB')
+                  
+                }
+              }
+              else {
+                alert('Please select an input!')
+              }
+
+          })
+
             if ( window.history.replaceState ) {
               window.history.replaceState( null, null, window.location.href );
             }

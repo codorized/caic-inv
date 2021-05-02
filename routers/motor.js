@@ -356,30 +356,9 @@ router.post('/motorItemStage/:id', async (req, res) => {
 
     try {
       const getFileDir = await methods.getFileDir(client)
-      iarFront = req.files.iar1;
-      iarFront_loc = getFileDir.dir + 'uploads/oncheckup/iarfront-'+req.params.id+'.jpg';
-
-      iarBack = req.files.iar2;
-      iarBack_loc = getFileDir.dir + 'uploads/oncheckup/iarback-'+req.params.id+'.jpg';
-
-      let befimage = req.files.beforeimageselect;
-      let befimage_loc = getFileDir.dir+'uploads/oncheckup/beforeimage-'+req.params.id+'.jpg';
-
-      iarFront.mv(iarFront_loc, async function(err) {
-        if (err)
-          return res.status(500).send(err);
-      });
-
-      iarBack.mv(iarBack_loc, async function(err) {
-        if (err)
-          return res.status(500).send(err); 
-      });
-
-      befimage.mv(befimage_loc, async function(err) {
-        if (err)
-          return res.status(500).send(err);
-        //Add the file to database
-      });
+      const iarFront_loc = getFileDir.dir + 'uploads/oncheckup/iarfront-'+req.params.id+'.jpg';
+      const iarBack_loc = getFileDir.dir + 'uploads/oncheckup/iarback-'+req.params.id+'.jpg';
+      const befimage_loc = getFileDir.dir+'uploads/oncheckup/beforeimage-'+req.params.id+'.jpg';
 
       //Save the records only when the file is succesfully uploaded
       var inputObj = await stages.createOncheckupObj(req.body, req.params.id)
@@ -1054,61 +1033,6 @@ router.post('/motorItem/:scope/:tagID',  async (req, res) => {
   { 
     var inputObj = await stages.createOncheckupObj(req.body, req.params.tagID)
     const OldOncheckup = await methods.getSingle(client, 'oncheckup', req.params.tagID);
-
-    if(req.files)
-    {
-      if(req.files.iar1)
-      {
-        try {
-          var iarFront = req.files.iar1;
-          var iarFront_loc = OldOncheckup.files[0].loc;
-          iarFront.mv(iarFront_loc, async function(err) {
-            if (err)
-              return res.status(500).send(err);
-          });
-        }
-        catch(e)
-        {
-          console.log(e)
-        }
-        
-      }
-
-      if(req.files.iar2)
-      {
-        try {
-          var iarBack = req.files.iar2;
-          var iarBack_loc = OldOncheckup.files[1].loc;
-          iarBack.mv(iarBack_loc, async function(err) {
-            if (err)
-              return res.status(500).send(err);
-          });
-        }
-        catch(e)
-        {
-          console.log(e)
-        }
-      }
-
-      if(req.files.beforeimageselect)
-      {
-        try{
-          let befimage = req.files.beforeimageselect;
-          let befimage_loc = OldOncheckup.files[4].loc;
-  
-          befimage.mv(befimage_loc, async function(err) {
-            if (err)
-              return res.status(500).send(err);
-          });
-
-        }
-        catch(e)
-        {
-          console.log(e)
-        }
-      }
-      
-    }
 
     inputObj.files.push({name: 'iarfront_img', loc: OldOncheckup.files[0].loc})
     inputObj.files.push({name: 'iarback_img', loc: OldOncheckup.files[1].loc})

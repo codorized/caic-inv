@@ -42,6 +42,8 @@ var PdfPrinter = require('pdfmake');
 var printer = new PdfPrinter(fonts);
 
 
+
+
 router.post('/asset/onrewind/ris/:fileStatus/:tagID', async function(req, res){
   let motors = await methods.getSingle(client, 'motors', req.params.tagID);
   let companydetails = await methods.getCompany(client, motors.company_id);
@@ -1927,7 +1929,7 @@ router.get('/downloadUploaded/:stage/:tagID/:filename', async function(req, res)
       fileDir = obj.files[i].loc
 
   try{
-    res.download(fileDir); // Set disposition and send it.
+    res.download(fileDir); 
   }
   catch(e) {
     console.log(e)
@@ -1938,7 +1940,7 @@ router.get('/downloadUploaded/export', async function(req, res){
   const dir = await methods.getFileDir(client)
   var fileDir = dir.dir + "export.csv"
   try{
-    res.download(fileDir); // Set disposition and send it.
+    res.download(fileDir); 
   }
   catch(e) {
     console.log(e)
@@ -1961,5 +1963,52 @@ router.get('/downloadPDF/:stage/:fileType/:tagID/:filename', async function(req,
   }
 });
 
+router.post('/uploadFile/:tagID/:stage/:file/:status', async function(req, res){
+  
+  var stageObj = null;
+  let fileobj = req.files[req.params.file];
+  let fileloc = '';
+  if(req.params.stage == 'oncheckup')
+    stageObj = await methods.getSingle(client, 'oncheckup', req.params.tagID);
+
+  if(req.params.status == 'new')
+  {
+    var filename = ''
+    if(req.params.file == 'beforeimage') filename = 'beforeimage-'+req.params.tagID+'.jpg';
+    else if (req.params.file == 'iar1') filename = 'iarfront-'+req.params.tagID+'.jpg';
+    else if (req.params.file == 'iar2') filename = 'iarback-'+req.params.tagID+'.jpg';  
+
+    const getFileDir = await methods.getFileDir(client)
+    
+    fileloc = getFileDir.dir+'uploads/'+req.params.stage+'/'+ filename;
+  }
+  else if(req.params.status == 'old')
+  {
+    if(stageObj)
+    {
+      if(req.params.stage == 'oncheckup')
+      {
+        console.log('Heyz');
+        if(req.params.file == 'iar1')
+          fileloc = stageObj.files[0].loc;
+        else if(req.params.file == 'iar2')
+          fileloc = stageObj.files[1].loc;
+        else if(req.params.file == 'beforeimage')
+          fileloc = stageObj.files[4].loc;
+      }
+      
+    }
+  }
+
+  fileobj.mv(fileloc, async function(err) {
+    if (err)
+      return res.status(500).send(err);
+    else 
+      console.log('Upload successful!')
+  });
+
+  res.send(200);
+
+});
 
 module.exports  = router;

@@ -762,7 +762,7 @@ const monitorListingsUsingHasNext = async (client, pipeline = [], socket, coll, 
     var matchquery = textsearchquery
     if(field == '') matchquery = {}
     if(stage2 != 'all') matchquery.status = stage2
-    console.log(limit)
+    
    
     const result = await client.db("caic-sample").collection(stage).aggregate(
       [
@@ -1023,8 +1023,7 @@ const monitorListingsUsingHasNext = async (client, pipeline = [], socket, coll, 
         }
       ]
     )
-    
-    console.log(await result.toArray())
+  
     return await result.toArray()
   }
 
@@ -1441,7 +1440,7 @@ const monitorListingsUsingHasNext = async (client, pipeline = [], socket, coll, 
       ]
     )
     
-    console.log(await result.toArray())
+   
     return await result.toArray();
   }
 

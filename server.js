@@ -19,10 +19,11 @@ initializePassport(
 )
 
 //Configs
-app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
+app.use(bodyParser.json());       // to support JSON-encoded bodies
+
 app.use(flash())
 app.use(session({ 
   secret: 'testing',
@@ -35,8 +36,8 @@ app.use(methodOverried('_method'))
 
 
 const upload = require('express-fileupload');
+// app.use(maybe(upload()));
 app.use(upload());
-
 
 //Mongo
 var client = require('./db/config').client;
@@ -145,5 +146,18 @@ async function main() {
       await client.close();
   }
 }
+
+// function maybe(fn) {
+  
+//   return function(req, res, next) {
+    
+//       if (req.path === '/io/uploadFile' && req.method === 'POST') {
+        
+//           next();
+//       } else {
+//           fn(req, res, next);
+//       }
+//   }
+// }
 
 main().catch(console.error);

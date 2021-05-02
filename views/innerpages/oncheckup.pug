@@ -16,10 +16,30 @@ html(lang='en')
                 div
                   h6.my-0.motordetails #{motordetails.notstarted[0].motorType}
                   small.text-muted Motor/TAG ID: #{motordetails.notstarted[0].tagID}
-            //- .input-group.card.p-2
-            //-   button.btn.btn-info#save(type="button") Save
-            //- .input-group.card.p-2
-            //-   button.btn.btn-danger#submit(type='submit' disabled) Submit
+              li.list-group-item.d-flex.justify-content-between.lh-condensed.mt-2(data-toggle='collapse' aria-expanded='false')
+                .col#files
+                  .row
+                    h6.my-0 Uploads
+                      span.ml-3#file-spinner
+                        .spinner-border.text-primary.spinner-border-sm(role='status')
+                          span.sr-only Loading...
+                  .row.mt-3
+                    .col
+                      label Select Before Image
+                      input#file-beforeimage(type='file' name='beforeimage' required='' value='Upload') 
+                      button.btn.btn-primary.mt-3#bef-img.file-btns(type="button") Upload
+                      
+                  .row.mt-3
+                    .col-md-4.mb-3
+                      label Upload Front (JPEG File)
+                      input#file-iar1(type='file' name='iar1' required='' value='Click me') 
+                      button.btn.btn-primary.mt-3#front-iar.file-btns(type="button") Upload
+                  .row     
+                    .col-md-4.mb-3
+                      label Upload Back (JPEG File)
+                      input#file-iar2(type='file' name='iar2' required='' value='Click me') 
+                      button.btn.btn-primary.mt-3#back-iar.file-btns(type="button") Upload
+                      
           .col-md-8.order-md-1.motorcol
             h4.mb-3 Motor Details
             form 
@@ -65,10 +85,7 @@ html(lang='en')
                           input.form-control(type='text' name='rpm' placeholder='' value='' required='')
                           .invalid-feedback
                             | Valid last name is required.
-                      .row 
-                        .col-md-6.mb-3
-                          label(for='download') Select Before Image
-                          input#uploadselect(type='file' name='beforeimageselect' required='' value='Upload') 
+                      
                       .row
                         .col-md-6.mb-3  
                           label(for='voltage') Start Date
@@ -82,13 +99,7 @@ html(lang='en')
                           input.form-control.btn-warning(type='button' name='download' required='' value='Click me') 
                         .col-md-4.mb-3.genIAR
                         .col-md-4.mb-3.genIAR2
-                      .row  
-                        .col-md-4.mb-3
-                          label(for='upload1') Upload Front (JPEG File)
-                          input(type='file' name='iar1' required='' value='Click me') 
-                        .col-md-4.mb-3
-                          label(for='upload2') Upload Back (JPEG File)
-                          input(type='file' name='iar2' required='' value='Click me') 
+                      
                       .card
                         #headingOne.card-header
                           h5.mb-0
@@ -509,22 +520,56 @@ html(lang='en')
     include ../components/stage_footer.pug
     script(src='../js/stages/oncheckup.js')
     script(src='../js/common.js')
+    script(src='../js/image-conversion.js')
     script. 
       
       const tagID = !{JSON.stringify(tagID)};
       const draft = !{JSON.stringify(draft)};
       const motordetails = !{JSON.stringify(motordetails.notstarted)};
- 
-
+      var baseurl = window.location.protocol + "//" + window.location.host + "/";
+      var filectr = 0;
       - $(document).ready(function() {
+           //Upload Files First
+          $('#file-spinner').hide()
+          
+          $('.file-btns').on('click', function(){
+            var file_input = $(this).parent().find('input');
+            var filename = file_input.attr('name');
 
-        //-  $('input[name="motorType"]').on('change', function(){
-        //-     var power = ""
-        //-     $('.pmcheck').each(function(i){
-        //-       if ($(this).prop('checked') == true)  power = $(this).val()
-        //-     })
-        //-     $('.motordetails').html($(this).val() + "-" + $('input[name="power"]').val() + " " + power.toUpperCase())
-        //-   })
+            if(document.getElementById('file-'+filename).files.length > 0)
+            {
+              var formData = new FormData();
+              var fileObj = document.getElementById('file-'+filename).files[0];
+              
+              $('.file-btns').prop('disabled', true);
+              $('#file-spinner').show()
+              imageConversion.compressAccurately(fileObj,900).then(res=>{
+                formData.append(filename, res);
+
+                $.ajax({   
+                  async: true, 
+                  method: 'POST',
+                  data: formData,
+                  url: baseurl+'io/uploadFile/'+tagID+'/oncheckup/'+filename+'/new',    
+                  processData: false,
+                  contentType: false,            
+                  success: function (data) {  
+                    $('.file-btns').prop('disabled', false);
+                    $('#file-spinner').hide()
+                    filectr++;
+                    checkIfReady()
+                  },
+                  error: function (xhr, text, error) {              
+                    alert(error);
+                  }
+                })
+              })
+            }
+            else {
+              alert('Please select an input!')
+            }
+
+          })
 
           $('input[name=powerrb]').on('change', function(){
           
@@ -778,7 +823,7 @@ html(lang='en')
         //Download
         - $('input[name="download"]').on('click', function(){  
 
-            $("#submit").prop('disabled', false);
+           
             var grandparent = $(this).parent().parent();
             grandparent.find('.genIAR').remove();
             grandparent.find('.genIAR2').remove();
@@ -792,6 +837,9 @@ html(lang='en')
                   
                   grandparent.append('<div class="col-md-4 mb-3 genIAR"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="'+baseurl+'io/asset/oncheckup/iar/front/notexists/'+tagID+'">Click here</a></div></div></div>');
                   grandparent.append('<div class="col-md-4 mb-3 genIAR2"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="'+baseurl+'io/asset/oncheckup/iar/back/notexists/'+tagID+'">Click here</a></div></div></div>');
+                  filectr++;
+                  checkIfReady()
+              
               },
               error: function (xhr, text, error) {              
                 alert('Oncheckup ajx: io/asset/iar/'+tagID + 'Error: ' + error);
@@ -878,6 +926,14 @@ html(lang='en')
         
       });
 
+      function checkIfReady()
+      { 
+        
+        if(filectr >= 4)
+        {
+          $("#submit").prop('disabled', false);
+        }
+      }
 
       
 
