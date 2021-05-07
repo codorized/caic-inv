@@ -2357,6 +2357,12 @@ const monitorListingsUsingHasNext = async (client, pipeline = [], socket, coll, 
       $group: {
         _id: '$compname'
       }
+    },
+    {
+      $sort: 
+      {
+        '_id': 1
+      }
     }
   ]);
   return await result2.toArray();
@@ -2620,6 +2626,8 @@ const saveDraft = async (client, formdata, stage) => {
   .updateOne({ stage: stage, tagID: formdata.tagID}, {$set: formdata}, { upsert: true });
   return result
 }
+
+
 
 const getDraft = async (client, stage, tagID) => {
   result = await client.db("caic-sample").collection("drafts").find({tagID: parseInt(tagID), stage: stage});

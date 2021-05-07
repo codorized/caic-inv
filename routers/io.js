@@ -2011,4 +2011,31 @@ router.post('/uploadFile/:tagID/:stage/:file/:status', async function(req, res){
 
 });
 
+router.get('/checkFiles/:tagID/:stage', async function(req, res){
+  
+  var fileCtr = 0; 
+  const stage = await client.db("caic-sample").collection(req.params.stage).find({tagID: parseInt(req.params.tagID)}, { projection:({ _id: 0, files: 1 })});
+  const stage_files = await stage.toArray();
+  var file_status = { found: [], notfound: []}
+
+ 
+
+  stage_files[0].files.forEach(file => {
+    try {
+      if (fs.existsSync(file.loc)) {
+        file_status.found.push(file.name)
+      }
+      else 
+      {
+        file_status.notfound.push(file.name)
+      }
+    } catch(err) {
+      console.error(err)
+    }
+  });
+
+  res.send(file_status);
+
+});
+
 module.exports  = router;

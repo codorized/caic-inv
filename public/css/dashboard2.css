@@ -121,6 +121,12 @@
       width: 100%;
       max-width: 100% !important;
       height: 100%;
+      
+  }
+
+  .mfp-iframe-holder
+  {
+    padding-bottom: 0 !important;
   }
 
 }

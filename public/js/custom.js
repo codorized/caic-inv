@@ -1,23 +1,39 @@
 $( ".motorRows" ).click(function() {
     var baseurl = window.location.protocol + "//" + window.location.host + "/";
     const tagID = $(this).find('.tagid a, .tagid p')[0].innerHTML;
+    
+
     $.magnificPopup.open({
         items: {
           src: baseurl+'motor/motorItemStage/'+tagID
         },
-        closeOnBgClick: true,
+        closeOnBgClick: false,
+        overflowY: "hidden",
         type: 'iframe',
-      });
+        callbacks: {
+          open: function() {
+              $('body').css('overflow-x','hidden')
+          },
+          close: function() {
+              $('body').css('overflow-x','scroll')
+          }
+       }
+    });
+
 });
+
 
 $( "#addmotorItem" ).click(function() {
   var baseurl = window.location.protocol + "//" + window.location.host + "/";
+  
   $.magnificPopup.open({
       items: {
         src: baseurl+'motor/newMotor'
       },
-      closeOnBgClick: true,
-      type: 'iframe',
+      closeOnBgClick: false,
+      overflowY: "hidden",
+      type: 'iframe'
+      
     });
 });
 

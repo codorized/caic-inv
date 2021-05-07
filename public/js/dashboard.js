@@ -264,6 +264,32 @@ function search(formobj)
 }
 
 
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+  
+
+var customColorFunction = function(schemeColors) {
+
+    //var myColors = ['#FFEFD5', '#00ff00', '#0000ff']; // define/generate own colors
+    var myColors = []
+
+    for(var i=0; i< 300; i++)
+    {
+        myColors.push(getRandomColor())
+    }
+
+    // extend the color scheme with own colors
+    Array.prototype.push.apply(schemeColors, myColors);
+
+    return schemeColors; // optional: this is not needed if the array is modified in place
+};
+
 function loadSalesRep(ctx, data)
 {
     var myChart = new Chart(ctx, {
@@ -580,27 +606,38 @@ function getMotorSalesRepByDate(ctx, data)
 
     var myChart = new Chart(ctx, {
         type: 'bar',
+        
         data: {
             datasets: [
-                {
-                    label: 'Dataset 1',
-                    data: [{x:'2021-3-1', y:10}, {x:'2021-4-1', y:20} ],
-                    backgroundColor: 'rgba('+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', 0.8)',
-                  },
-                  {
-                    label: 'Dataset 2',
-                    data: [{x:'2021-3-1', y:20},{x:'2021-4-1', y:20}, {x:'2021-6-1', y:20}, {x:'2021-8-1', y:20}],
-                    backgroundColor: 'rgba('+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', 0.8)',
-                  },
-                  {
-                    label: 'Dataset 3',
-                    data: [{x:'2021-3-1', y:20}, {x:'2021-4-1', y:20}, {x:'2021-8-1', y:20}],
-                    backgroundColor: 'rgba('+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', 0.8)',
-                  }
-        ]
+                // {
+                //     label: 'Dataset 1',
+                //     data: [{x:moment('2021-3-1'), y:10}, {x:moment('2021-4-1'), y:15}],
+                //     //backgroundColor: 'rgba('+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', 0.8)',
+                // },
+                // {
+                //     label: 'Dataset 2',
+                //     data: [{x:moment('2021-3-1'), y:20},{x:moment('2021-4-1'), y:20}, {x:moment('2021-6-1'), y:20}, {x:moment('2021-8-1'), y:20}],
+                //     //backgroundColor: 'rgba('+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', 0.8)',
+                // },
+                // {
+                //     label: 'Dataset 3',
+                //     data: [{x:moment('2021-3-1'), y:20}, {x:moment('2021-4-1'), y:20}, {x:moment('2021-8-1'), y:20}],
+                //    // backgroundColor: 'rgba('+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', 0.8)',
+                // }
+            ]
 
         },
         options: {
+            plugins: {
+                datalabels: 
+                {
+                    display: false
+                },
+                colorschemes: 
+                {
+                    custom: customColorFunction
+                }
+            },
             maintainAspectRatio: false,
             scales: {
                 xAxes: [{
@@ -620,41 +657,40 @@ function getMotorSalesRepByDate(ctx, data)
                 }]
             }
         },
-        plugins: {
-            datalabels: {
-                display: false,
-            },
-        },
+        
         responsive: true
     });
     
-    // for(var i=0; i<data.salesrepByDate.length; i++)
-    // {
-    //     myChart.data.datasets.push({
-    //         label: data.salesrepByDate[i]._id.sr,
-    //         backgroundColor:  'rgba('+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', '+Math.floor((Math.random() * 255) + 1)+', 0.8)',
-    //         data: [{
-    //             stack: 'hey',
-    //             x: data.salesrepByDate[i]._id.year+"-"+data.salesrepByDate[i]._id.month+"-1",
-    //             y: parseFloat(data.salesrepByDate[i].grandTotal)
-    //         }]
-    //     })
-    //     // console.log(parseFloat(data.salesrepByDate[i].grandTotal))
+    var salesreps = []
 
-    // }
+    data.salesrepByDate.forEach(dataObj => {
+        salesreps.push(dataObj._id.sr)
+    })
 
+    var uniqueNames = new Set(salesreps)
+    uniqueNames = [...uniqueNames]
     
-    // for(var i=0; i<data.salesrepByDate.length; i++)
-    // {
-    //     var salesrep = data.salesrepByDate[i]._id.sr
-    //     for(var j=0; j<data.salesrepByDate.length; j++)
-    //     {
-    //         if(salesrep == myChart.data.datasets[j].label)
-    //         {
-    //             myChart.data.datasets[j].data = 
-    //         }
-    //     }
-    // }
+
+    for(var j=0; j<uniqueNames.length; j++)
+    {
+        myChart.data.datasets.push({
+            label: uniqueNames[j],
+            data: [],
+            
+        })
+
+        for(var i=0; i<data.salesrepByDate.length; i++)
+        {
+            if(data.salesrepByDate[i]._id.sr == uniqueNames[j])
+            {
+                myChart.data.datasets[j].data.push({
+                    x: data.salesrepByDate[i]._id.year+"-"+data.salesrepByDate[i]._id.month+"-1",
+                    y: (data.salesrepByDate[i].grandTotal).toFixed(2)
+                })
+            }
+            
+        }
+    }
 
     myChart.update();
     
@@ -903,75 +939,50 @@ function getClients(ctx, data){
     var myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            datasets: [{
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(200, 206, 86, 0.2)',
-                    'rgba(100, 192, 192, 0.2)',
-                    'rgba(153, 255, 255, 0.2)',
-                    'rgba(255, 99, 120, 0.2)',
-                    'rgba(54, 162, 225, 0.2)',
-                    'rgba(255, 206, 80, 0.2)',
-                    'rgba(75, 192, 180, 0.2)',
-                    'rgba(153, 102, 220, 0.2)',
-                    'rgba(200, 206, 70, 0.2)',
-                    'rgba(100, 192, 180, 0.2)',
-                    'rgba(153, 255, 240, 0.2)',
-                ],
-                // label: 'My dataset' // for legend
-            }],
+            datasets: []
         },
         options: {
             responsive: true,
+            plugins: {
+                datalabels: {
+                    anchor: 'center',
+                    color: 'black',
+                    labels: {
+                        title: {
+                            font: {
+                                weight: 'bold'
+                            }
+                        },
+                        value: {
+                            color: 'green'
+                        }
+                    }
+                },
+                colorschemes: {
+                    
+                    custom: customColorFunction
+                }
+            },
             legend: {
                 display: false,
             },
             title: {
                 display: true,
                 text: 'Client Chart'
-            },
-            // scale: {
-            //     ticks: {
-            //         beginAtZero: true
-            //     },
-            //     reverse: false
-            // },
-            // animation: {
-            //     animateRotate: false,
-            //     animateScale: true
-            // },
-            // plugins: {
-            //     datalabels: {
-            //         anchor: 'center',
-            //         color: 'black',
-            //         labels: {
-            //             title: {
-            //                 font: {
-            //                     weight: 'bold'
-            //                 }
-            //             },
-            //             value: {
-            //                 color: 'green'
-            //             }
-            //         }
-            //     }
-            // }
+            }
         }
     });
 
+    myChart.data.datasets.push({data:[]})
     for(var i=0; i<data.length; i++)
     {
-        myChart.data.labels.push(data[i]._id);
-        myChart.data.datasets.forEach((dataset) => {
-            dataset.data.push(data[i].count);
-        });
-    }
+        myChart.data.labels.push(data[i]._id[0]);
+        myChart.data.datasets[0].data.push(data[i].count)
+    }   
+
     myChart.update();
 
     return myChart;
 }
+
 

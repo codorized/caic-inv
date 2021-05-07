@@ -1388,9 +1388,12 @@ router.post('/motorItem/:scope/:tagID',  async (req, res) => {
 //Save 
 router.post('/save/:stage/:tagID',  async (req, res) => {
   var inputObj = {}
+  var isDraft = await methods.getDraft(client, req.params.stage, req.params.tagID);
 
   if(req.params.stage == 'oncheckup') {
     var inputObj = await stages.createOncheckupObj(req.body, req.params.tagID)
+    if(isDraft != null)
+      inputObj.draft_file = isDraft[0].draft_file;
   }
   else if(req.params.stage == 'prelimdocs') {
     const oncheckup = await methods.getSingle(client, 'oncheckup', req.params.tagID);
@@ -1432,6 +1435,41 @@ router.post('/save/:stage/:tagID',  async (req, res) => {
 
   await methods.saveDraft(client, inputObj, req.params.stage)
   res.send(200)
+})
+
+//Save files
+router.post('/save_file/:stage/:tagID',  async (req, res) => {
+  var isDraft = await methods.getDraft(client, req.params.stage, req.params.tagID);
+
+  if(isDraft == null)
+  {
+    var inputObj = {}
+    inputObj.tagID = parseInt(req.params.tagID);
+    inputObj.stage = req.params.stage;
+    inputObj.draft_file = [req.body.filename];
+    await methods.saveDraft(client, inputObj, req.params.stage)
+  }
+  else 
+  {
+    //Check if draf_file already exists 
+    var draft_files = isDraft[0].draft_file;
+    if(draft_files.length > 0) 
+    {
+      //Look if the file is already existing, push if true
+      if(draft_files.indexOf(req.body.filename) == -1)
+      {
+        isDraft[0].draft_file.push(req.body.filename);
+        await methods.saveDraft(client, isDraft[0], req.params.stage)
+      }
+    } 
+  }
+  
+  res.sendStatus(200);
+})
+
+//Get files
+router.get('/save_file/:stage/:tagID',  async (req, res) => {
+  res.send(await methods.getDraft(client, req.params.stage, req.params.tagID));
 })
 
 // @route   GET motor/hpTable/:hpval

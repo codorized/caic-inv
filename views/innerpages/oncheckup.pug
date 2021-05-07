@@ -5,7 +5,14 @@ html(lang='en')
     .container.oncheckup
       include ../components/stage_navbar.pug
       form#form(method='post', enctype="multipart/form-data")
-        include ../components/buttons.pug
+        .row  
+          .col-md-12.mt-3
+              .card.text-right
+                  .card-body
+                    button.btn.btn-info#save.mr-3(type="button") Save
+                    button.btn.btn-danger#submit_button(type="button") Submit 
+                    button.btn.btn-danger#submit_button2(type="submit" style="display:none") Submit 
+                              
         .row.motorinfo
           .col-md-4.order-md-2.mb-4
             h4.d-flex.justify-content-between.align-items-center.mb-3
@@ -25,19 +32,26 @@ html(lang='en')
                           span.sr-only Loading...
                   .row.mt-3
                     .col
-                      label Select Before Image
-                      input#file-beforeimage(type='file' name='beforeimage' required='' value='Upload') 
+                      label.upload_status Select Before Image 
+                        svg.bi.bi-check-circle-fill.ml-3(xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='green' viewBox='0 0 16 16')
+                          path(d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z')
+                        
+                      input#file-beforeimage(type='file' name='beforeimage' value='Upload') 
                       button.btn.btn-primary.mt-3#bef-img.file-btns(type="button") Upload
                       
                   .row.mt-3
-                    .col-md-4.mb-3
-                      label Upload Front (JPEG File)
-                      input#file-iar1(type='file' name='iar1' required='' value='Click me') 
+                    .col
+                      label.upload_status Upload Front (JPEG File)
+                        svg.bi.bi-check-circle-fill.ml-3(xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='green' viewBox='0 0 16 16')
+                          path(d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z')
+                      input#file-iar1(type='file' name='iar1' value='Click me') 
                       button.btn.btn-primary.mt-3#front-iar.file-btns(type="button") Upload
                   .row     
-                    .col-md-4.mb-3
-                      label Upload Back (JPEG File)
-                      input#file-iar2(type='file' name='iar2' required='' value='Click me') 
+                    .col
+                      label.upload_status Upload Back (JPEG File)
+                        svg.bi.bi-check-circle-fill.ml-3(xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='green' viewBox='0 0 16 16')
+                          path(d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z')
+                      input#file-iar2(type='file' name='iar2' value='Click me') 
                       button.btn.btn-primary.mt-3#back-iar.file-btns(type="button") Upload
                       
           .col-md-8.order-md-1.motorcol
@@ -95,7 +109,9 @@ html(lang='en')
                           input.form-control(type='date' name='finishdate' placeholder='' required='')
                       .row
                         .col-md-4.mb-3
-                          label(for='download') Generate IAR
+                          label.upload_status(for='download') Generate IAR
+                            svg.bi.bi-check-circle-fill.ml-3(xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='green' viewBox='0 0 16 16')
+                              path(d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z')
                           input.form-control.btn-warning(type='button' name='download' required='' value='Click me') 
                         .col-md-4.mb-3.genIAR
                         .col-md-4.mb-3.genIAR2
@@ -527,11 +543,47 @@ html(lang='en')
       const draft = !{JSON.stringify(draft)};
       const motordetails = !{JSON.stringify(motordetails.notstarted)};
       var baseurl = window.location.protocol + "//" + window.location.host + "/";
-      var filectr = 0;
+     
       - $(document).ready(function() {
-           //Upload Files First
+          /*Upload Files First*/
+          //Hide Loader
           $('#file-spinner').hide()
-          
+          //Hide all upload status
+          $('.upload_status svg').hide();
+          $('#submit_button').prop('disabled', false);
+
+          $('#submit_button').on('click', function(event){
+            //Ajax to check if draft already contains everything
+            var file_count = 0;
+            $.ajax({ 
+              async: false,  
+              method: 'GET',
+              url: baseurl+'motor/save_file/oncheckup/'+tagID,
+              success: function (data) {  
+                if(data)
+                  file_count = data[0].draft_file.length;
+              
+              },
+              error: function (xhr, text, error) {              
+                alert(error);
+              }
+            })
+
+           
+
+            //Verification
+            if(file_count == 4)
+            {
+              $("#submit_button2").click();
+            }
+            else 
+            {
+              event.preventDefault();
+              alert('File inputs incomplete. Please make sure to upload everything first.');
+            }
+              
+          })
+
           $('.file-btns').on('click', function(){
             var file_input = $(this).parent().find('input');
             var filename = file_input.attr('name');
@@ -540,35 +592,56 @@ html(lang='en')
             {
               var formData = new FormData();
               var fileObj = document.getElementById('file-'+filename).files[0];
+              var fileType = fileObj['type'];
+              var validImageTypes = ["image/jpeg", "image/png"];
+              var fileSize = fileObj.size/1000;
               
-              $('.file-btns').prop('disabled', true);
-              $('#file-spinner').show()
-              imageConversion.compressAccurately(fileObj,900).then(res=>{
-                formData.append(filename, res);
+              if($.inArray(fileType, validImageTypes) >= 0 && fileSize < 15000){
+                $('.file-btns').prop('disabled', true);
+                $('#file-spinner').show()
+                imageConversion.compressAccurately(fileObj,900).then(res=>{
+                  formData.append(filename, res);
+                  
+                  $.ajax({   
+                    async: true, 
+                    method: 'POST',
+                    data: formData,
+                    url: baseurl+'io/uploadFile/'+tagID+'/oncheckup/'+filename+'/new',    
+                    processData: false,
+                    contentType: false,            
+                    success: function (data) {  
+                      $('.file-btns').prop('disabled', false);
+                      $('#file-spinner').hide()
 
-                $.ajax({   
-                  async: true, 
-                  method: 'POST',
-                  data: formData,
-                  url: baseurl+'io/uploadFile/'+tagID+'/oncheckup/'+filename+'/new',    
-                  processData: false,
-                  contentType: false,            
-                  success: function (data) {  
-                    $('.file-btns').prop('disabled', false);
-                    $('#file-spinner').hide()
-                    filectr++;
-                    checkIfReady()
-                  },
-                  error: function (xhr, text, error) {              
-                    alert(error);
-                  }
+                      //Create a draft object
+                      $.ajax({   
+                        method: 'POST',
+                        data: {'filename': filename},
+                        url: baseurl+'motor/save_file/oncheckup/'+tagID,
+                        success: function (data) {  
+                            var svg_siblig = $('input[name="'+filename+'"]').parent().find('.upload_status svg');
+                            svg_siblig.show();
+                        },
+                        error: function (xhr, text, error) {              
+                          alert(error);
+                        }
+                      })
+                      
+                    },
+                    error: function (xhr, text, error) {              
+                      alert(error);
+                    }
+                  })
                 })
-              })
             }
             else {
-              alert('Please select an input!')
+              alert('Invalid file type! Must be a JPG or PNG and the file size must not exceed 15 MB')
+                  
             }
-
+             }
+              else {
+                alert('Please select an input!')
+              }
           })
 
           $('input[name=powerrb]').on('change', function(){
@@ -585,13 +658,18 @@ html(lang='en')
               }
             })
 
-           
-
             $('.motordetails').html(motordetails[0].motorType + " - " + $('input[name="power"]').val() + " " + power.toUpperCase())
           })
           
         if(draft)
         {
+
+          //Verify files 
+          draft[0].draft_file.forEach(file => {
+            var svg_siblig = $('input[name="'+file+'"]').parent().find('svg');
+            svg_siblig.show();
+          })
+
           //Fill out ordinary text fields
           $('input[type="text"]').each(function( index ) {
               var name = $(this).prop('name')
@@ -785,7 +863,7 @@ html(lang='en')
               {
                 if($(children[j]).val() == draft[0].mechanical[i].model)
                 {
-                    
+            
                     $(children[j]).prop('selected', true)
                 }
                   
@@ -834,12 +912,25 @@ html(lang='en')
                 data:  $('form').serialize(),   
                 url: baseurl+'io/asset/oncheckup/iar/notexists/'+tagID,                          
                 success: function (data) {  
-                  
                   grandparent.append('<div class="col-md-4 mb-3 genIAR"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="'+baseurl+'io/asset/oncheckup/iar/front/notexists/'+tagID+'">Click here</a></div></div></div>');
                   grandparent.append('<div class="col-md-4 mb-3 genIAR2"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="'+baseurl+'io/asset/oncheckup/iar/back/notexists/'+tagID+'">Click here</a></div></div></div>');
-                  filectr++;
-                  checkIfReady()
-              
+                  
+                  var svg_siblig = $('input[name="download"]').parent().find('svg');
+                  svg_siblig.show();
+
+                  $.ajax({   
+                    method: 'POST',
+                    data: {'filename': 'download'},
+                    url: baseurl+'motor/save_file/oncheckup/'+tagID,
+                    success: function (data) {  
+                        var svg_siblig = $('input[name="download"]').parent().find('svg');
+                        svg_siblig.show();
+                    },
+                    error: function (xhr, text, error) {              
+                      alert(error);
+                    }
+                  })
+
               },
               error: function (xhr, text, error) {              
                 alert('Oncheckup ajx: io/asset/iar/'+tagID + 'Error: ' + error);
@@ -926,16 +1017,6 @@ html(lang='en')
         
       });
 
-      function checkIfReady()
-      { 
-        
-        if(filectr >= 4)
-        {
-          $("#submit").prop('disabled', false);
-        }
-      }
-
-      
 
 
 

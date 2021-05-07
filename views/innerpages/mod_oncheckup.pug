@@ -55,10 +55,14 @@ html(lang='en')
                       li.list-group-item 
                         .col
                           .row
-                            p IAR Back (Image)
-                            a.ml-3(href=url+"/io/downloadUploaded/oncheckup/"+motorobj.tagID+"/iarback-"+motorobj.tagID+".jpg") 
+                            p Before Image (Image)
+                            a.ml-3.downloadfile(href=url+"/io/downloadUploaded/oncheckup/"+motorobj.tagID+"/iarback-"+motorobj.tagID+".jpg") 
                               svg.bi.bi-cloud-arrow-down-fill(xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='currentColor' viewBox='0 0 16 16')
                                 path(d='M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z')
+                            p.ml-3.filenotfound
+                              svg.bi.bi-x-circle-fill(xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='red' viewBox='0 0 16 16')
+                                path(d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z')
+                              |   File not found
                           .row
                             input#file-beforeimage(type='file' name='beforeimage'  value='Upload') 
                             button.btn.btn-primary#bef-img.file-btns(type="button") Upload
@@ -66,9 +70,13 @@ html(lang='en')
                         .col
                           .row
                             p IAR Front (Image)
-                            a.ml-3(href=url+"/io/downloadUploaded/oncheckup/"+motorobj.tagID+"/iarfront-"+motorobj.tagID+".jpg")
+                            a.ml-3.downloadfile(href=url+"/io/downloadUploaded/oncheckup/"+motorobj.tagID+"/iarfront-"+motorobj.tagID+".jpg")
                               svg.bi.bi-cloud-arrow-down-fill(xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='currentColor' viewBox='0 0 16 16')
                                 path(d='M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z')
+                            p.ml-3.filenotfound
+                              svg.bi.bi-x-circle-fill(xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='red' viewBox='0 0 16 16')
+                                path(d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z')
+                              |   File not found
                           .row
                             input#file-iar1(type='file' name='iar1'  value='Click me') 
                             button.btn.btn-primary.mt-3#front-iar.file-btns(type="button") Upload
@@ -77,9 +85,13 @@ html(lang='en')
                         .col
                           .row
                             p IAR Back (Image)
-                            a.ml-3(href=url+"/io/downloadUploaded/oncheckup/"+motorobj.tagID+"/iarback-"+motorobj.tagID+".jpg")
+                            a.ml-3.downloadfile(href=url+"/io/downloadUploaded/oncheckup/"+motorobj.tagID+"/beforeimage-"+motorobj.tagID+".jpg")
                               svg.bi.bi-cloud-arrow-down-fill(xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='currentColor' viewBox='0 0 16 16')
                                 path(d='M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z')
+                            p.ml-3.filenotfound
+                              svg.bi.bi-x-circle-fill(xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='red' viewBox='0 0 16 16')
+                                path(d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z')
+                              |   File not found
                           .row
                             input#file-iar2(type='file' name='iar2'  value='Click me') 
                             button.btn.btn-primary.mt-3#back-iar.file-btns(type="button") Upload
@@ -87,19 +99,25 @@ html(lang='en')
                       li.list-group-item 
                         .col
                           .row
-                            p IAR Back (PDF)
-                            a.ml-3(href=url+"/io/downloadPDF/oncheckup/iar/"+motorobj.tagID+"/iar-front-"+motorobj.tagID+".pdf")
+                            p.iarfrontpdf IAR Front (PDF)
+                            a.ml-3.downloadfile(href=url+"/io/downloadPDF/oncheckup/iar/"+motorobj.tagID+"/iar-front-"+motorobj.tagID+".pdf")
                               svg.bi.bi-cloud-arrow-down-fill(xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='currentColor' viewBox='0 0 16 16')
                                 path(d='M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z')
-                          
+                            p.ml-3.filenotfound
+                              svg.bi.bi-x-circle-fill(xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='red' viewBox='0 0 16 16')
+                                path(d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z')
+                              |   File not found
                       li.list-group-item 
                         .col
                           .row
-                            p Before Image (Image)
-                            a.ml-3(href=url+"/io/downloadUploaded/oncheckup/"+tagID+"/beforeimage-"+tagID+".jpg")
+                            p.iarbackpdf IAR Back (PDF)
+                            a.ml-3.downloadfile(href=url+"/io/downloadPDF/oncheckup/iar/"+motorobj.tagID+"/iar-back-"+motorobj.tagID+".pdf")
                               svg.bi.bi-cloud-arrow-down-fill(xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='currentColor' viewBox='0 0 16 16')
                                 path(d='M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z')
-                        
+                            p.ml-3.filenotfound
+                              svg.bi.bi-x-circle-fill(xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='red' viewBox='0 0 16 16')
+                                path(d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z')
+                              |   File not found
                           
               
             .col-md-8.order-md-1.motorcol
@@ -158,6 +176,10 @@ html(lang='en')
                         .row
                           .col-md-4.mb-3
                             label(for='download') Generate IAR
+                              p.ml-3.filenotfound
+                                svg.bi.bi-x-circle-fill(xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='red' viewBox='0 0 16 16')
+                                  path(d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z')
+                                |   File not found
                             input.form-control.btn-warning(type='button' name='download' required='' value='Click me') 
                           .col-md-4.mb-3.genIAR
                           .col-md-4.mb-3.genIAR2
@@ -575,12 +597,26 @@ html(lang='en')
 
         var baseurl = window.location.protocol + "//" + window.location.host + "/";
         - $(document).ready(function() {
+            /*Check files to know if they exist*/
             
+            //Hide alerts first
+            $('.filenotfound').hide();
+            
+            //Check all file's existence
+            fileChecker('oncheckup', tagID, {
+              'iarfront_img': 'iar1',
+              'iarback_img': 'iar2',
+              'iarfront_pdf': 'iarfrontpdf',
+              'iarback_pdf': 'iarbackpdf', 
+              'bef_img': 'beforeimage'
+            });
+
             //Upload
             $('#file-spinner').hide()
             $('.file-btns').on('click', function(){
               var file_input = $(this).parent().find('input');
               var filename = file_input.attr('name');
+              var this_object = $(this);
 
               if(document.getElementById('file-'+filename).files.length > 0)
               {
@@ -608,7 +644,11 @@ html(lang='en')
                         $('.file-btns').prop('disabled', false);
                         $('#file-spinner').hide()
                         
-                        checkIfReady()
+                        var download_obj = this_object.parent().parent().find('.downloadfile')
+                        var notFound_obj = this_object.parent().parent().find('.filenotfound')
+                        download_obj.show()
+                        notFound_obj.hide()
+                       
                       },
                       error: function (xhr, text, error) {              
                         alert(error);
@@ -933,6 +973,19 @@ html(lang='en')
                     
                   grandparent.append('<div class="col-md-4 mb-3 genIAR"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="'+baseurl+'io/asset/oncheckup/iar/front/exists/'+tagID+'">Click here</a></div></div></div>');
                   grandparent.append('<div class="col-md-4 mb-3 genIAR2"><label for="voltage">Generated Content</label><div class="gencard card"><div class="card-body"><a target="_blank" href="'+baseurl+'io/asset/oncheckup/iar/back/exists/'+tagID+'">Click here</a></div></div></div>');
+
+                  var iarbackpdfObj_download = $('.iarbackpdf').parent().find('.downloadfile');
+                  var iarbackpdfObj_notfound = $('.iarbackpdf').parent().find('.filenotfound');
+
+                  var iarfrontpdfObj_download = $('.iarfrontpdf').parent().find('.downloadfile');
+                  var iarfrontpdfObj_notfound = $('.iarfrontpdf').parent().find('.filenotfound');
+
+                  iarbackpdfObj_download.show()
+                  iarfrontpdfObj_download.show()
+
+                  iarbackpdfObj_notfound.hide()
+                  iarfrontpdfObj_notfound.hide()
+
                 },
                 error: function (xhr, text, error) {              
                 alert('Error: ' + error);

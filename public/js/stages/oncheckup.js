@@ -1,5 +1,38 @@
 
 
+function fileChecker(stage, tagID, compats)
+{
+  
+    $.ajax({   
+        async: true, 
+        method: 'GET',
+        url: baseurl+'io/checkFiles/'+tagID+'/'+stage,    
+        success: function (data) {  
+         
+            data.notfound.forEach(file => {
+                
+                var filename = compats[file];
+                
+                var notFoundObj = $('.'+filename).parent().parent().find('.filenotfound');
+                var downloadObj = $('.'+filename).parent().parent().find('.downloadfile');
+               
+                if(notFoundObj.length == 0)
+                {
+                    notFoundObj = $('input[name="'+filename+'"').parent().parent().find('.filenotfound');
+                    downloadObj = $('input[name="'+filename+'"').parent().parent().find('.downloadfile');
+                }
+                    
+                downloadObj.hide();
+                notFoundObj.show();
+            });
+            
+        },
+        error: function (xhr, text, error) {              
+          alert(error);
+        }
+      })
+}
+
 
 function oncheckup2(ctr, submotor){
   
